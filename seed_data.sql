@@ -59,13 +59,15 @@ DROP TABLE IF EXISTS `compositions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `compositions` (
+  `compID` int NOT NULL AUTO_INCREMENT,
   `troopID` int NOT NULL,
   `armID` int NOT NULL,
-  PRIMARY KEY (`troopID`,`armID`),
-  KEY `thearms_idx` (`armID`),
-  CONSTRAINT `oftroop` FOREIGN KEY (`troopID`) REFERENCES `troops` (`troopID`),
-  CONSTRAINT `thearms` FOREIGN KEY (`armID`) REFERENCES `arms` (`armID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`compID`),
+  KEY `ofTroop_idx` (`troopID`),
+  KEY `hasArms_idx` (`armID`),
+  CONSTRAINT `hasArms` FOREIGN KEY (`armID`) REFERENCES `arms` (`armID`),
+  CONSTRAINT `ofTroop` FOREIGN KEY (`troopID`) REFERENCES `troops` (`troopID`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -74,6 +76,7 @@ CREATE TABLE `compositions` (
 
 LOCK TABLES `compositions` WRITE;
 /*!40000 ALTER TABLE `compositions` DISABLE KEYS */;
+INSERT INTO `compositions` VALUES (1,1,1),(2,1,2),(3,1,3),(4,1,3),(5,2,5),(6,2,2),(7,2,7),(8,2,7),(9,2,7);
 /*!40000 ALTER TABLE `compositions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -151,7 +154,7 @@ CREATE TABLE `troops` (
   KEY `userID_idx` (`userID`),
   CONSTRAINT `leadedBy` FOREIGN KEY (`lordID`) REFERENCES `lords` (`lordID`),
   CONSTRAINT `userID` FOREIGN KEY (`userID`) REFERENCES `users` (`userID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -160,6 +163,7 @@ CREATE TABLE `troops` (
 
 LOCK TABLES `troops` WRITE;
 /*!40000 ALTER TABLE `troops` DISABLE KEYS */;
+INSERT INTO `troops` VALUES (1,'harry\'s first',1,3,'This is Harry\'s first troop'),(2,'harry\'s second',1,1,'This is Harry\'s second troop');
 /*!40000 ALTER TABLE `troops` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -236,4 +240,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-08 17:49:51
+-- Dump completed on 2020-11-09 16:13:56
