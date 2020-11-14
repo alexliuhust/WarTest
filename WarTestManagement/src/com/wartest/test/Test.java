@@ -98,6 +98,43 @@ public class Test {
 			}
 		}
 	}
+	
+	public ResultSet findTroopByUserID(Connection con, Integer troopID) throws Exception {
+		String sql = "select t.name as troopname, t.memo as memo,"
+				+ "		l.name as lordname,"
+				+ "        group_concat(a.name, \"(\", a.type, \")\") as arms"
+				+ "	from troop t join lord l on (t.lordID = l.lordID)"
+				+ "    join composition c on (t.troopID = c.troopID)"
+				+ "    join arm a on (c.armID = a.armID)"
+				+ "    where t.userID = ?"
+				+ "	group by t.troopID";
+		PreparedStatement pstmt = con.prepareStatement(sql);
+		pstmt.setInt(1, troopID);
+		return pstmt.executeQuery();
+	}
+	public void findTroopByUserIDTest() {
+		DbUtil dbUtil = new DbUtil();
+		Connection con = null;
+		try {
+			con = dbUtil.getCon();
+			ResultSet rs = findTroopByUserID(con, 1);
+			while(rs.next()) {
+				System.out.println(rs.getString("troopname") + 
+					", " + rs.getString("memo") + 
+					", " + rs.getString("lordname") + 
+					", " + rs.getString("arms"));
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				dbUtil.closeCon(con);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 
 	public static void main(String[] args) {
 		Test test = new Test();
@@ -105,8 +142,10 @@ public class Test {
 //		test.findArmByIdTest();
 //		System.out.println("-------------findArmByRaceTest-------------");
 //		test.findArmByRaceTest();
-		System.out.println("-------------findLordWithRaceLocationTest-------------");
-		test.findLordWithRaceLocationTest();
+//		System.out.println("-------------findLordWithRaceLocationTest-------------");
+//		test.findLordWithRaceLocationTest();
+		System.out.println("-------------findTroopByUserIDTest-------------");
+		test.findTroopByUserIDTest();
 		
 	}
 
