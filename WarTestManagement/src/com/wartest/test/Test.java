@@ -69,13 +69,44 @@ public class Test {
 		}
 	}
 	
+	public ResultSet findLordWithRaceLocation(Connection con, Integer lordID) throws Exception {
+		String sql = "select l.*, r.location "
+				+ "from lords as l join races as r on l.race = r.race "
+				+ "where lordID = ?";
+		PreparedStatement pstmt = con.prepareStatement(sql);
+		pstmt.setInt(1, lordID);
+		return pstmt.executeQuery();
+	}
+	public void findLordWithRaceLocationTest() {
+		DbUtil dbUtil = new DbUtil();
+		Connection con = null;
+		try {
+			con = dbUtil.getCon();
+			ResultSet rs = findLordWithRaceLocation(con, 1);
+			while(rs.next()) {
+				System.out.println(rs.getString("name") + 
+					", " + rs.getString("race") + 
+					", " + rs.getString("location"));
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				dbUtil.closeCon(con);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 	public static void main(String[] args) {
 		Test test = new Test();
-		System.out.println("-------------findArmByIdTest-------------");
-		test.findArmByIdTest();
-		System.out.println("-------------findArmByRaceTest-------------");
-		test.findArmByRaceTest();
+//		System.out.println("-------------findArmByIdTest-------------");
+//		test.findArmByIdTest();
+//		System.out.println("-------------findArmByRaceTest-------------");
+//		test.findArmByRaceTest();
+		System.out.println("-------------findLordWithRaceLocationTest-------------");
+		test.findLordWithRaceLocationTest();
 		
 	}
 
