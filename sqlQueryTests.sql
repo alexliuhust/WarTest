@@ -1,12 +1,12 @@
-select troops.name as troopname, troops.memo, 
-		lords.name as lordname, 
-        group_concat(arms.name, "-", arms.type) as arms
-	from troops join lords on (troops.lordID = lords.lordID)
-    join compositions on (troops.troopID = compositions.troopID)
-    join arms on (compositions.armID = arms.armID)
-	group by troops.troopID
-    having troops.troopID = 1;
+select troop.name as troopname, troop.memo, 
+		lord.name as lordname, 
+        group_concat(arm.name, "-", arm.type) as arms
+	from troop join lord on (troop.lordID = lord.lordID)
+    join composition on (troop.troopID = composition.troopID)
+    join arm on (composition.armID = arm.armID)
+    where troop.userID = 1
+	group by troop.troopID;
 
-select * from troops where troopID = 2;
+select * from troop where troopID = 2;
 
-select * from compositions where troopID = 2;
+select * from composition where troopID = 2;
