@@ -3,10 +3,9 @@ package com.wartest.test;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Vector;
 
-import com.wartest.model.Arm;
+import com.wartest.dao.UserDao;
+import com.wartest.model.User;
 import com.wartest.util.DbUtil;
 
 public class Test {
@@ -135,6 +134,28 @@ public class Test {
 		}
 	}
 	
+	public void loginTest() {
+		String username = "ronald@gmail.com";
+		String password = "654321";
+		User user = new User(username, password);
+		UserDao userDao = new UserDao();
+		DbUtil dbUtil = new DbUtil();
+		Connection con = null;
+		try {
+			con = dbUtil.getCon();
+			User currentUser = userDao.login(con, user);
+			if (currentUser != null) 
+				System.out.println(currentUser.getUsername() + " logged in!!");
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				dbUtil.closeCon(con);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 	public static void main(String[] args) {
 		Test test = new Test();
@@ -144,8 +165,10 @@ public class Test {
 //		test.findArmByRaceTest();
 //		System.out.println("-------------findLordWithRaceLocationTest-------------");
 //		test.findLordWithRaceLocationTest();
-		System.out.println("-------------findTroopByUserIDTest-------------");
-		test.findTroopByUserIDTest();
+//		System.out.println("-------------findTroopByUserIDTest-------------");
+//		test.findTroopByUserIDTest();
+//		System.out.println("-------------loginTest-------------");
+//		test.loginTest();
 		
 	}
 

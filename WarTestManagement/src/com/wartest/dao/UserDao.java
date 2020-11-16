@@ -23,11 +23,11 @@ public class UserDao {
 	public User login(Connection con, User user) throws Exception {
 		User resultUser = null;
 		String sql1 = "select * from user where username = ? and password= ?";
-		PreparedStatement pstm = con.prepareStatement(sql1);
+		PreparedStatement pstm1 = con.prepareStatement(sql1);
 		
-		pstm.setString(1, user.getUsername());
-		pstm.setString(2, user.getPassword());
-		ResultSet rs = pstm.executeQuery();
+		pstm1.setString(1, user.getUsername());
+		pstm1.setString(2, user.getPassword());
+		ResultSet rs = pstm1.executeQuery();
 		
 		if (rs.next()) {
 			resultUser = new User();
@@ -36,9 +36,14 @@ public class UserDao {
 			resultUser.setPassword(rs.getString("password"));
 			
 			// Add the current user into the database
+			String deletesql = "delete from curuser";
+			PreparedStatement depstm = con.prepareStatement(deletesql);
+			int numOfDel = depstm.executeUpdate();
 			
-			
-			
+			String sql2 = "insert into curuser (cuID) values (?)";
+			PreparedStatement pstm2 = con.prepareStatement(sql2);
+			pstm2.setInt(1, rs.getInt("userID"));
+			int num = pstm2.executeUpdate();
 		}
 		
 		return resultUser;
