@@ -81,6 +81,28 @@ INSERT INTO `composition` VALUES (1,1,1),(2,1,2),(3,1,3),(4,1,3),(5,2,5),(6,2,2)
 UNLOCK TABLES;
 
 --
+-- Table structure for table `current_user`
+--
+
+DROP TABLE IF EXISTS `current_user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `current_user` (
+  `cuID` int NOT NULL,
+  PRIMARY KEY (`cuID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `current_user`
+--
+
+LOCK TABLES `current_user` WRITE;
+/*!40000 ALTER TABLE `current_user` DISABLE KEYS */;
+/*!40000 ALTER TABLE `current_user` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `lord`
 --
 
@@ -240,4 +262,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-14 16:53:54
+-- Dump completed on 2020-11-16 16:15:59
