@@ -167,8 +167,8 @@ public class Test {
 //		test.findLordWithRaceLocationTest();
 //		System.out.println("-------------findTroopByUserIDTest-------------");
 //		test.findTroopByUserIDTest();
-//		System.out.println("-------------loginTest-------------");
-//		test.loginTest();
+		System.out.println("-------------loginTest-------------");
+		test.loginTest();
 		
 	}
 
