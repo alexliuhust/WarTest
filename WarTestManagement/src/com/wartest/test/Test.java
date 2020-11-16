@@ -135,8 +135,8 @@ public class Test {
 	}
 	
 	public void loginTest() {
-		String username = "ronald@gmail.com";
-		String password = "654321";
+		String username = "admin";
+		String password = "123";
 		User user = new User(username, password);
 		UserDao userDao = new UserDao();
 		DbUtil dbUtil = new DbUtil();
@@ -146,6 +146,27 @@ public class Test {
 			User currentUser = userDao.login(con, user);
 			if (currentUser != null) 
 				System.out.println(currentUser.getUsername() + " logged in!!");
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				dbUtil.closeCon(con);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void registerTest() {
+		String username = "admin";
+		String password = "123";
+		User user = new User(username, password);
+		UserDao userDao = new UserDao();
+		DbUtil dbUtil = new DbUtil();
+		Connection con = null;
+		try {
+			con = dbUtil.getCon();
+			userDao.register(con, user);
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -167,8 +188,10 @@ public class Test {
 //		test.findLordWithRaceLocationTest();
 //		System.out.println("-------------findTroopByUserIDTest-------------");
 //		test.findTroopByUserIDTest();
-		System.out.println("-------------loginTest-------------");
-		test.loginTest();
+//		System.out.println("-------------loginTest-------------");
+//		test.loginTest();
+//		System.out.println("-------------registerTest-------------");
+//		test.registerTest();
 		
 	}
 

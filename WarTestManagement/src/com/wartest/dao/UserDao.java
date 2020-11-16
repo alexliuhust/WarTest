@@ -14,6 +14,21 @@ import com.wartest.model.User;
 public class UserDao {
 	
 	/**
+	 * Register
+	 * @param con
+	 * @param user
+	 * @throws Exception
+	 */
+	public void register(Connection con, User user) throws Exception {
+		String sql = "insert into user (username, password) values (?, ?)";
+		PreparedStatement pstmt = con.prepareStatement(sql);
+		pstmt.setString(1, user.getUsername());
+		pstmt.setString(2, user.getPassword());
+		int num = pstmt.executeUpdate();
+		if (num == 1) System.out.println("Successfully Add a User!");
+	}
+	
+	/**
 	 * Login Authentication
 	 * @param con: Connection
 	 * @param user: User
@@ -48,4 +63,16 @@ public class UserDao {
 		
 		return resultUser;
 	}
+	
+	/**
+	 * Log Out
+	 * @param con
+	 * @throws Exception
+	 */
+	public void logout(Connection con) throws Exception {
+		String deletesql = "delete from curuser";
+		PreparedStatement depstm = con.prepareStatement(deletesql);
+		int numOfDel = depstm.executeUpdate();
+	}
+	
 }
