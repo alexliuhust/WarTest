@@ -81,28 +81,6 @@ INSERT INTO `composition` VALUES (1,1,1),(2,1,2),(3,1,3),(4,1,3),(5,2,5),(6,2,2)
 UNLOCK TABLES;
 
 --
--- Table structure for table `current_user`
---
-
-DROP TABLE IF EXISTS `current_user`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `current_user` (
-  `cuID` int NOT NULL,
-  PRIMARY KEY (`cuID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `current_user`
---
-
-LOCK TABLES `current_user` WRITE;
-/*!40000 ALTER TABLE `current_user` DISABLE KEYS */;
-/*!40000 ALTER TABLE `current_user` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `lord`
 --
 
@@ -201,7 +179,7 @@ CREATE TABLE `user` (
   `username` varchar(20) NOT NULL,
   `password` varchar(15) NOT NULL,
   PRIMARY KEY (`userID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -210,7 +188,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'harry@gmail.com','123456'),(2,'ronald@gmail.com','654321');
+INSERT INTO `user` VALUES (1,'harry@gmail.com','123456'),(2,'ronald@gmail.com','654321'),(4,'admin','213');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -262,4 +240,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-16 16:15:59
+-- Dump completed on 2020-11-17 10:57:47
