@@ -14,6 +14,9 @@ import javax.swing.JOptionPane;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Insets;
+import javax.swing.SwingConstants;
+import javax.swing.JMenu;
 
 public class MainFrm extends JFrame {
 
@@ -48,7 +51,17 @@ public class MainFrm extends JFrame {
 		setBounds(100, 100, 450, 300);
 		
 		JMenuBar menuBar = new JMenuBar();
+		menuBar.setMargin(new Insets(10, 0, 5, 50));
 		setJMenuBar(menuBar);
+		
+		JMenu mnNewMenu = new JMenu("Main Menu");
+		menuBar.add(mnNewMenu);
+		
+		JMenuItem mntmNewMenuItem_2 = new JMenuItem("My Troops");
+		mnNewMenu.add(mntmNewMenuItem_2);
+		
+		JMenuItem mntmNewMenuItem_3 = new JMenuItem("My War Test");
+		mnNewMenu.add(mntmNewMenuItem_3);
 		
 		JMenuItem mntmNewMenuItem = new JMenuItem("Log Out");
 		mntmNewMenuItem.addActionListener(new ActionListener() {
@@ -56,7 +69,19 @@ public class MainFrm extends JFrame {
 				logoutActionPerformed(e);
 			}
 		});
-		menuBar.add(mntmNewMenuItem);
+		mnNewMenu.add(mntmNewMenuItem);
+		
+		JMenu mnNewMenu_1 = new JMenu("Library");
+		menuBar.add(mnNewMenu_1);
+		
+		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Races");
+		mnNewMenu_1.add(mntmNewMenuItem_1);
+		
+		JMenuItem mntmNewMenuItem_4 = new JMenuItem("Lords");
+		mnNewMenu_1.add(mntmNewMenuItem_4);
+		
+		JMenuItem mntmNewMenuItem_5 = new JMenuItem("Arms");
+		mnNewMenu_1.add(mntmNewMenuItem_5);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -65,7 +90,7 @@ public class MainFrm extends JFrame {
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 	}
 
-	
+
 	/**
 	 * Action Event: Log Out
 	 * @param e
@@ -78,7 +103,7 @@ public class MainFrm extends JFrame {
 			new LogInFrm().setVisible(true);;
 		}
 	}
-
+	
 }
 
 
