@@ -51,10 +51,6 @@ public class UserDao {
 	 * @throws Exception
 	 */
 	public User login(Connection con, User user) throws Exception {
-		// First, delete the current user ID in the database
-		String deletesql = "delete from curuser";
-		PreparedStatement depstm = con.prepareStatement(deletesql);
-		depstm.executeUpdate();
 		
 		User resultUser = null;
 		String sql1 = "select * from user where username = ? and password= ?";
@@ -79,15 +75,5 @@ public class UserDao {
 		return resultUser;
 	}
 	
-	/**
-	 * Log Out
-	 * @param con
-	 * @throws Exception
-	 */
-	public void logout(Connection con) throws Exception {
-		String deletesql = "delete from curuser";
-		PreparedStatement depstm = con.prepareStatement(deletesql);
-		depstm.executeUpdate();
-	}
 	
 }

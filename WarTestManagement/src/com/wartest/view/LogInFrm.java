@@ -182,7 +182,7 @@ public class LogInFrm extends JFrame {
 			if (currentUser != null) {
 				JOptionPane.showMessageDialog(null, currentUser.getUsername() + ", Logged You In!");
 				dispose();
-				// new MainFrm().setVisible(true);
+				new MainFrm(currentUser).setVisible(true);
 			}else {
 				JOptionPane.showMessageDialog(null, "Incorrect username or password!");
 			}

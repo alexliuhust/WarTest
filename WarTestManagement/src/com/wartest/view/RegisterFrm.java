@@ -137,7 +137,7 @@ public class RegisterFrm extends JFrame {
 		this.setLocationRelativeTo(null);
 	}
 	/**
-	 * Action Event: Log In
+	 * Action Event: Register 
 	 * @param e
 	 */
 	private void registerActionPerformed(ActionEvent event) {
