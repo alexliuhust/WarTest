@@ -99,39 +99,30 @@ public class LogInFrm extends JFrame {
 			}
 		});
 		btnSignUp.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 14));
-		
-		JLabel lblNewLabel_2_1 = new JLabel("Don't have an account?");
-		lblNewLabel_2_1.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 15));
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.TRAILING)
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addContainerGap(31, Short.MAX_VALUE)
-					.addComponent(lblNewLabel)
-					.addGap(92))
-				.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
-					.addGap(51)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(lblNewLabel_2_1, GroupLayout.PREFERRED_SIZE, 176, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnSignUp, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE)
-							.addGap(123))
-						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(71)
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 77, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblNewLabel_2, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnNewButton))
+							.addGap(18)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
 								.addGroup(gl_contentPane.createSequentialGroup()
-									.addComponent(btnNewButton)
-									.addPreferredGap(ComponentPlacement.RELATED, 142, Short.MAX_VALUE)
+									.addGap(9)
+									.addComponent(btnSignUp, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 									.addComponent(btnNewButton_1))
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-										.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 77, GroupLayout.PREFERRED_SIZE)
-										.addComponent(lblNewLabel_2, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE))
-									.addGap(18)
-									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-										.addComponent(passwordTXT, GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
-										.addComponent(usernameTxt, GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE))))
-							.addGap(105))))
+								.addComponent(usernameTxt, GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+								.addComponent(passwordTXT)))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(60)
+							.addComponent(lblNewLabel)))
+					.addContainerGap(63, Short.MAX_VALUE))
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -144,17 +135,14 @@ public class LogInFrm extends JFrame {
 						.addComponent(usernameTxt, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(18)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblNewLabel_2)
-						.addComponent(passwordTXT, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
+						.addComponent(passwordTXT, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblNewLabel_2))
+					.addGap(65)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnNewButton)
+						.addComponent(btnSignUp, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnNewButton_1))
-					.addPreferredGap(ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblNewLabel_2_1, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnSignUp, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE))
-					.addGap(69))
+					.addContainerGap(109, Short.MAX_VALUE))
 		);
 		contentPane.setLayout(gl_contentPane);
 		this.setLocationRelativeTo(null);

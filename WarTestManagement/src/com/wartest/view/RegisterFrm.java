@@ -61,7 +61,7 @@ public class RegisterFrm extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		
-		JLabel lblNewLabel = new JLabel("Total War II War Drill System");
+		JLabel lblNewLabel = new JLabel("REGISTER");
 		lblNewLabel.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 24));
 		
 		JLabel lblNewLabel_1 = new JLabel("Username");
@@ -90,36 +90,46 @@ public class RegisterFrm extends JFrame {
 			}
 		});
 		btnNewButton_1.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 14));
+		
+		JButton btnBack = new JButton("Back");
+		btnBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				goBackToLogIn(e);
+			}
+		});
+		btnBack.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 14));
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.TRAILING)
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addContainerGap(50, Short.MAX_VALUE)
+					.addContainerGap(77, Short.MAX_VALUE)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
-						.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
+						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblNewLabel)
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-										.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 77, GroupLayout.PREFERRED_SIZE)
-										.addComponent(lblNewLabel_2, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE))
-									.addGap(18)
-									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
-										.addComponent(passwordTXT)
-										.addComponent(usernameTxt, GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE))))
-							.addGap(46))
+								.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 77, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblNewLabel_2, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE))
+							.addGap(18)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(passwordTXT)
+								.addComponent(usernameTxt, GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)))
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addComponent(btnNewButton)
+							.addGap(18)
+							.addComponent(btnBack, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(btnNewButton_1)
-							.addGap(68))))
+							.addComponent(btnNewButton_1, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE)))
+					.addGap(79))
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addGap(164)
+					.addComponent(lblNewLabel)
+					.addContainerGap(169, Short.MAX_VALUE))
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(35)
+					.addGap(48)
 					.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
-					.addGap(64)
+					.addGap(51)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(usernameTxt, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblNewLabel_1))
@@ -130,12 +140,17 @@ public class RegisterFrm extends JFrame {
 					.addGap(44)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnNewButton)
-						.addComponent(btnNewButton_1))
-					.addContainerGap(71, Short.MAX_VALUE))
+						.addComponent(btnNewButton_1)
+						.addComponent(btnBack, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(65, Short.MAX_VALUE))
 		);
 		contentPane.setLayout(gl_contentPane);
 		this.setLocationRelativeTo(null);
 	}
+	
+	
+	
+	
 	/**
 	 * Action Event: Register 
 	 * @param e
@@ -176,6 +191,16 @@ public class RegisterFrm extends JFrame {
 			}
 		}
 	}
+	
+	/**
+	 * Action Event: Go back to Login
+	 * @param event
+	 */
+	private void goBackToLogIn(ActionEvent e) {
+		dispose();
+		new LogInFrm().setVisible(true);
+	}
+
 
 	/**
 	 * Action Event: Reset Values
@@ -185,5 +210,4 @@ public class RegisterFrm extends JFrame {
 		this.usernameTxt.setText("");
 		this.passwordTXT.setText("");
 	}
-
 }
