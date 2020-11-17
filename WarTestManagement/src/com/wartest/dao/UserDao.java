@@ -64,12 +64,6 @@ public class UserDao {
 			resultUser.setUserID(rs.getInt("userID"));
 			resultUser.setUsername(rs.getString("userName"));
 			resultUser.setPassword(rs.getString("password"));
-			
-			// Add the current user into the database
-			String sql2 = "insert into curuser (cuID) values (?)";
-			PreparedStatement pstm2 = con.prepareStatement(sql2);
-			pstm2.setInt(1, rs.getInt("userID"));
-			pstm2.executeUpdate();
 		}
 		
 		return resultUser;
