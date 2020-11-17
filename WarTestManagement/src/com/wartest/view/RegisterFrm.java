@@ -24,7 +24,7 @@ import com.wartest.model.User;
 import com.wartest.util.DbUtil;
 import com.wartest.util.StringUtil;
 
-public class LogInFrm extends JFrame {
+public class RegisterFrm extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField usernameTxt;
@@ -52,9 +52,9 @@ public class LogInFrm extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public LogInFrm() {
+	public RegisterFrm() {
 		setResizable(false);
-		setTitle("User Login");
+		setTitle("User Register");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 404);
 		contentPane = new JPanel();
@@ -75,10 +75,10 @@ public class LogInFrm extends JFrame {
 		
 		passwordTXT = new JPasswordField();
 		
-		JButton btnNewButton = new JButton("Log In");
+		JButton btnNewButton = new JButton("Sign Up");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				loginActionPerformed(e);
+				registerActionPerformed(e);
 			}
 		});
 		btnNewButton.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 14));
@@ -90,71 +90,48 @@ public class LogInFrm extends JFrame {
 			}
 		});
 		btnNewButton_1.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 14));
-		
-		JButton btnSignUp = new JButton("Sign Up");
-		btnSignUp.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				dispose();
-				new RegisterFrm().setVisible(true);
-			}
-		});
-		btnSignUp.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 14));
-		
-		JLabel lblNewLabel_2_1 = new JLabel("Don't have an account?");
-		lblNewLabel_2_1.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 15));
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addContainerGap(31, Short.MAX_VALUE)
-					.addComponent(lblNewLabel)
-					.addGap(92))
-				.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
-					.addGap(51)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(lblNewLabel_2_1, GroupLayout.PREFERRED_SIZE, 176, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnSignUp, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE)
-							.addGap(123))
-						.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap(50, Short.MAX_VALUE)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
+						.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addComponent(btnNewButton)
-									.addPreferredGap(ComponentPlacement.RELATED, 142, Short.MAX_VALUE)
-									.addComponent(btnNewButton_1))
+								.addComponent(lblNewLabel)
 								.addGroup(gl_contentPane.createSequentialGroup()
 									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 										.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 77, GroupLayout.PREFERRED_SIZE)
 										.addComponent(lblNewLabel_2, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE))
 									.addGap(18)
-									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-										.addComponent(passwordTXT, GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
+									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
+										.addComponent(passwordTXT)
 										.addComponent(usernameTxt, GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE))))
-							.addGap(105))))
+							.addGap(46))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addComponent(btnNewButton)
+							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(btnNewButton_1)
+							.addGap(68))))
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addGap(35)
 					.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
+					.addGap(64)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblNewLabel_1)
-						.addComponent(usernameTxt, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
+						.addComponent(usernameTxt, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblNewLabel_1))
+					.addGap(37)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblNewLabel_2)
-						.addComponent(passwordTXT, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
+						.addComponent(passwordTXT, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblNewLabel_2))
+					.addGap(44)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnNewButton)
 						.addComponent(btnNewButton_1))
-					.addPreferredGap(ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblNewLabel_2_1, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnSignUp, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE))
-					.addGap(69))
+					.addContainerGap(71, Short.MAX_VALUE))
 		);
 		contentPane.setLayout(gl_contentPane);
 		this.setLocationRelativeTo(null);
@@ -163,7 +140,7 @@ public class LogInFrm extends JFrame {
 	 * Action Event: Log In
 	 * @param e
 	 */
-	private void loginActionPerformed(ActionEvent event) {
+	private void registerActionPerformed(ActionEvent event) {
 		String userName = this.usernameTxt.getText();
 		String password = (new String(this.passwordTXT.getPassword()));
 		if (StringUtil.isEmpty(userName)) {
@@ -178,13 +155,16 @@ public class LogInFrm extends JFrame {
 		Connection con = null;
 		try {
 			con = dbUtil.getCon();
-			User currentUser = userDao.login(con, user);
-			if (currentUser != null) {
-				JOptionPane.showMessageDialog(null, currentUser.getUsername() + ", Logged You In!");
+			int num = userDao.register(con, user);
+			if (num == 1) {
+				JOptionPane.showMessageDialog(null, "Successfully Registered");
 				dispose();
-				// new MainFrm().setVisible(true);
-			}else {
-				JOptionPane.showMessageDialog(null, "Incorrect username or password!");
+				new LogInFrm().setVisible(true);
+			} else if (num == -1) {
+				JOptionPane.showMessageDialog(null, "This username has already existed!\nPlease try another one!");
+				this.usernameTxt.setText("");
+			} else {
+				JOptionPane.showMessageDialog(null, "Fail to sign you in...");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -205,8 +185,5 @@ public class LogInFrm extends JFrame {
 		this.usernameTxt.setText("");
 		this.passwordTXT.setText("");
 	}
+
 }
-
-
-
-

@@ -19,13 +19,28 @@ public class UserDao {
 	 * @param user
 	 * @throws Exception
 	 */
-	public void register(Connection con, User user) throws Exception {
+	public int register(Connection con, User user) throws Exception {
+		// Check if the input username already exists in the database
+		String checksql = "select * from user where username = ?";
+		PreparedStatement checkpstmt = con.prepareStatement(checksql);
+		checkpstmt.setString(1, user.getUsername());
+		ResultSet rs = checkpstmt.executeQuery();
+		if (rs.next()) {
+			//System.out.println("This username has already existed!");
+			return -1;
+		}
+		
+		// Add the valid new user into the database
 		String sql = "insert into user (username, password) values (?, ?)";
 		PreparedStatement pstmt = con.prepareStatement(sql);
 		pstmt.setString(1, user.getUsername());
 		pstmt.setString(2, user.getPassword());
 		int num = pstmt.executeUpdate();
-		if (num == 1) System.out.println("Successfully Add a User!");
+		if (num == 1) {
+			//System.out.println("Successfully Add a User!");
+			return num;
+		}
+		return -2;
 	}
 	
 	/**
@@ -39,7 +54,7 @@ public class UserDao {
 		// First, delete the current user ID in the database
 		String deletesql = "delete from curuser";
 		PreparedStatement depstm = con.prepareStatement(deletesql);
-		int numOfDel = depstm.executeUpdate();
+		depstm.executeUpdate();
 		
 		User resultUser = null;
 		String sql1 = "select * from user where username = ? and password= ?";
@@ -58,7 +73,7 @@ public class UserDao {
 			String sql2 = "insert into curuser (cuID) values (?)";
 			PreparedStatement pstm2 = con.prepareStatement(sql2);
 			pstm2.setInt(1, rs.getInt("userID"));
-			int num = pstm2.executeUpdate();
+			pstm2.executeUpdate();
 		}
 		
 		return resultUser;
@@ -72,7 +87,7 @@ public class UserDao {
 	public void logout(Connection con) throws Exception {
 		String deletesql = "delete from curuser";
 		PreparedStatement depstm = con.prepareStatement(deletesql);
-		int numOfDel = depstm.executeUpdate();
+		depstm.executeUpdate();
 	}
 	
 }
