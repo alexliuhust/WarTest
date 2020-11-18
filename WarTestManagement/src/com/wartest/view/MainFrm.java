@@ -17,11 +17,12 @@ import java.awt.event.ActionEvent;
 import java.awt.Insets;
 import javax.swing.SwingConstants;
 import javax.swing.JMenu;
+import javax.swing.JDesktopPane;
 
 public class MainFrm extends JFrame {
 
 	private JPanel contentPane;
-	
+	private JDesktopPane table = null;
 	
 	private User currentUser = null; // Used to track the current user
 
@@ -75,6 +76,13 @@ public class MainFrm extends JFrame {
 		menuBar.add(mnNewMenu_1);
 		
 		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Races");
+		mntmNewMenuItem_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RaceInterFrm raceInterFrm = new RaceInterFrm();
+				raceInterFrm.setVisible(true);
+				table.add(raceInterFrm);
+			}
+		});
 		mnNewMenu_1.add(mntmNewMenuItem_1);
 		
 		JMenuItem mntmNewMenuItem_4 = new JMenuItem("Lords");
@@ -84,8 +92,11 @@ public class MainFrm extends JFrame {
 		mnNewMenu_1.add(mntmNewMenuItem_5);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
+		contentPane.setLayout(new BorderLayout(0, 0));
+		
+		table = new JDesktopPane();
+		contentPane.add(table, BorderLayout.CENTER);
 		this.setLocationRelativeTo(null);
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 	}
