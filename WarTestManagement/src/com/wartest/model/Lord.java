@@ -8,7 +8,7 @@ package com.wartest.model;
 public class Lord {
 	private Integer lordID;
 	private String name;
-	private Race race;
+	private String race;
 	private Integer hp;
 	private Integer attack;
 	private Integer armor;
@@ -19,7 +19,7 @@ public class Lord {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Lord(String name, Race race, Integer hp, Integer attack, Integer armor, Integer speed) {
+	public Lord(String name, String race, Integer hp, Integer attack, Integer armor, Integer speed) {
 		super();
 		this.name = name;
 		this.race = race;
@@ -28,7 +28,7 @@ public class Lord {
 		this.armor = armor;
 		this.speed = speed;
 	}
-	public Lord(Integer lordID, String name, Race race, Integer hp, Integer attack, Integer armor, Integer speed) {
+	public Lord(Integer lordID, String name, String race, Integer hp, Integer attack, Integer armor, Integer speed) {
 		super();
 		this.lordID = lordID;
 		this.name = name;
@@ -52,10 +52,10 @@ public class Lord {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Race getRace() {
+	public String getRace() {
 		return race;
 	}
-	public void setRace(Race race) {
+	public void setRace(String race) {
 		this.race = race;
 	}
 	public Integer getHp() {

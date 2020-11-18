@@ -86,9 +86,23 @@ public class MainFrm extends JFrame {
 		mnNewMenu_1.add(mntmNewMenuItem_1);
 		
 		JMenuItem mntmNewMenuItem_4 = new JMenuItem("Lords");
+		mntmNewMenuItem_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				LordInterFrm lordInterFrm = new LordInterFrm();
+				lordInterFrm.setVisible(true);
+				table.add(lordInterFrm);
+			}
+		});
 		mnNewMenu_1.add(mntmNewMenuItem_4);
 		
 		JMenuItem mntmNewMenuItem_5 = new JMenuItem("Arms");
+		mntmNewMenuItem_5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ArmInterFrm armInterFrm = new ArmInterFrm();
+				armInterFrm.setVisible(true);
+				table.add(armInterFrm);
+			}
+		});
 		mnNewMenu_1.add(mntmNewMenuItem_5);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
