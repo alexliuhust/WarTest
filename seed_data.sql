@@ -200,7 +200,8 @@ DROP TABLE IF EXISTS `wartest`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `wartest` (
-  `warID` int NOT NULL,
+  `warID` int NOT NULL AUTO_INCREMENT,
+  `userID` int NOT NULL,
   `troopID1` int NOT NULL,
   `troopID2` int NOT NULL,
   `location` varchar(30) NOT NULL,
@@ -209,9 +210,13 @@ CREATE TABLE `wartest` (
   PRIMARY KEY (`warID`),
   KEY `troop1_idx` (`troopID1`),
   KEY `troop2_idx` (`troopID2`),
+  KEY `owner_idx` (`userID`),
+  KEY `winner_idx` (`victor`),
+  CONSTRAINT `owner` FOREIGN KEY (`userID`) REFERENCES `user` (`userID`),
   CONSTRAINT `troop1` FOREIGN KEY (`troopID1`) REFERENCES `troop` (`troopID`),
-  CONSTRAINT `troop2` FOREIGN KEY (`troopID2`) REFERENCES `troop` (`troopID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `troop2` FOREIGN KEY (`troopID2`) REFERENCES `troop` (`troopID`),
+  CONSTRAINT `winner` FOREIGN KEY (`victor`) REFERENCES `troop` (`troopID`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -220,6 +225,7 @@ CREATE TABLE `wartest` (
 
 LOCK TABLES `wartest` WRITE;
 /*!40000 ALTER TABLE `wartest` DISABLE KEYS */;
+INSERT INTO `wartest` VALUES (1,1,2,1,'underground',2,1),(2,1,1,2,'cliven river',2,2);
 /*!40000 ALTER TABLE `wartest` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -240,4 +246,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-17 10:57:47
+-- Dump completed on 2020-11-18 21:21:30
