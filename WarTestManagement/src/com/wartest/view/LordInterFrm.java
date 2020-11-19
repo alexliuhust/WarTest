@@ -31,32 +31,31 @@ public class LordInterFrm extends JInternalFrame {
 	private JTextField s_lordNameTxt;
 	private JTextField s_lordRaceTxt;
 	private JTable lordtable;
-	
-	private DbUtil dbUtil = new DbUtil();
-	private LordDao lordDao = new LordDao();
-	private Lord selectedLord = null;
 	private JTextField lordNameTxt;
 	private JTextField lordRaceTxt;
 	private JTextField hpTxt;
 	private JTextField attTxt;
 	private JTextField arTxt;
 	private JTextField spTxt;
+	
+	private DbUtil dbUtil = new DbUtil();
+	private LordDao lordDao = new LordDao();
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					LordInterFrm frame = new LordInterFrm();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					LordInterFrm frame = new LordInterFrm();
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Create the frame.
