@@ -58,8 +58,14 @@ public class MainFrm extends JFrame {
 		JMenu mnNewMenu = new JMenu("Main Menu");
 		menuBar.add(mnNewMenu);
 		
-		JMenuItem mntmNewMenuItem_2 = new JMenuItem("My Troops");
-		mnNewMenu.add(mntmNewMenuItem_2);
+		JMenu mnNewMenu_2 = new JMenu("My Troops");
+		mnNewMenu.add(mnNewMenu_2);
+		
+		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Add Troop");
+		mnNewMenu_2.add(mntmNewMenuItem_2);
+		
+		JMenuItem mntmNewMenuItem_6 = new JMenuItem("Manage Troop");
+		mnNewMenu_2.add(mntmNewMenuItem_6);
 		
 		JMenuItem mntmNewMenuItem_3 = new JMenuItem("My War Test");
 		mnNewMenu.add(mntmNewMenuItem_3);
@@ -128,6 +134,5 @@ public class MainFrm extends JFrame {
 			new LogInFrm().setVisible(true);;
 		}
 	}
-	
 }
 
