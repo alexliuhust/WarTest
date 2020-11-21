@@ -3,6 +3,7 @@ package com.wartest.view;
 import java.awt.Font;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.util.Vector;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -26,6 +27,8 @@ import com.wartest.model.User;
 import com.wartest.util.DbUtil;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class TroopAddInterFrm extends JInternalFrame {
 	private JTextField troopNameTxt;
@@ -121,6 +124,11 @@ public class TroopAddInterFrm extends JInternalFrame {
 		JScrollPane scrollPane = new JScrollPane();
 		
 		JButton btnNewButton_1 = new JButton("Delete");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				deleteSelectedArm(e);
+			}
+		});
 		btnNewButton_1.setFont(new Font("Segoe UI Semibold", Font.BOLD, 13));
 		
 		JLabel lblNewLabel_2 = new JLabel("Selected Arms");
@@ -128,9 +136,25 @@ public class TroopAddInterFrm extends JInternalFrame {
 		
 		JButton btnNewButton_2 = new JButton("Add");
 		btnNewButton_2.setFont(new Font("Segoe UI Semibold", Font.BOLD, 14));
+		
+		JButton btnNewButton_1_1 = new JButton("Clear");
+		btnNewButton_1_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				clearArmTable(e);
+			}
+		});
+		btnNewButton_1_1.setFont(new Font("Segoe UI Semibold", Font.BOLD, 13));
+		
+		JButton btnNewButton_3 = new JButton("Add Arm");
+		btnNewButton_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				addAnArmIntoArmTable(e);
+			}
+		});
+		btnNewButton_3.setFont(new Font("Segoe UI Semibold", Font.BOLD, 12));
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
+			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
@@ -163,11 +187,15 @@ public class TroopAddInterFrm extends JInternalFrame {
 								.addGroup(groupLayout.createSequentialGroup()
 									.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 396, GroupLayout.PREFERRED_SIZE)
 									.addGap(18)
-									.addComponent(btnNewButton_1))
+									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+										.addComponent(btnNewButton_1_1, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
+										.addComponent(btnNewButton_1)))
 								.addGroup(groupLayout.createSequentialGroup()
 									.addComponent(lblNewLabel_1_1_1)
 									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(armJcb, GroupLayout.PREFERRED_SIZE, 265, GroupLayout.PREFERRED_SIZE))
+									.addComponent(armJcb, GroupLayout.PREFERRED_SIZE, 265, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addComponent(btnNewButton_3))
 								.addGroup(groupLayout.createSequentialGroup()
 									.addComponent(lblNewLabel_1_1, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
 									.addPreferredGap(ComponentPlacement.UNRELATED)
@@ -176,7 +204,7 @@ public class TroopAddInterFrm extends JInternalFrame {
 							.addGap(183)
 							.addComponent(lblNewLabel_2)))
 					.addContainerGap(30, Short.MAX_VALUE))
-				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap(141, Short.MAX_VALUE)
 					.addComponent(btnNewButton_2, GroupLayout.PREFERRED_SIZE, 227, GroupLayout.PREFERRED_SIZE)
 					.addGap(174))
@@ -211,12 +239,16 @@ public class TroopAddInterFrm extends JInternalFrame {
 							.addGap(18)
 							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 								.addComponent(lblNewLabel_1_1_1, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
-								.addComponent(armJcb, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE))
+								.addComponent(armJcb, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnNewButton_3))
 							.addGap(23)
 							.addComponent(lblNewLabel_2)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 238, GroupLayout.PREFERRED_SIZE))
-						.addComponent(btnNewButton_1))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(btnNewButton_1_1, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
+							.addGap(18)
+							.addComponent(btnNewButton_1)))
 					.addGap(31)
 					.addComponent(btnNewButton_2)
 					.addContainerGap(19, Short.MAX_VALUE))
@@ -243,6 +275,53 @@ public class TroopAddInterFrm extends JInternalFrame {
 	
 	
 	/**
+	 * Delete selected Arm
+	 * @param event
+	 */
+	private void deleteSelectedArm(ActionEvent event) {
+		DefaultTableModel dtm = (DefaultTableModel) this.selectedArmsTable.getModel();
+		int[] rows = selectedArmsTable.getSelectedRows();
+		for(int i = 0; i < rows.length; i++) {
+			dtm.removeRow(rows[i]-i);
+		}
+	}
+	
+	/**
+	 * Clear the selected Arms Table
+	 * @param event
+	 */
+	private void clearArmTable(ActionEvent event) {
+		DefaultTableModel dtm = (DefaultTableModel) selectedArmsTable.getModel();
+		dtm.setRowCount(0); // Clear table
+	}
+
+	/**
+	 * Add a selected Arm into the armTable
+	 * @param event
+	 */
+	private void addAnArmIntoArmTable(ActionEvent event) {
+		DefaultTableModel dtm = (DefaultTableModel) selectedArmsTable.getModel();
+		Connection con = null;
+		try {
+			con = dbUtil.getCon();
+			Vector v = new Vector();
+			Arm selectedArm = (Arm) this.armJcb.getSelectedItem();
+			v.add(selectedArm.getName());
+			v.add(selectedArm.getRace());
+			v.add(selectedArm.getType());
+			dtm.addRow(v);
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				dbUtil.closeCon(con);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	/**
 	 * Race Filter Action
 	 * @param event
 	 */
@@ -259,6 +338,7 @@ public class TroopAddInterFrm extends JInternalFrame {
 				lord = new Lord();
 				lord.setLordID(rs.getInt("lordID"));
 				lord.setName(rs.getString("name"));
+				lord.setRace(racename);
 				this.lordJcb.addItem(lord);
 			}
 			
@@ -268,6 +348,7 @@ public class TroopAddInterFrm extends JInternalFrame {
 				arm = new Arm();
 				arm.setArmID(rs.getInt("armID"));
 				arm.setName(rs.getString("name"));
+				arm.setRace(racename);
 				arm.setType(rs.getString("type"));
 				this.armJcb.addItem(arm);
 			}
@@ -307,6 +388,7 @@ public class TroopAddInterFrm extends JInternalFrame {
 				lord = new Lord();
 				lord.setLordID(rs.getInt("lordID"));
 				lord.setName(rs.getString("name"));
+				lord.setRace(this.raceJcb.getSelectedItem().toString());
 				this.lordJcb.addItem(lord);
 			}
 			
@@ -315,6 +397,7 @@ public class TroopAddInterFrm extends JInternalFrame {
 				arm = new Arm();
 				arm.setArmID(rs.getInt("armID"));
 				arm.setName(rs.getString("name"));
+				arm.setRace(this.raceJcb.getSelectedItem().toString());
 				arm.setType(rs.getString("type"));
 				this.armJcb.addItem(arm);
 			}
