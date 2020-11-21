@@ -19,25 +19,6 @@ public class Lord {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Lord(String name, String race, Integer hp, Integer attack, Integer armor, Integer speed) {
-		super();
-		this.name = name;
-		this.race = race;
-		this.hp = hp;
-		this.attack = attack;
-		this.armor = armor;
-		this.speed = speed;
-	}
-	public Lord(Integer lordID, String name, String race, Integer hp, Integer attack, Integer armor, Integer speed) {
-		super();
-		this.lordID = lordID;
-		this.name = name;
-		this.race = race;
-		this.hp = hp;
-		this.attack = attack;
-		this.armor = armor;
-		this.speed = speed;
-	}
 	
 	
 	public Integer getLordID() {

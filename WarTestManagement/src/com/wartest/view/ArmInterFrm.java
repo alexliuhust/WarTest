@@ -100,18 +100,6 @@ public class ArmInterFrm extends JInternalFrame {
 		});
 		btnNewButton.setFont(new Font("Segoe UI Semibold", Font.BOLD, 14));
 		
-		JLabel lblNewLabel_1 = new JLabel("Name");
-		lblNewLabel_1.setFont(new Font("Segoe UI Semibold", Font.BOLD, 14));
-		
-		JLabel lblId = new JLabel("ID");
-		lblId.setFont(new Font("Segoe UI Semibold", Font.BOLD, 14));
-		
-		JLabel lblRace_1 = new JLabel("Race");
-		lblRace_1.setFont(new Font("Segoe UI Semibold", Font.BOLD, 14));
-		
-		JLabel lblType_1 = new JLabel("Type");
-		lblType_1.setFont(new Font("Segoe UI Semibold", Font.BOLD, 14));
-		
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(null, "Arm Information", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
@@ -123,35 +111,23 @@ public class ArmInterFrm extends JInternalFrame {
 							.addGap(24)
 							.addComponent(lblNewLabel)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(s_armNameTxt, GroupLayout.PREFERRED_SIZE, 106, GroupLayout.PREFERRED_SIZE)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(lblId, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
-									.addGap(39)
-									.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)))
+							.addComponent(s_armNameTxt, GroupLayout.PREFERRED_SIZE, 106, GroupLayout.PREFERRED_SIZE)
+							.addGap(25)
+							.addComponent(lblRace, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGap(16)
-									.addComponent(lblRace, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(s_armRaceTxt, GroupLayout.PREFERRED_SIZE, 106, GroupLayout.PREFERRED_SIZE))
-								.addComponent(lblRace_1, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE))
+							.addComponent(s_armRaceTxt, GroupLayout.PREFERRED_SIZE, 106, GroupLayout.PREFERRED_SIZE)
 							.addGap(18)
-							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(lblType, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(s_armTypeTxt, GroupLayout.PREFERRED_SIZE, 106, GroupLayout.PREFERRED_SIZE))
-								.addComponent(lblType_1, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE))
+							.addComponent(lblType, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(s_armTypeTxt, GroupLayout.PREFERRED_SIZE, 106, GroupLayout.PREFERRED_SIZE)
 							.addGap(18)
 							.addComponent(btnNewButton))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(52)
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(panel, GroupLayout.PREFERRED_SIZE, 539, GroupLayout.PREFERRED_SIZE)
-								.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 538, GroupLayout.PREFERRED_SIZE))))
-					.addContainerGap(38, Short.MAX_VALUE))
+								.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 538, GroupLayout.PREFERRED_SIZE)
+								.addComponent(panel, GroupLayout.PREFERRED_SIZE, 539, GroupLayout.PREFERRED_SIZE))))
+					.addContainerGap(31, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -165,15 +141,9 @@ public class ArmInterFrm extends JInternalFrame {
 						.addComponent(lblNewLabel)
 						.addComponent(lblRace, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
 						.addComponent(s_armRaceTxt, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(22)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblRace_1, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblType_1, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblId, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGap(27)
 					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 161, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGap(27)
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 248, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(27, Short.MAX_VALUE))
 		);
@@ -362,7 +332,7 @@ public class ArmInterFrm extends JInternalFrame {
 		armTable.getColumnModel().getColumn(2).setPreferredWidth(106);
 		armTable.getColumnModel().getColumn(3).setPreferredWidth(106);
 		
-		scrollPane.setColumnHeaderView(armTable);
+		scrollPane.setViewportView(armTable);
 		getContentPane().setLayout(groupLayout);
 		
 		this.fillTable(new Arm());

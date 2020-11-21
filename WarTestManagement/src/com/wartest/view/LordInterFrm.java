@@ -91,35 +91,19 @@ public class LordInterFrm extends JInternalFrame {
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		
-		JLabel lblNewLabel_1 = new JLabel("Name");
-		lblNewLabel_1.setFont(new Font("Segoe UI Semibold", Font.BOLD, 14));
-		
-		JLabel lblNewLabel1_1 = new JLabel("Race");
-		lblNewLabel1_1.setFont(new Font("Segoe UI Semibold", Font.BOLD, 14));
-		
-		JLabel lblId = new JLabel("ID");
-		lblId.setFont(new Font("Segoe UI Semibold", Font.BOLD, 14));
-		
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(null, "Lord Information", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		
 		
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
+			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(62)
-					.addComponent(lblId, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
-					.addGap(104)
-					.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED, 196, Short.MAX_VALUE)
-					.addComponent(lblNewLabel1_1, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
-					.addGap(171))
-				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
 					.addContainerGap(35, Short.MAX_VALUE)
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 						.addComponent(panel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 544, Short.MAX_VALUE)
-						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+							.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 543, GroupLayout.PREFERRED_SIZE)
 							.addGroup(groupLayout.createSequentialGroup()
 								.addComponent(lblNewLabel)
 								.addPreferredGap(ComponentPlacement.RELATED)
@@ -129,8 +113,7 @@ public class LordInterFrm extends JInternalFrame {
 								.addPreferredGap(ComponentPlacement.RELATED)
 								.addComponent(s_lordRaceTxt, GroupLayout.PREFERRED_SIZE, 185, GroupLayout.PREFERRED_SIZE)
 								.addGap(18)
-								.addComponent(btnNewButton))
-							.addComponent(scrollPane)))
+								.addComponent(btnNewButton))))
 					.addGap(44))
 		);
 		groupLayout.setVerticalGroup(
@@ -143,17 +126,11 @@ public class LordInterFrm extends JInternalFrame {
 						.addComponent(lblNewLabel1)
 						.addComponent(s_lordRaceTxt, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnNewButton))
-					.addGap(21)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-							.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
-							.addComponent(lblId, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE))
-						.addComponent(lblNewLabel1_1, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGap(18)
 					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 132, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGap(39)
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 222, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(123, Short.MAX_VALUE))
+					.addContainerGap(16, Short.MAX_VALUE))
 		);
 		
 		JLabel lblNewLabel_2 = new JLabel("Name");
@@ -285,7 +262,7 @@ public class LordInterFrm extends JInternalFrame {
 		lordtable.getColumnModel().getColumn(1).setPreferredWidth(160);
 		lordtable.getColumnModel().getColumn(2).setPreferredWidth(160);
 		
-		scrollPane.setColumnHeaderView(lordtable);
+		scrollPane.setViewportView(lordtable);
 		getContentPane().setLayout(groupLayout);
 		
 		this.fillTable(new Lord());

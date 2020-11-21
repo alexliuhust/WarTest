@@ -135,6 +135,11 @@ public class TroopAddInterFrm extends JInternalFrame {
 		lblNewLabel_2.setFont(new Font("Segoe UI Semibold", Font.BOLD, 12));
 		
 		JButton btnNewButton_2 = new JButton("Add");
+		btnNewButton_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				addTroopActionPerformed(e);
+			}
+		});
 		btnNewButton_2.setFont(new Font("Segoe UI Semibold", Font.BOLD, 14));
 		
 		JButton btnNewButton_1_1 = new JButton("Clear");
@@ -286,6 +291,13 @@ public class TroopAddInterFrm extends JInternalFrame {
 	
 	
 	
+	/**
+	 * Add a Troop to the database
+	 * @param event
+	 */
+	private void addTroopActionPerformed(ActionEvent event) {
+		
+	}
 	
 	/**
 	 * Delete selected Arm

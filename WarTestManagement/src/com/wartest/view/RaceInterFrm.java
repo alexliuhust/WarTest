@@ -81,15 +81,6 @@ public class RaceInterFrm extends JInternalFrame {
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(null, "Race Information", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		
-		JLabel lblRace = new JLabel("Race");
-		lblRace.setFont(new Font("Segoe UI Semibold", Font.BOLD, 14));
-		
-		JLabel lblNewLabel_1_1_1 = new JLabel("Location");
-		lblNewLabel_1_1_1.setFont(new Font("Segoe UI Semibold", Font.BOLD, 14));
-		
-		JLabel lblNewLabel_1_2_1 = new JLabel("Description");
-		lblNewLabel_1_2_1.setFont(new Font("Segoe UI Semibold", Font.BOLD, 14));
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -107,14 +98,7 @@ public class RaceInterFrm extends JInternalFrame {
 							.addGap(51)
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 								.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 526, GroupLayout.PREFERRED_SIZE)
-								.addComponent(panel, GroupLayout.PREFERRED_SIZE, 527, GroupLayout.PREFERRED_SIZE)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGap(27)
-									.addComponent(lblRace, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
-									.addGap(81)
-									.addComponent(lblNewLabel_1_1_1, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
-									.addGap(142)
-									.addComponent(lblNewLabel_1_2_1, GroupLayout.PREFERRED_SIZE, 72, GroupLayout.PREFERRED_SIZE)))))
+								.addComponent(panel, GroupLayout.PREFERRED_SIZE, 527, GroupLayout.PREFERRED_SIZE))))
 					.addGap(54))
 		);
 		groupLayout.setVerticalGroup(
@@ -125,14 +109,9 @@ public class RaceInterFrm extends JInternalFrame {
 						.addComponent(lblNewLabel)
 						.addComponent(s_raceName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnNewButton))
-					.addGap(30)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblNewLabel_1_1_1, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblNewLabel_1_2_1, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblRace, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGap(29)
 					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 179, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGap(37)
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 264, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(23, Short.MAX_VALUE))
 		);
@@ -215,7 +194,7 @@ public class RaceInterFrm extends JInternalFrame {
 		raceTable.getColumnModel().getColumn(2).setPreferredWidth(200);
 		
 		
-		scrollPane.setColumnHeaderView(raceTable);
+		scrollPane.setViewportView(raceTable);
 		getContentPane().setLayout(groupLayout);
 
 		this.fillTable(new Race());

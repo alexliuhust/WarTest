@@ -15,12 +15,6 @@ public class Race {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Race(String race, String location, String description) {
-		super();
-		this.race = race;
-		this.location = location;
-		this.description = description;
-	}
 	
 	
 	public String getRace() {

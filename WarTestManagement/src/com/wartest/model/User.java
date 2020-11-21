@@ -20,14 +20,8 @@ public class User {
 		this.username = username;
 		this.password = password;
 	}
-	public User(Integer userID, String username, String password) {
-		super();
-		this.userID = userID;
-		this.username = username;
-		this.password = password;
-	}
-	
-	
+
+
 	public Integer getUserID() {
 		return userID;
 	}

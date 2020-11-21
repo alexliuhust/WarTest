@@ -22,33 +22,6 @@ public class Arm {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Arm(String name, String race, String type, Integer cost, Integer scale, Integer hp, Integer attack,
-			Integer armor, Integer speed) {
-		super();
-		this.name = name;
-		this.race = race;
-		this.type = type;
-		this.cost = cost;
-		this.scale = scale;
-		this.hp = hp;
-		this.attack = attack;
-		this.armor = armor;
-		this.speed = speed;
-	}
-	public Arm(Integer armID, String name, String race, String type, Integer cost, Integer scale, Integer hp,
-			Integer attack, Integer armor, Integer speed) {
-		super();
-		this.armID = armID;
-		this.name = name;
-		this.race = race;
-		this.type = type;
-		this.cost = cost;
-		this.scale = scale;
-		this.hp = hp;
-		this.attack = attack;
-		this.armor = armor;
-		this.speed = speed;
-	}
 	
 	
 	public Integer getArmID() {

@@ -11,7 +11,7 @@ public class Troop {
 	private Integer troopID;
 	private String name;
 	private Integer userID;
-	private Lord lord;
+	private Integer lordID;
 	private List<Arm> arms;
 	private String memeo;
 	
@@ -19,24 +19,6 @@ public class Troop {
 	public Troop() {
 		super();
 		// TODO Auto-generated constructor stub
-	}
-	public Troop(String name, Integer userID, Lord lord, List<Arm> arms, String memeo) {
-		super();
-		this.name = name;
-		this.userID = userID;
-		this.lord = lord;
-		this.arms = arms;
-		this.memeo = memeo;
-	}
-	
-	public Troop(Integer troopID, String name, Integer userID, Lord lord, List<Arm> arms, String memeo) {
-		super();
-		this.troopID = troopID;
-		this.name = name;
-		this.userID = userID;
-		this.lord = lord;
-		this.arms = arms;
-		this.memeo = memeo;
 	}
 	
 	
@@ -58,11 +40,11 @@ public class Troop {
 	public void setUserID(Integer userID) {
 		this.userID = userID;
 	}
-	public Lord getLord() {
-		return lord;
+	public Integer getLordID() {
+		return lordID;
 	}
-	public void setLord(Lord lord) {
-		this.lord = lord;
+	public void setLord(Integer lordID) {
+		this.lordID = lordID;
 	}
 	public List<Arm> getArms() {
 		return arms;
@@ -75,12 +57,6 @@ public class Troop {
 	}
 	public void setMemeo(String memeo) {
 		this.memeo = memeo;
-	}
-	
-	@Override
-	public String toString() {
-		return "Troop [troopID=" + troopID + ", name=" + name + ", userID=" + userID + ", lordID=" + lord + ", arms="
-				+ arms + ", memeo=" + memeo + "]";
 	}
 	
 }
