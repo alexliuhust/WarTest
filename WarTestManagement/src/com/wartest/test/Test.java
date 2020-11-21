@@ -178,8 +178,8 @@ public class Test {
 		}
 	}
 
-	public static void main(String[] args) {
-		Test test = new Test();
+//	public static void main(String[] args) {
+//		Test test = new Test();
 //		System.out.println("-------------findArmByIdTest-------------");
 //		test.findArmByIdTest();
 //		System.out.println("-------------findArmByRaceTest-------------");
@@ -192,7 +192,7 @@ public class Test {
 //		test.loginTest();
 //		System.out.println("-------------registerTest-------------");
 //		test.registerTest();
-		
-	}
+//		
+//	}
 
 }

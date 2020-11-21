@@ -70,10 +70,12 @@ public class MainFrm extends JFrame {
 		mnNewMenu_2.add(mntmNewMenuItem_2);
 		
 		JMenuItem mntmNewMenuItem_6 = new JMenuItem("Manage Troop");
+		mntmNewMenuItem_6.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				openTroopManageInterFrmActionPerformed(e);
+			}
+		});
 		mnNewMenu_2.add(mntmNewMenuItem_6);
-		
-		JMenuItem mntmNewMenuItem_3 = new JMenuItem("My War Test");
-		mnNewMenu.add(mntmNewMenuItem_3);
 		
 		JMenuItem mntmNewMenuItem = new JMenuItem("Log Out");
 		mntmNewMenuItem.addActionListener(new ActionListener() {
@@ -81,6 +83,15 @@ public class MainFrm extends JFrame {
 				logoutActionPerformed(e);
 			}
 		});
+		
+		JMenu mnNewMenu_3 = new JMenu("My War Tests");
+		mnNewMenu.add(mnNewMenu_3);
+		
+		JMenuItem mntmNewMenuItem_3 = new JMenuItem("Add War Test");
+		mnNewMenu_3.add(mntmNewMenuItem_3);
+		
+		JMenuItem mntmNewMenuItem_7 = new JMenuItem("Manage War Test");
+		mnNewMenu_3.add(mntmNewMenuItem_7);
 		mnNewMenu.add(mntmNewMenuItem);
 		
 		JMenu mnNewMenu_1 = new JMenu("Library");
@@ -124,6 +135,16 @@ public class MainFrm extends JFrame {
 		contentPane.add(table, BorderLayout.CENTER);
 		this.setLocationRelativeTo(null);
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+	}
+
+	/**
+	 * Open the Troop Manage internal frame and track the current user ID
+	 * @param event
+	 */
+	private void openTroopManageInterFrmActionPerformed(ActionEvent event) {
+		TroopManageInterFrm troopManangeInterFrm = new TroopManageInterFrm(this.currentUser);
+		troopManangeInterFrm.setVisible(true);
+		table.add(troopManangeInterFrm);
 	}
 
 

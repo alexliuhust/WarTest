@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import com.wartest.model.Troop;
-import com.wartest.model.User;
 
 public class TroopDao {
 	
