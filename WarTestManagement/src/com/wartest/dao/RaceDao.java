@@ -3,9 +3,10 @@ package com.wartest.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 
-import com.wartest.util.StringUtil;
 import com.wartest.model.Race;
+import com.wartest.util.StringUtil;
 
 /**
  * Race Dao
@@ -28,5 +29,17 @@ public class RaceDao {
 		}
 		PreparedStatement pstmt = con.prepareStatement(sb.toString().replaceFirst("and", "where"));
 		return pstmt.executeQuery();
+	}
+	
+	/**
+	 * Find All Races name
+	 * @param con
+	 * @return
+	 * @throws Exception
+	 */
+	public ResultSet findAllRaces(Connection con) throws Exception{
+		String sql = "select race from race";
+		Statement stmt = con.prepareStatement(sql);
+		return stmt.executeQuery(sql);
 	}
 }

@@ -127,6 +127,10 @@ public class MainFrm extends JFrame {
 	}
 
 
+	/**
+	 * Open the Troop Add internal frame and track the current user ID
+	 * @param event
+	 */
 	private void openTroopAddInterFrmActionPerformed(ActionEvent event) {
 		TroopAddInterFrm troopAddInterFrm = new TroopAddInterFrm(this.currentUser);
 		troopAddInterFrm.setVisible(true);

@@ -46,5 +46,12 @@ public class LordDao {
 		pstmt.setInt(1, lordID);
 		return pstmt.executeQuery();
 	}
+	
+	public ResultSet findLordByRace(Connection con, String race) throws Exception{
+		String sql = "select * from lord where race = ?";
+		PreparedStatement pstmt = con.prepareStatement(sql);
+		pstmt.setString(1, race);
+		return pstmt.executeQuery();
+	}
 
 }

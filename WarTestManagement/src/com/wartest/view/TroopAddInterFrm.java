@@ -1,21 +1,31 @@
 package com.wartest.view;
 
-import java.awt.EventQueue;
+import java.awt.Font;
+import java.sql.Connection;
+import java.sql.ResultSet;
 
-import javax.swing.JInternalFrame;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.JLabel;
-import java.awt.Font;
-import javax.swing.JTextField;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JComboBox;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.table.DefaultTableModel;
 
+import com.wartest.dao.ArmDao;
+import com.wartest.dao.LordDao;
+import com.wartest.dao.RaceDao;
+import com.wartest.model.Arm;
+import com.wartest.model.Lord;
+import com.wartest.model.Race;
 import com.wartest.model.User;
+import com.wartest.util.DbUtil;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class TroopAddInterFrm extends JInternalFrame {
 	private JTextField troopNameTxt;
@@ -26,6 +36,11 @@ public class TroopAddInterFrm extends JInternalFrame {
 	private JComboBox raceJcb;
 	private JComboBox lordJcb;
 	private JComboBox armJcb;
+	
+	private DbUtil dbUtil = new DbUtil();
+	private RaceDao raceDao = new RaceDao();
+	private LordDao lordDao = new LordDao();
+	private ArmDao armDao = new ArmDao();
 	
 	private User currentUser = null; // Used to track the current user
 
@@ -60,6 +75,7 @@ public class TroopAddInterFrm extends JInternalFrame {
 		
 		troopNameTxt = new JTextField();
 		troopNameTxt.setColumns(10);
+		troopNameTxt.setText("- My new troop -");
 		
 		JLabel lblUserId = new JLabel("User ID");
 		lblUserId.setFont(new Font("Segoe UI Semibold", Font.BOLD, 14));
@@ -75,6 +91,7 @@ public class TroopAddInterFrm extends JInternalFrame {
 		
 		troopMemoTxt = new JTextField();
 		troopMemoTxt.setColumns(10);
+		troopMemoTxt.setText("- My new memo -");
 		
 		JLabel lblNewLabel_1 = new JLabel("Select a Race");
 		lblNewLabel_1.setFont(new Font("Segoe UI Semibold", Font.BOLD, 14));
@@ -82,6 +99,11 @@ public class TroopAddInterFrm extends JInternalFrame {
 		raceJcb = new JComboBox();
 		
 		JButton btnNewButton = new JButton("Apply Filter");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				filterRaceActionPerformed(e);
+			}
+		});
 		btnNewButton.setFont(new Font("Segoe UI Semibold", Font.BOLD, 13));
 		
 		JLabel lblNewLabel_1_1 = new JLabel("Select a Lord");
@@ -212,5 +234,100 @@ public class TroopAddInterFrm extends JInternalFrame {
 		scrollPane.setViewportView(selectedArmsTable);
 		getContentPane().setLayout(groupLayout);
 
+		this.fillAllJcbs();
 	}
+	
+	
+	
+	
+	
+	
+	/**
+	 * Race Filter Action
+	 * @param event
+	 */
+	private void filterRaceActionPerformed(ActionEvent event) {
+		Connection con = null;
+		Lord lord = null;
+		Arm arm = null;
+		String racename = this.raceJcb.getSelectedItem().toString();
+		try {
+			con = dbUtil.getCon();
+			ResultSet rs = lordDao.findLordByRace(con, racename);
+			this.lordJcb.removeAllItems();
+			while (rs.next()) {
+				lord = new Lord();
+				lord.setLordID(rs.getInt("lordID"));
+				lord.setName(rs.getString("name"));
+				this.lordJcb.addItem(lord);
+			}
+			
+			rs = armDao.findArmByRace(con, racename);
+			this.armJcb.removeAllItems();
+			while (rs.next()) {
+				arm = new Arm();
+				arm.setArmID(rs.getInt("armID"));
+				arm.setName(rs.getString("name"));
+				arm.setType(rs.getString("type"));
+				this.armJcb.addItem(arm);
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				dbUtil.closeCon(con);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	
+	/**
+	 * Initialize all Jcbs
+	 */
+	private void fillAllJcbs() {
+		Connection con = null;
+		Race race = null;
+		Lord lord = null;
+		Arm arm = null;
+		try {
+			con = dbUtil.getCon();
+			
+			ResultSet rs = raceDao.findAllRaces(con);
+			while (rs.next()) {
+				race = new Race();
+				race.setRace(rs.getString("race"));
+				this.raceJcb.addItem(race);
+			}
+			
+			rs = lordDao.findLordByRace(con, this.raceJcb.getSelectedItem().toString());
+			while (rs.next()) {
+				lord = new Lord();
+				lord.setLordID(rs.getInt("lordID"));
+				lord.setName(rs.getString("name"));
+				this.lordJcb.addItem(lord);
+			}
+			
+			rs = armDao.findArmByRace(con, this.raceJcb.getSelectedItem().toString());
+			while (rs.next()) {
+				arm = new Arm();
+				arm.setArmID(rs.getInt("armID"));
+				arm.setName(rs.getString("name"));
+				arm.setType(rs.getString("type"));
+				this.armJcb.addItem(arm);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				dbUtil.closeCon(con);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 }

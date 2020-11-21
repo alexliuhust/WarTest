@@ -45,6 +45,6 @@ public class Race {
 	
 	@Override
 	public String toString() {
-		return "Race [race=" + race + ", location=" + location + ", description=" + description + "]";
+		return race;
 	}
 }

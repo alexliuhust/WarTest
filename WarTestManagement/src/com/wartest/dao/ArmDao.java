@@ -50,4 +50,18 @@ public class ArmDao {
 		return pstmt.executeQuery();
 	}
 	
+	/**
+	 * Find Arms only by Race
+	 * @param con
+	 * @param race
+	 * @return
+	 * @throws Exception
+	 */
+	public ResultSet findArmByRace(Connection con, String race) throws Exception {
+		String sql = "select * from arm where race = ?";
+		PreparedStatement pstmt = con.prepareStatement(sql);
+		pstmt.setString(1, race);
+		return pstmt.executeQuery();
+	}
+	
 }
