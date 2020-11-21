@@ -255,14 +255,27 @@ public class TroopAddInterFrm extends JInternalFrame {
 		);
 		
 		selectedArmsTable = new JTable();
-		selectedArmsTable.setModel(new DefaultTableModel(new Object[][] {},
-			new String[] {"Name", "Race", "Type"}) {
-			
-			boolean[] columnEditables = new boolean[] {false, false, false};
+		selectedArmsTable.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"ID", "Name", "Race", "Type"
+			}
+		) {
+			boolean[] columnEditables = new boolean[] {
+				false, false, false, false
+			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
 			}
 		});
+		
+		selectedArmsTable.getColumnModel().getColumn(0).setPreferredWidth(5);
+		selectedArmsTable.getColumnModel().getColumn(1).setPreferredWidth(70);
+		selectedArmsTable.getColumnModel().getColumn(2).setPreferredWidth(50);
+		selectedArmsTable.getColumnModel().getColumn(3).setPreferredWidth(50);
+		
+		
 		scrollPane.setViewportView(selectedArmsTable);
 		getContentPane().setLayout(groupLayout);
 
@@ -306,6 +319,7 @@ public class TroopAddInterFrm extends JInternalFrame {
 			con = dbUtil.getCon();
 			Vector v = new Vector();
 			Arm selectedArm = (Arm) this.armJcb.getSelectedItem();
+			v.add(selectedArm.getArmID());
 			v.add(selectedArm.getName());
 			v.add(selectedArm.getRace());
 			v.add(selectedArm.getType());
