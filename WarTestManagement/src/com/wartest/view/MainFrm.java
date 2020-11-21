@@ -62,6 +62,11 @@ public class MainFrm extends JFrame {
 		mnNewMenu.add(mnNewMenu_2);
 		
 		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Add Troop");
+		mntmNewMenuItem_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				openTroopAddInterFrmActionPerformed(e);
+			}
+		});
 		mnNewMenu_2.add(mntmNewMenuItem_2);
 		
 		JMenuItem mntmNewMenuItem_6 = new JMenuItem("Manage Troop");
@@ -119,6 +124,13 @@ public class MainFrm extends JFrame {
 		contentPane.add(table, BorderLayout.CENTER);
 		this.setLocationRelativeTo(null);
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+	}
+
+
+	private void openTroopAddInterFrmActionPerformed(ActionEvent event) {
+		TroopAddInterFrm troopAddInterFrm = new TroopAddInterFrm(this.currentUser);
+		troopAddInterFrm.setVisible(true);
+		table.add(troopAddInterFrm);
 	}
 
 

@@ -115,8 +115,6 @@ public class Arm {
 	
 	@Override
 	public String toString() {
-		return "Arm [armID=" + armID + ", name=" + name + ", race=" + race + ", type=" + type + ", cost=" + cost
-				+ ", scale=" + scale + ", hp=" + hp + ", attack=" + attack + ", armor=" + armor + ", speed=" + speed
-				+ "]";
+		return this.name + " - " + this.type;
 	}
 }

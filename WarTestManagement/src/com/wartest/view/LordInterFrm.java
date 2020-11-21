@@ -26,6 +26,7 @@ import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.ScrollPaneConstants;
 
 public class LordInterFrm extends JInternalFrame {
 	private JTextField s_lordNameTxt;
@@ -87,6 +88,8 @@ public class LordInterFrm extends JInternalFrame {
 		btnNewButton.setFont(new Font("Segoe UI Semibold", Font.BOLD, 14));
 		
 		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		
 		JLabel lblNewLabel_1 = new JLabel("Name");
 		lblNewLabel_1.setFont(new Font("Segoe UI Semibold", Font.BOLD, 14));

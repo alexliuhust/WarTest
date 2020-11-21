@@ -86,8 +86,7 @@ public class Lord {
 	
 	@Override
 	public String toString() {
-		return "Lord [lordID=" + lordID + ", name=" + name + ", race=" + race + ", hp=" + hp + ", attack=" + attack
-				+ ", armor=" + armor + ", speed=" + speed + "]";
+		return this.name;
 	}
 	
 	
