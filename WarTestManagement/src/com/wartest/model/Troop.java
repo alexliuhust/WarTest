@@ -12,8 +12,8 @@ public class Troop {
 	private String name;
 	private Integer userID;
 	private Integer lordID;
-	private List<Arm> arms;
-	private String memeo;
+	private List<Integer> armIDs;
+	private String memo;
 	
 	
 	public Troop() {
@@ -46,17 +46,17 @@ public class Troop {
 	public void setLord(Integer lordID) {
 		this.lordID = lordID;
 	}
-	public List<Arm> getArms() {
-		return arms;
+	public List<Integer> getArms() {
+		return armIDs;
 	}
-	public void setArms(List<Arm> arms) {
-		this.arms = arms;
+	public void setArms(List<Integer> armIDs) {
+		this.armIDs = armIDs;
 	}
-	public String getMemeo() {
-		return memeo;
+	public String getMemo() {
+		return memo;
 	}
-	public void setMemeo(String memeo) {
-		this.memeo = memeo;
+	public void setMemo(String memo) {
+		this.memo = memo;
 	}
 	
 }

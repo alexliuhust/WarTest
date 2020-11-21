@@ -1,8 +1,12 @@
 package com.wartest.view;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.GroupLayout;
@@ -11,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -20,15 +25,13 @@ import javax.swing.table.DefaultTableModel;
 import com.wartest.dao.ArmDao;
 import com.wartest.dao.LordDao;
 import com.wartest.dao.RaceDao;
+import com.wartest.dao.TroopDao;
 import com.wartest.model.Arm;
 import com.wartest.model.Lord;
 import com.wartest.model.Race;
+import com.wartest.model.Troop;
 import com.wartest.model.User;
 import com.wartest.util.DbUtil;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class TroopAddInterFrm extends JInternalFrame {
 	private JTextField troopNameTxt;
@@ -44,6 +47,7 @@ public class TroopAddInterFrm extends JInternalFrame {
 	private RaceDao raceDao = new RaceDao();
 	private LordDao lordDao = new LordDao();
 	private ArmDao armDao = new ArmDao();
+	private TroopDao troopDao = new TroopDao();
 	
 	private User currentUser = null; // Used to track the current user
 
@@ -78,7 +82,7 @@ public class TroopAddInterFrm extends JInternalFrame {
 		
 		troopNameTxt = new JTextField();
 		troopNameTxt.setColumns(10);
-		troopNameTxt.setText("- My new troop -");
+		troopNameTxt.setText("My troop");
 		
 		JLabel lblUserId = new JLabel("User ID");
 		lblUserId.setFont(new Font("Segoe UI Semibold", Font.BOLD, 14));
@@ -94,7 +98,7 @@ public class TroopAddInterFrm extends JInternalFrame {
 		
 		troopMemoTxt = new JTextField();
 		troopMemoTxt.setColumns(10);
-		troopMemoTxt.setText("- My new memo -");
+		troopMemoTxt.setText("My memo");
 		
 		JLabel lblNewLabel_1 = new JLabel("Select a Race");
 		lblNewLabel_1.setFont(new Font("Segoe UI Semibold", Font.BOLD, 14));
@@ -296,7 +300,47 @@ public class TroopAddInterFrm extends JInternalFrame {
 	 * @param event
 	 */
 	private void addTroopActionPerformed(ActionEvent event) {
-		
+		Connection con = null;
+		try {
+			con = dbUtil.getCon();
+			ResultSet rs = troopDao.findTroopByTroopName(con, this.troopNameTxt.getText());
+			if (rs.next()) {
+				JOptionPane.showMessageDialog(null, "You have used this troop name!\nTry another one!");
+				this.troopNameTxt.setText("My troop");
+			} else if (selectedArmsTable.getRowCount() == 0) {
+				JOptionPane.showMessageDialog(null, "You have to select at least one Arm!");
+			} else {
+				Troop troop = new Troop();
+				troop.setName(this.troopNameTxt.getText());
+				troop.setMemo(this.troopMemoTxt.getText());
+				String userID = this.currentUserIDTxt.getText();
+				troop.setUserID(Integer.parseInt(userID));
+				Lord selectedLord = (Lord) this.lordJcb.getSelectedItem();
+				troop.setLord(selectedLord.getLordID());
+				
+				List<Integer> armIDs = new ArrayList<>();
+				for (int i = 0; i < selectedArmsTable.getRowCount(); i++) {
+					armIDs.add((Integer)selectedArmsTable.getValueAt(i, 0));
+				}
+				troop.setArms(armIDs);
+				
+				int[] ans = troopDao.addOneTroop(con, troop);
+				if (ans[0] == 1 && ans[1] >= 1) {
+					JOptionPane.showMessageDialog(null, "Successfully Added a Troop!");
+				} else {
+					JOptionPane.showMessageDialog(null, "Failed to add a troop...");
+				}
+			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				dbUtil.closeCon(con);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	/**
