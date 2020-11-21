@@ -1,11 +1,14 @@
 package com.wartest.view;
 
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.util.Vector;
 
 import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JInternalFrame;
@@ -13,7 +16,6 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.table.DefaultTableModel;
 
@@ -23,6 +25,8 @@ import com.wartest.dao.RaceDao;
 import com.wartest.dao.TroopDao;
 import com.wartest.model.User;
 import com.wartest.util.DbUtil;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class TroopManageInterFrm extends JInternalFrame {
 	private JTextField troopNameTxt;
@@ -41,8 +45,10 @@ public class TroopManageInterFrm extends JInternalFrame {
 	private TroopDao troopDao = new TroopDao();
 	
 	private User currentUser = null; // Used to track the current user
-	private JTextField textField;
-	private JTable table;
+	private JTextField troopIDTxt;
+	private JTable myTroopTable;
+	
+	
 	/**
 	 * Launch the application.
 	 */
@@ -63,6 +69,7 @@ public class TroopManageInterFrm extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public TroopManageInterFrm(User currentUser_) {
+		this.currentUser = currentUser_;
 		setTitle("Troop Management");
 		setIconifiable(true);
 		setClosable(true);
@@ -156,9 +163,9 @@ public class TroopManageInterFrm extends JInternalFrame {
 		JLabel lblNewLabel_4 = new JLabel("Troop ID");
 		lblNewLabel_4.setFont(new Font("Segoe UI Semibold", Font.BOLD, 13));
 		
-		textField = new JTextField();
-		textField.setEditable(false);
-		textField.setColumns(10);
+		troopIDTxt = new JTextField();
+		troopIDTxt.setEditable(false);
+		troopIDTxt.setColumns(10);
 		
 		JButton btnNewButton_4 = new JButton("Delete");
 		btnNewButton_4.setFont(new Font("Segoe UI Semibold", Font.BOLD, 13));
@@ -214,7 +221,7 @@ public class TroopManageInterFrm extends JInternalFrame {
 													.addGroup(groupLayout.createSequentialGroup()
 														.addComponent(lblNewLabel_4)
 														.addPreferredGap(ComponentPlacement.UNRELATED)
-														.addComponent(textField, 0, 0, Short.MAX_VALUE)))))
+														.addComponent(troopIDTxt, 0, 0, Short.MAX_VALUE)))))
 										.addPreferredGap(ComponentPlacement.RELATED))
 									.addGroup(groupLayout.createSequentialGroup()
 										.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
@@ -256,7 +263,7 @@ public class TroopManageInterFrm extends JInternalFrame {
 						.addComponent(troopMemoTxt, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblNewLabel_3)
 						.addComponent(lblNewLabel_4)
-						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(troopIDTxt, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(18)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblNewLabel_1)
@@ -287,47 +294,93 @@ public class TroopManageInterFrm extends JInternalFrame {
 					.addGap(26))
 		);
 		
-		table = new JTable();
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"ID", "Name", "Memo", "Lord", "Race"
+		myTroopTable = new JTable();
+		myTroopTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				mousePressedOnMyTroopTable(e);
 			}
-		) {
-			boolean[] columnEditables = new boolean[] {
-				false, false, false, false, false
-			};
+		});
+		myTroopTable.setModel(new DefaultTableModel(new Object[][] {},
+			new String[] {"ID", "Name", "Memo", "Lord", "Race"}) {
+			boolean[] columnEditables = new boolean[] {false, false, false, false, false};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
 			}
 		});
-		myTroopScrollPane.setViewportView(table);
+		myTroopTable.getColumnModel().getColumn(0).setPreferredWidth(5);
+		myTroopTable.getColumnModel().getColumn(1).setPreferredWidth(30);
+		myTroopTable.getColumnModel().getColumn(2).setPreferredWidth(40);
+		myTroopTable.getColumnModel().getColumn(3).setPreferredWidth(50);
+		myTroopTable.getColumnModel().getColumn(4).setPreferredWidth(40);
+		myTroopScrollPane.setViewportView(myTroopTable);
 		
 		selectedArmsTable = new JTable();
-		selectedArmsTable.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"ID", "Name", "Race", "Type"
-			}
-		) {
-			boolean[] columnEditables = new boolean[] {
-				false, false, false, false
-			};
+		selectedArmsTable.setModel(new DefaultTableModel(new Object[][] {},
+			new String[] {"ID", "Name", "Race", "Type"}) {
+			boolean[] columnEditables = new boolean[] {false, false, false, false};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
 			}
 		});
-		
 		selectedArmsTable.getColumnModel().getColumn(0).setPreferredWidth(5);
 		selectedArmsTable.getColumnModel().getColumn(1).setPreferredWidth(70);
 		selectedArmsTable.getColumnModel().getColumn(2).setPreferredWidth(50);
 		selectedArmsTable.getColumnModel().getColumn(3).setPreferredWidth(50);
-		
-		
 		scrollPane.setViewportView(selectedArmsTable);
+		
 		getContentPane().setLayout(groupLayout);
-
+		
+		this.fillMyTroopTable();
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * Show edit information when mouse pressed on MyTroopTable
+	 * @param event
+	 */
+	private void mousePressedOnMyTroopTable(MouseEvent event) {
+		int row = this.myTroopTable.getSelectedRow();
+		this.troopIDTxt.setText((String) this.myTroopTable.getValueAt(row, 0));
+		this.troopNameTxt.setText((String) this.myTroopTable.getValueAt(row, 1));
+		this.troopMemoTxt.setText((String) this.myTroopTable.getValueAt(row, 2));
+		
+	}
+
+	/**
+	 * Initialize MyTroopTable
+	 */
+	public void fillMyTroopTable() {
+		DefaultTableModel dtm = (DefaultTableModel) myTroopTable.getModel();
+		Connection con = null;
+		try {
+			con = dbUtil.getCon();
+			Integer currentUserId = this.currentUser.getUserID();
+			ResultSet rs = troopDao.findTroopsByUserName_withRaceAndLord(con, currentUserId);
+			while (rs.next()) {
+				Vector v = new Vector();
+				v.add(rs.getInt("troopID"));
+				v.add(rs.getString("name"));
+				v.add(rs.getString("memo"));
+				v.add(rs.getString("lord"));
+				v.add(rs.getString("race"));
+				dtm.addRow(v);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				dbUtil.closeCon(con);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 }
