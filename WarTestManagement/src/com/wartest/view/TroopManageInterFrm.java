@@ -104,7 +104,7 @@ public class TroopManageInterFrm extends JInternalFrame {
 		JButton btnNewButton = new JButton("Apply Filter");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//filterRaceActionPerformed(e);
+				filterRaceActionPerformed(e);
 			}
 		});
 		btnNewButton.setFont(new Font("Segoe UI Semibold", Font.BOLD, 13));
@@ -126,7 +126,7 @@ public class TroopManageInterFrm extends JInternalFrame {
 		JButton btnNewButton_1 = new JButton("Delete");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//deleteSelectedArm(e);
+				deleteSelectedArm(e);
 			}
 		});
 		btnNewButton_1.setFont(new Font("Segoe UI Semibold", Font.BOLD, 13));
@@ -137,15 +137,23 @@ public class TroopManageInterFrm extends JInternalFrame {
 		JButton btnNewButton_2 = new JButton("Update");
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//addTroopActionPerformed(e);
+				//updateTroopActionPerformed(e);
 			}
 		});
 		btnNewButton_2.setFont(new Font("Segoe UI Semibold", Font.BOLD, 14));
 		
+		JButton btnNewButton_4 = new JButton("Delete");
+		btnNewButton_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//deletedTroopActionPerformed(e);
+			}
+		});
+		btnNewButton_4.setFont(new Font("Segoe UI Semibold", Font.BOLD, 13));
+		
 		JButton btnNewButton_1_1 = new JButton("Clear");
 		btnNewButton_1_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//clearArmTable(e);
+				clearArmTable(e);
 			}
 		});
 		btnNewButton_1_1.setFont(new Font("Segoe UI Semibold", Font.BOLD, 13));
@@ -153,7 +161,7 @@ public class TroopManageInterFrm extends JInternalFrame {
 		JButton btnNewButton_3 = new JButton("Add Arm");
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//addAnArmIntoArmTable(e);
+				addAnArmIntoArmTable(e);
 			}
 		});
 		btnNewButton_3.setFont(new Font("Segoe UI Semibold", Font.BOLD, 12));
@@ -169,9 +177,6 @@ public class TroopManageInterFrm extends JInternalFrame {
 		troopIDTxt = new JTextField();
 		troopIDTxt.setEditable(false);
 		troopIDTxt.setColumns(10);
-		
-		JButton btnNewButton_4 = new JButton("Delete");
-		btnNewButton_4.setFont(new Font("Segoe UI Semibold", Font.BOLD, 13));
 		
 		JLabel lblNewLabel_5 = new JLabel("My Troops");
 		lblNewLabel_5.setFont(new Font("Segoe UI Semibold", Font.BOLD, 16));
@@ -343,6 +348,99 @@ public class TroopManageInterFrm extends JInternalFrame {
 	
 	
 	
+	
+	
+	/**
+	 * Delete selected Arm
+	 * @param event
+	 */
+	private void deleteSelectedArm(ActionEvent event) {
+		DefaultTableModel dtm = (DefaultTableModel) this.selectedArmsTable.getModel();
+		int[] rows = selectedArmsTable.getSelectedRows();
+		for(int i = 0; i < rows.length; i++) {
+			dtm.removeRow(rows[i]-i);
+		}
+	}
+	
+	/**
+	 * Clear the selected Arms Table
+	 * @param event
+	 */
+	private void clearArmTable(ActionEvent event) {
+		DefaultTableModel dtm = (DefaultTableModel) selectedArmsTable.getModel();
+		dtm.setRowCount(0); // Clear table
+	}
+	
+	/**
+	 * Add a selected Arm into the armTable
+	 * @param event
+	 */
+	private void addAnArmIntoArmTable(ActionEvent event) {
+		DefaultTableModel dtm = (DefaultTableModel) selectedArmsTable.getModel();
+		Connection con = null;
+		try {
+			con = dbUtil.getCon();
+			Vector v = new Vector();
+			Arm selectedArm = (Arm) this.armJcb.getSelectedItem();
+			v.add(selectedArm.getArmID());
+			v.add(selectedArm.getName());
+			v.add(selectedArm.getRace());
+			v.add(selectedArm.getType());
+			dtm.addRow(v);
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				dbUtil.closeCon(con);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	/**
+	 * Race Filter Action
+	 * @param event
+	 */
+	private void filterRaceActionPerformed(ActionEvent event) {
+		Connection con = null;
+		Lord lord = null;
+		Arm arm = null;
+		String racename = this.raceJcb.getSelectedItem().toString();
+		try {
+			con = dbUtil.getCon();
+			
+			ResultSet rs = lordDao.findLordByRace(con, racename);
+			this.lordJcb.removeAllItems();
+			while (rs.next()) {
+				lord = new Lord();
+				lord.setLordID(rs.getInt("lordID"));
+				lord.setName(rs.getString("name"));
+				lord.setRace(racename);
+				this.lordJcb.addItem(lord);
+			}
+			
+			rs = armDao.findArmByRace(con, racename);
+			this.armJcb.removeAllItems();
+			while (rs.next()) {
+				arm = new Arm();
+				arm.setArmID(rs.getInt("armID"));
+				arm.setName(rs.getString("name"));
+				arm.setRace(racename);
+				arm.setType(rs.getString("type"));
+				this.armJcb.addItem(arm);
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				dbUtil.closeCon(con);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
 	
 	/**
 	 * Show edit information when mouse pressed on MyTroopTable
