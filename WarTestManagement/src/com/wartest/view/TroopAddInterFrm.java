@@ -292,9 +292,7 @@ public class TroopAddInterFrm extends JInternalFrame {
 		this.fillAllJcbs();
 	}
 	
-	
-	
-	
+	// -----------------------------------------------------------------------------------------------------
 	
 	/**
 	 * Add a Troop to the database

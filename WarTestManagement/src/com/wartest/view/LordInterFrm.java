@@ -19,6 +19,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.wartest.dao.LordDao;
 import com.wartest.model.Lord;
+import com.wartest.service.LordService;
 import com.wartest.util.DbUtil;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -42,21 +43,6 @@ public class LordInterFrm extends JInternalFrame {
 	private DbUtil dbUtil = new DbUtil();
 	private LordDao lordDao = new LordDao();
 
-	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					LordInterFrm frame = new LordInterFrm();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
 
 	/**
 	 * Create the frame.
@@ -82,7 +68,7 @@ public class LordInterFrm extends JInternalFrame {
 		JButton btnNewButton = new JButton("Search");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				lordSearchActionPerformed(e);
+				LordService.lordSearchActionPerformed(e, s_lordNameTxt, s_lordRaceTxt, lordtable);
 			}
 		});
 		btnNewButton.setFont(new Font("Segoe UI Semibold", Font.BOLD, 14));
@@ -246,7 +232,8 @@ public class LordInterFrm extends JInternalFrame {
 		lordtable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				lordTableMousePressed(e);
+				LordService.lordTableMousePressed(e, s_lordNameTxt, s_lordRaceTxt, lordtable, 
+						lordNameTxt, lordRaceTxt, hpTxt, attTxt, arTxt, spTxt);
 			}
 		});
 		lordtable.setModel(new DefaultTableModel(new Object[][] {},
@@ -265,83 +252,7 @@ public class LordInterFrm extends JInternalFrame {
 		scrollPane.setViewportView(lordtable);
 		getContentPane().setLayout(groupLayout);
 		
-		this.fillTable(new Lord());
+		LordService.fillTable(new Lord(), this.lordtable);
 	}
 	
-	
-	/**
-	 * Mouse Pressing On Table Row Event Process
-	 * @param e
-	 */
-	private void lordTableMousePressed(MouseEvent event) {
-		int row = lordtable.getSelectedRow();
-		Integer lordID = (Integer) lordtable.getValueAt(row, 0);
-		Connection con = null;
-		try {
-			con = dbUtil.getCon();
-			ResultSet rs = lordDao.findLordByID(con, lordID);
-			while (rs.next()) {
-				this.lordNameTxt.setText(rs.getString("name"));
-				this.lordRaceTxt.setText(rs.getString("race"));
-				Integer hp = rs.getInt("hp");
-				this.hpTxt.setText(hp.toString());
-				Integer att = rs.getInt("attack");
-				this.attTxt.setText(att.toString());
-				Integer ar = rs.getInt("armor");
-				this.arTxt.setText(ar.toString());
-				Integer sp = rs.getInt("speed");
-				this.spTxt.setText(sp.toString());
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				dbUtil.closeCon(con);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	/**
-	 * Lord Search Event Process
-	 * @param event
-	 */
-	private void lordSearchActionPerformed(ActionEvent event) {
-		String s_lordName = this.s_lordNameTxt.getText();
-		String s_lordRace = this.s_lordRaceTxt.getText();
-		Lord lord = new Lord();
-		lord.setName(s_lordName);
-		lord.setRace(s_lordRace);
-		this.fillTable(lord);
-	}
-
-	/**
-	 * Initialize Table
-	 * @param lord
-	 */
-	private void fillTable(Lord lord) {
-		DefaultTableModel dtm = (DefaultTableModel) lordtable.getModel();
-		dtm.setRowCount(0); // Clear table before every search
-		Connection con = null;
-		try {
-			con = dbUtil.getCon();
-			ResultSet rs = lordDao.findLordsByNameOrRace(con, lord);
-			while(rs.next()) {
-				Vector v = new Vector();
-				v.add(rs.getInt("lordID"));
-				v.add(rs.getString("name"));
-				v.add(rs.getString("race"));
-				dtm.addRow(v);
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				dbUtil.closeCon(con);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
 }

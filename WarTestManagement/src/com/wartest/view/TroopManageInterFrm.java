@@ -349,11 +349,7 @@ public class TroopManageInterFrm extends JInternalFrame {
 		this.fillMyTroopTable();
 	}
 	
-	
-	
-	
-	
-	
+	// -----------------------------------------------------------------------------------------------------
 	
 	/**
 	 * Update a Troop

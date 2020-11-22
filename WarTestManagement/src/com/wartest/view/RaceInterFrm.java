@@ -22,6 +22,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.wartest.dao.RaceDao;
 import com.wartest.model.Race;
+import com.wartest.service.RaceService;
 import com.wartest.util.DbUtil;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -38,22 +39,7 @@ public class RaceInterFrm extends JInternalFrame {
 	private DbUtil dbUtil = new DbUtil();
 	private RaceDao raceDao = new RaceDao();
 
-	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					RaceInterFrm frame = new RaceInterFrm();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
-
+	
 	/**
 	 * Create the frame.
 	 */
@@ -72,7 +58,7 @@ public class RaceInterFrm extends JInternalFrame {
 		JButton btnNewButton = new JButton("Search");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				raceSearchActionPerformed(e);
+				RaceService.raceSearchActionPerformed(e, s_raceName, raceTable);
 			}
 		});
 		btnNewButton.setFont(new Font("Segoe UI Semibold", Font.BOLD, 14));
@@ -177,7 +163,7 @@ public class RaceInterFrm extends JInternalFrame {
 		raceTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				raceTableMousePressed(e);
+				RaceService.raceTableMousePressed(e, raceTable, raceNameTxt, raceLocationTxt, raceDescTxt);
 			}
 		});
 		
@@ -197,62 +183,7 @@ public class RaceInterFrm extends JInternalFrame {
 		scrollPane.setViewportView(raceTable);
 		getContentPane().setLayout(groupLayout);
 
-		this.fillTable(new Race());
+		RaceService.fillTable(new Race(), raceTable);
 	}
 	
-	
-	
-	
-	
-	
-	/**
-	 * Mouse Pressing On Table Row Event Process
-	 * @param event
-	 */
-	private void raceTableMousePressed(MouseEvent event) {
-		int row = raceTable.getSelectedRow();
-		raceNameTxt.setText((String)raceTable.getValueAt(row, 0));
-		raceLocationTxt.setText((String)raceTable.getValueAt(row, 1));
-		raceDescTxt.setText((String)raceTable.getValueAt(row, 2)); 
-	}
-
-	/**
-	 * Race Search Event Process
-	 * @param event
-	 */
-	private void raceSearchActionPerformed(ActionEvent event) {
-		String s_raceName = this.s_raceName.getText();
-		Race race = new Race();
-		race.setRace(s_raceName);
-		this.fillTable(race);
-	}
-
-	/**
-	 * Initialize Table
-	 * @param race
-	 */
-	private void fillTable(Race race) {
-		DefaultTableModel dtm = (DefaultTableModel) raceTable.getModel();
-		dtm.setRowCount(0); // Clear table before every search
-		Connection con = null;
-		try {
-			con = dbUtil.getCon();
-			ResultSet rs = raceDao.findRacesByName(con, race);
-			while(rs.next()) {
-				Vector v = new Vector();
-				v.add(rs.getString("race"));
-				v.add(rs.getString("location"));
-				v.add(rs.getString("description"));
-				dtm.addRow(v);
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				dbUtil.closeCon(con);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
 }

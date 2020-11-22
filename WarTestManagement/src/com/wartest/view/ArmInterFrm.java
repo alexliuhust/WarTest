@@ -24,6 +24,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.wartest.dao.ArmDao;
 import com.wartest.model.Arm;
+import com.wartest.service.ArmService;
 import com.wartest.util.DbUtil;
 import javax.swing.ScrollPaneConstants;
 
@@ -45,21 +46,6 @@ public class ArmInterFrm extends JInternalFrame {
 	private DbUtil dbUtil = new DbUtil();
 	private ArmDao armDao = new ArmDao();
 
-	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					ArmInterFrm frame = new ArmInterFrm();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
 
 	/**
 	 * Create the frame.
@@ -95,7 +81,7 @@ public class ArmInterFrm extends JInternalFrame {
 		JButton btnNewButton = new JButton("Search");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				armSearchActionPerformed(e);
+				ArmService.armSearchActionPerformed(e, s_armNameTxt, s_armRaceTxt, s_armTypeTxt, armTable);
 			}
 		});
 		btnNewButton.setFont(new Font("Segoe UI Semibold", Font.BOLD, 14));
@@ -315,7 +301,8 @@ public class ArmInterFrm extends JInternalFrame {
 		armTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				armTableMousePressed(e);
+				ArmService.armTableMousePressed(e, armTable, armNameTxt, armRaceTxt, armTypeTxt, 
+						costTxt, scaleTxt, hpTxt, attTxt, arTxt, spTxt);
 			}
 		});
 		armTable.setModel(new DefaultTableModel(new Object[][] {},
@@ -334,93 +321,6 @@ public class ArmInterFrm extends JInternalFrame {
 		
 		scrollPane.setViewportView(armTable);
 		getContentPane().setLayout(groupLayout);
-		
-		this.fillTable(new Arm());
+		ArmService.fillTable(new Arm(), armTable);
 	}
-	
-	/**
-	 * Mouse Pressing On Table Row Event Process
-	 * @param event
-	 */
-	private void armTableMousePressed(MouseEvent event) {
-		int row = this.armTable.getSelectedRow();
-		Integer armID = (Integer) armTable.getValueAt(row, 0);
-		Connection con = null;
-		try {
-			con = dbUtil.getCon();
-			ResultSet rs = armDao.findArmById(con, armID);
-			while (rs.next()) {
-				this.armNameTxt.setText(rs.getString("name"));
-				this.armRaceTxt.setText(rs.getString("race"));
-				this.armTypeTxt.setText(rs.getString("type"));
-				Integer cost = rs.getInt("cost");
-				this.costTxt.setText(cost.toString());
-				Integer scale = rs.getInt("scale");
-				this.scaleTxt.setText(scale.toString());
-				Integer hp = rs.getInt("hp");
-				this.hpTxt.setText(hp.toString());
-				Integer att = rs.getInt("attack");
-				this.attTxt.setText(att.toString());
-				Integer ar = rs.getInt("armor");
-				this.arTxt.setText(ar.toString());
-				Integer sp = rs.getInt("speed");
-				this.spTxt.setText(sp.toString());
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				dbUtil.closeCon(con);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		
-	}
-	
-	/**
-	 * Arm Search Event Process
-	 * @param event
-	 */
-	private void armSearchActionPerformed(ActionEvent event) {
-		String s_armName = this.s_armNameTxt.getText();
-		String s_armRace = this.s_armRaceTxt.getText();
-		String s_armType = this.s_armTypeTxt.getText();
-		Arm arm = new Arm();
-		arm.setName(s_armName);
-		arm.setRace(s_armRace);
-		arm.setType(s_armType);
-		this.fillTable(arm);
-	}
-
-	/**
-	 * Initialize Table
-	 * @param arm
-	 */
-	private void fillTable(Arm arm) {
-		DefaultTableModel dtm = (DefaultTableModel) armTable.getModel();
-		dtm.setRowCount(0); // Clear table before every search
-		Connection con = null;
-		try {
-			con = dbUtil.getCon();
-			ResultSet rs = armDao.findArmsByNameOrRaceOrType(con, arm);
-			while(rs.next()) {
-				Vector v = new Vector();
-				v.add(rs.getInt("armID"));
-				v.add(rs.getString("name"));
-				v.add(rs.getString("race"));
-				v.add(rs.getString("type"));
-				dtm.addRow(v);
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				dbUtil.closeCon(con);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
 }
