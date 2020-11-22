@@ -5,9 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.util.Vector;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -22,10 +19,8 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
-import com.wartest.dao.ArmDao;
 import com.wartest.model.Arm;
 import com.wartest.service.ArmService;
-import com.wartest.util.DbUtil;
 import javax.swing.ScrollPaneConstants;
 
 public class ArmInterFrm extends JInternalFrame {
@@ -42,9 +37,6 @@ public class ArmInterFrm extends JInternalFrame {
 	private JTextField attTxt;
 	private JTextField arTxt;
 	private JTextField spTxt;
-	
-	private DbUtil dbUtil = new DbUtil();
-	private ArmDao armDao = new ArmDao();
 
 
 	/**

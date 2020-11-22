@@ -18,14 +18,9 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.table.DefaultTableModel;
 
-import com.wartest.dao.ArmDao;
-import com.wartest.dao.LordDao;
-import com.wartest.dao.RaceDao;
-import com.wartest.dao.TroopDao;
 import com.wartest.model.User;
 import com.wartest.service.TroopFrmService;
 import com.wartest.service.TroopService;
-import com.wartest.util.DbUtil;
 
 public class TroopManageInterFrm extends JInternalFrame {
 	private JTextField troopNameTxt;
@@ -38,12 +33,6 @@ public class TroopManageInterFrm extends JInternalFrame {
 	private JComboBox raceJcb;
 	private JComboBox lordJcb;
 	private JComboBox armJcb;
-	
-	private DbUtil dbUtil = new DbUtil();
-	private RaceDao raceDao = new RaceDao();
-	private LordDao lordDao = new LordDao();
-	private ArmDao armDao = new ArmDao();
-	private TroopDao troopDao = new TroopDao();
 	
 	private User currentUser = null; // Used to track the current user
 	

@@ -1,10 +1,6 @@
 package com.wartest.view;
 
-import java.awt.EventQueue;
 import java.awt.Font;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.util.Vector;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -20,10 +16,8 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
-import com.wartest.dao.RaceDao;
 import com.wartest.model.Race;
 import com.wartest.service.RaceService;
-import com.wartest.util.DbUtil;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -35,10 +29,6 @@ public class RaceInterFrm extends JInternalFrame {
 	private JTextField raceNameTxt;
 	private JTextField raceLocationTxt;
 	private JTextArea raceDescTxt;
-	
-	private DbUtil dbUtil = new DbUtil();
-	private RaceDao raceDao = new RaceDao();
-
 	
 	/**
 	 * Create the frame.

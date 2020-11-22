@@ -1,10 +1,6 @@
 package com.wartest.view;
 
-import java.awt.EventQueue;
 import java.awt.Font;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.util.Vector;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -17,10 +13,8 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.table.DefaultTableModel;
 
-import com.wartest.dao.LordDao;
 import com.wartest.model.Lord;
 import com.wartest.service.LordService;
-import com.wartest.util.DbUtil;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
@@ -39,9 +33,6 @@ public class LordInterFrm extends JInternalFrame {
 	private JTextField attTxt;
 	private JTextField arTxt;
 	private JTextField spTxt;
-	
-	private DbUtil dbUtil = new DbUtil();
-	private LordDao lordDao = new LordDao();
 
 
 	/**

@@ -3,11 +3,6 @@ package com.wartest.view;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -15,26 +10,15 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.table.DefaultTableModel;
 
-import com.wartest.dao.ArmDao;
-import com.wartest.dao.LordDao;
-import com.wartest.dao.RaceDao;
-import com.wartest.dao.TroopDao;
-import com.wartest.model.Arm;
-import com.wartest.model.Lord;
-import com.wartest.model.Race;
-import com.wartest.model.Troop;
 import com.wartest.model.User;
 import com.wartest.service.TroopFrmService;
 import com.wartest.service.TroopService;
-import com.wartest.util.DbUtil;
-import com.wartest.util.StringUtil;
 
 public class TroopAddInterFrm extends JInternalFrame {
 	private JTextField troopNameTxt;
@@ -45,12 +29,6 @@ public class TroopAddInterFrm extends JInternalFrame {
 	private JComboBox raceJcb;
 	private JComboBox lordJcb;
 	private JComboBox armJcb;
-	
-	private DbUtil dbUtil = new DbUtil();
-	private RaceDao raceDao = new RaceDao();
-	private LordDao lordDao = new LordDao();
-	private ArmDao armDao = new ArmDao();
-	private TroopDao troopDao = new TroopDao();
 	
 	private User currentUser = null; // Used to track the current user
 
