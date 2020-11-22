@@ -52,6 +52,51 @@ public class TroopDao {
 	}
 	
 	/**
+	 * Update a Troop
+	 * @param con
+	 * @param troop
+	 * @return
+	 * @throws Exception
+	 */
+	public int[] updateOneTroop(Connection con, Troop troop) throws Exception {
+		int[] ans = new int[2];
+		ans[0] = ans[1] = -1;
+		
+		// Update a Troop record
+		String sql = "update troop set name = ?, memo = ?, lordID = ? where troopID = ?";
+		PreparedStatement pstmt = con.prepareStatement(sql);
+		pstmt.setString(1, troop.getName());
+		pstmt.setString(2, troop.getMemo());
+		pstmt.setInt(3, troop.getLordID());
+		pstmt.setInt(4, troop.getTroopID());
+		ans[0] = pstmt.executeUpdate();
+		
+		if (ans[0] != 1) return ans;
+		
+		// Delete those composition records that belong to the target troop
+		sql = "delete from composition where troopID = ?";
+		pstmt = con.prepareStatement(sql);
+		pstmt.setInt(1, troop.getTroopID());
+		int num = pstmt.executeUpdate();
+		
+		if (num < 1) return ans;
+		
+		// Insert new arms into the composition table
+		ans[1] = 0;
+		String addComp = "insert into composition (troopID, armID) values (?, ?)";
+		if (troop.getTroopID() > 0) {
+			for (Integer armID : troop.getArms()) {
+				pstmt = con.prepareStatement(addComp);
+				pstmt.setInt(1, troop.getTroopID());
+				pstmt.setInt(2, armID);
+				ans[1] += pstmt.executeUpdate();
+			}
+		}
+		
+		return ans;
+	}
+	
+	/**
 	 * Delete a troop by troopID
 	 * @param con
 	 * @param troopID
@@ -107,8 +152,8 @@ public class TroopDao {
 		pstmt.setInt(2, troop.getUserID());
 		pstmt.setInt(3, troop.getLordID());
 		pstmt.setString(4, troop.getMemo());
-		
 		ans[0] = pstmt.executeUpdate();
+		
 		if (ans[0] != 1) return ans;
 		
 		String findTroopID = "select troopID from troop where name = ?";

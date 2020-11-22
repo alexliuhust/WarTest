@@ -7,6 +7,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.GroupLayout;
@@ -29,6 +31,7 @@ import com.wartest.dao.TroopDao;
 import com.wartest.model.Arm;
 import com.wartest.model.Lord;
 import com.wartest.model.Race;
+import com.wartest.model.Troop;
 import com.wartest.model.User;
 import com.wartest.util.DbUtil;
 import com.wartest.util.StringUtil;
@@ -164,7 +167,7 @@ public class TroopManageInterFrm extends JInternalFrame {
 		JButton btnNewButton_2 = new JButton("Update");
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//updateTroopActionPerformed(e);
+				updateTroopActionPerformed(e);
 			}
 		});
 		btnNewButton_2.setFont(new Font("Segoe UI Semibold", Font.BOLD, 14));
@@ -352,7 +355,71 @@ public class TroopManageInterFrm extends JInternalFrame {
 	
 	
 	
-	
+	/**
+	 * Update a Troop
+	 * @param event
+	 */
+	private void updateTroopActionPerformed(ActionEvent event) {
+		if (StringUtil.isEmpty(this.troopIDTxt.getText())) {
+			JOptionPane.showMessageDialog(null, "Please select a record!");
+			return;
+		}
+		
+		Connection con = null;
+		try {
+			con = dbUtil.getCon();
+			
+			if (StringUtil.isEmpty(this.troopNameTxt.getText())) {
+				JOptionPane.showMessageDialog(null, "Troop Name Cannot Be Empty!");
+				return;
+			}
+			if (StringUtil.isEmpty(this.troopMemoTxt.getText())) {
+				JOptionPane.showMessageDialog(null, "Troop Memo Cannot Be Empty!");
+				return;
+			}
+			Integer troopID = Integer.parseInt(this.troopIDTxt.getText());
+			ResultSet rs = troopDao.findTroopByTroopNameButNotThisID(
+					con, this.troopNameTxt.getText(), troopID);
+			if (rs.next()) {
+				JOptionPane.showMessageDialog(null, "You have used this troop name!\nTry another one!");
+				this.troopNameTxt.setText("My troop");
+			} else if (selectedArmsTable.getRowCount() == 0) {
+				JOptionPane.showMessageDialog(null, "You have to select at least one Arm!");
+			} else {
+				Troop troop = new Troop();
+				troop.setName(this.troopNameTxt.getText());
+				troop.setMemo(this.troopMemoTxt.getText());
+				Lord selectedLord = (Lord) this.lordJcb.getSelectedItem();
+				troop.setLord(selectedLord.getLordID());
+				troop.setTroopID(troopID);
+				
+				List<Integer> armIDs = new ArrayList<>();
+				for (int i = 0; i < selectedArmsTable.getRowCount(); i++) {
+					armIDs.add((Integer)selectedArmsTable.getValueAt(i, 0));
+				}
+				troop.setArms(armIDs);
+				
+				int[] ans = troopDao.updateOneTroop(con, troop);
+				if (ans[0] == 1 && ans[1] >= 1) {
+					JOptionPane.showMessageDialog(null, "Successfully Updated a Troop!");
+					this.fillMyTroopTable();
+				} else {
+					JOptionPane.showMessageDialog(null, "Failed to update a troop");
+				}
+			}
+			
+		} catch(Exception e) {
+			JOptionPane.showMessageDialog(null, "Failed to update a troop...");
+			e.printStackTrace();
+		} finally {
+			try {
+				dbUtil.closeCon(con);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	/**
 	 * Delete selected Troop
 	 * @param event

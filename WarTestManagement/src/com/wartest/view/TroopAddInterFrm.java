@@ -32,6 +32,7 @@ import com.wartest.model.Race;
 import com.wartest.model.Troop;
 import com.wartest.model.User;
 import com.wartest.util.DbUtil;
+import com.wartest.util.StringUtil;
 
 public class TroopAddInterFrm extends JInternalFrame {
 	private JTextField troopNameTxt;
@@ -303,6 +304,16 @@ public class TroopAddInterFrm extends JInternalFrame {
 		Connection con = null;
 		try {
 			con = dbUtil.getCon();
+			
+			if (StringUtil.isEmpty(this.troopNameTxt.getText())) {
+				JOptionPane.showMessageDialog(null, "Troop Name Cannot Be Empty!");
+				return;
+			}
+			if (StringUtil.isEmpty(this.troopMemoTxt.getText())) {
+				JOptionPane.showMessageDialog(null, "Troop Memo Cannot Be Empty!");
+				return;
+			}
+			
 			ResultSet rs = troopDao.findTroopByTroopName(con, this.troopNameTxt.getText());
 			if (rs.next()) {
 				JOptionPane.showMessageDialog(null, "You have used this troop name!\nTry another one!");
