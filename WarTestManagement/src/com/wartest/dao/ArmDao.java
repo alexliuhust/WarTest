@@ -15,6 +15,24 @@ import com.wartest.util.StringUtil;
 public class ArmDao {
 	
 	/**
+	 * Find Arms by TroopID
+	 * @param con
+	 * @param troopID
+	 * @return
+	 * @throws Exception
+	 */
+	public ResultSet findArmsByTroopID(Connection con, Integer troopID) throws Exception {
+		String sql = "select a.armID, a.name, a.race, a.type from "
+				+ "composition as c "
+				+ "join troop as t on c.troopID = t.troopID "
+				+ "join arm as a on c.armID = a.armID "
+				+ "where t.troopID = ? group by c.compID; ";
+		PreparedStatement pstmt = con.prepareStatement(sql);
+		pstmt.setInt(1, troopID);
+		return pstmt.executeQuery();
+	}
+	
+	/**
 	 * Find arms by Name, Race or Type
 	 * @param con
 	 * @param arm

@@ -3,6 +3,8 @@ package com.wartest.view;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.Vector;
@@ -23,10 +25,11 @@ import com.wartest.dao.ArmDao;
 import com.wartest.dao.LordDao;
 import com.wartest.dao.RaceDao;
 import com.wartest.dao.TroopDao;
+import com.wartest.model.Arm;
+import com.wartest.model.Lord;
+import com.wartest.model.Race;
 import com.wartest.model.User;
 import com.wartest.util.DbUtil;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class TroopManageInterFrm extends JInternalFrame {
 	private JTextField troopNameTxt;
@@ -346,11 +349,88 @@ public class TroopManageInterFrm extends JInternalFrame {
 	 * @param event
 	 */
 	private void mousePressedOnMyTroopTable(MouseEvent event) {
-		int row = this.myTroopTable.getSelectedRow();
-		this.troopIDTxt.setText((String) this.myTroopTable.getValueAt(row, 0));
-		this.troopNameTxt.setText((String) this.myTroopTable.getValueAt(row, 1));
-		this.troopMemoTxt.setText((String) this.myTroopTable.getValueAt(row, 2));
-		
+		Connection con = null;
+		try {
+			con = dbUtil.getCon();
+			
+			int row = this.myTroopTable.getSelectedRow();
+			Integer troopID = (Integer) this.myTroopTable.getValueAt(row, 0);
+			this.troopIDTxt.setText(troopID.toString());
+			this.troopNameTxt.setText((String) this.myTroopTable.getValueAt(row, 1));
+			this.troopMemoTxt.setText((String) this.myTroopTable.getValueAt(row, 2));
+			
+			// Set the race Jcb to the specific item
+			Race race = null;
+			ResultSet rs = raceDao.findAllRaces(con);
+			while (rs.next()) {
+				race = new Race();
+				race.setRace(rs.getString("race"));
+				this.raceJcb.addItem(race);
+			}
+			String raceName = (String) this.myTroopTable.getValueAt(row, 4);
+			for (int i = 0; i < this.raceJcb.getItemCount(); i++) {
+				Race currentRace = (Race) this.raceJcb.getItemAt(i);
+				if (currentRace.getRace().equals(raceName)) {
+					this.raceJcb.setSelectedIndex(i);
+				}
+			}
+			
+			// Set the Lord Jcb to the specific item
+			Lord lord = null;
+			rs = lordDao.findLordByRace(con, raceName);
+			this.lordJcb.removeAllItems();
+			while (rs.next()) {
+				lord = new Lord();
+				lord.setLordID(rs.getInt("lordID"));
+				lord.setName(rs.getString("name"));
+				lord.setRace(raceName);
+				this.lordJcb.addItem(lord);
+			}
+			String lordName = (String) this.myTroopTable.getValueAt(row, 3);
+			for (int i = 0; i < this.lordJcb.getItemCount(); i++) {
+				Lord currentLord = (Lord) this.lordJcb.getItemAt(i);
+				if (currentLord.getName().equals(lordName)) {
+					this.lordJcb.setSelectedIndex(i);
+				}
+			}
+			
+			// Filter the Arm Jcb to the specific range
+			Arm arm = null;
+			rs = armDao.findArmByRace(con, raceName);
+			this.armJcb.removeAllItems();
+			while (rs.next()) {
+				arm = new Arm();
+				arm.setArmID(rs.getInt("armID"));
+				arm.setName(rs.getString("name"));
+				arm.setRace(raceName);
+				arm.setType(rs.getString("type"));
+				this.armJcb.addItem(arm);
+			}
+			
+			// Show the arms on the selected Arms Table
+			String tID = this.troopIDTxt.getText();
+			rs = armDao.findArmsByTroopID(con, Integer.parseInt(tID));
+			DefaultTableModel dtm = (DefaultTableModel) selectedArmsTable.getModel();
+			dtm.setRowCount(0); // Clear table
+			while (rs.next()) {
+				Vector v = new Vector();
+				v.add(rs.getInt("armID"));
+				v.add(rs.getString("name"));
+				v.add(rs.getString("race"));
+				v.add(rs.getString("type"));
+				dtm.addRow(v);
+			}
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				dbUtil.closeCon(con);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**
@@ -358,6 +438,7 @@ public class TroopManageInterFrm extends JInternalFrame {
 	 */
 	public void fillMyTroopTable() {
 		DefaultTableModel dtm = (DefaultTableModel) myTroopTable.getModel();
+		dtm.setRowCount(0); // Clear table
 		Connection con = null;
 		try {
 			con = dbUtil.getCon();

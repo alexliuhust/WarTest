@@ -402,6 +402,7 @@ public class TroopAddInterFrm extends JInternalFrame {
 		String racename = this.raceJcb.getSelectedItem().toString();
 		try {
 			con = dbUtil.getCon();
+			
 			ResultSet rs = lordDao.findLordByRace(con, racename);
 			this.lordJcb.removeAllItems();
 			while (rs.next()) {
