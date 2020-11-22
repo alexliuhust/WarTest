@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -30,12 +31,15 @@ import com.wartest.model.Lord;
 import com.wartest.model.Race;
 import com.wartest.model.User;
 import com.wartest.util.DbUtil;
+import com.wartest.util.StringUtil;
 
 public class TroopManageInterFrm extends JInternalFrame {
 	private JTextField troopNameTxt;
 	private JTextField currentUserIDTxt;
 	private JTextField troopMemoTxt;
 	private JTable selectedArmsTable;
+	private JTextField troopIDTxt;
+	private JTable myTroopTable;
 	
 	private JComboBox raceJcb;
 	private JComboBox lordJcb;
@@ -48,8 +52,6 @@ public class TroopManageInterFrm extends JInternalFrame {
 	private TroopDao troopDao = new TroopDao();
 	
 	private User currentUser = null; // Used to track the current user
-	private JTextField troopIDTxt;
-	private JTable myTroopTable;
 	
 	
 	/**
@@ -123,32 +125,8 @@ public class TroopManageInterFrm extends JInternalFrame {
 		
 		JScrollPane scrollPane = new JScrollPane();
 		
-		JButton btnNewButton_1 = new JButton("Delete");
-		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				deleteSelectedArm(e);
-			}
-		});
-		btnNewButton_1.setFont(new Font("Segoe UI Semibold", Font.BOLD, 13));
-		
 		JLabel lblNewLabel_2 = new JLabel("Selected Arms");
 		lblNewLabel_2.setFont(new Font("Segoe UI Semibold", Font.BOLD, 12));
-		
-		JButton btnNewButton_2 = new JButton("Update");
-		btnNewButton_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//updateTroopActionPerformed(e);
-			}
-		});
-		btnNewButton_2.setFont(new Font("Segoe UI Semibold", Font.BOLD, 14));
-		
-		JButton btnNewButton_4 = new JButton("Delete");
-		btnNewButton_4.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//deletedTroopActionPerformed(e);
-			}
-		});
-		btnNewButton_4.setFont(new Font("Segoe UI Semibold", Font.BOLD, 13));
 		
 		JButton btnNewButton_1_1 = new JButton("Clear");
 		btnNewButton_1_1.addActionListener(new ActionListener() {
@@ -157,6 +135,14 @@ public class TroopManageInterFrm extends JInternalFrame {
 			}
 		});
 		btnNewButton_1_1.setFont(new Font("Segoe UI Semibold", Font.BOLD, 13));
+		
+		JButton btnNewButton_1 = new JButton("Delete");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				deleteSelectedArm(e);
+			}
+		});
+		btnNewButton_1.setFont(new Font("Segoe UI Semibold", Font.BOLD, 13));
 		
 		JButton btnNewButton_3 = new JButton("Add Arm");
 		btnNewButton_3.addActionListener(new ActionListener() {
@@ -173,6 +159,24 @@ public class TroopManageInterFrm extends JInternalFrame {
 		
 		JLabel lblNewLabel_4 = new JLabel("Troop ID");
 		lblNewLabel_4.setFont(new Font("Segoe UI Semibold", Font.BOLD, 13));
+		
+		
+		JButton btnNewButton_2 = new JButton("Update");
+		btnNewButton_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//updateTroopActionPerformed(e);
+			}
+		});
+		btnNewButton_2.setFont(new Font("Segoe UI Semibold", Font.BOLD, 14));
+		
+		JButton btnNewButton_4 = new JButton("Delete");
+		btnNewButton_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				deletedTroopActionPerformed(e);
+			}
+		});
+		btnNewButton_4.setFont(new Font("Segoe UI Semibold", Font.BOLD, 13));
+		
 		
 		troopIDTxt = new JTextField();
 		troopIDTxt.setEditable(false);
@@ -349,7 +353,43 @@ public class TroopManageInterFrm extends JInternalFrame {
 	
 	
 	
-	
+	/**
+	 * Delete selected Troop
+	 * @param event
+	 */
+	private void deletedTroopActionPerformed(ActionEvent event) {
+		String troopID = this.troopIDTxt.getText();
+		if (StringUtil.isEmpty(troopID)) {
+			JOptionPane.showMessageDialog(null, "Please select a record!");
+			return;
+		}
+		int n = JOptionPane.showConfirmDialog(null, "Are you sure to delete this record?");
+		if (n == 0) {
+			Connection con = null;
+			try {
+				con = dbUtil.getCon();
+				int[] ans = troopDao.deleteTroop(con, Integer.parseInt(troopID));
+				if (ans[0] >= 0 && ans[1] >= 0 && ans[2] == 1) {
+					JOptionPane.showMessageDialog(null, "Seuccessfully Deleted a Troop!");
+					this.fillMyTroopTable();
+				} else {
+					JOptionPane.showMessageDialog(null, "Failed to delete a Troop...");
+				}
+				
+			} catch(Exception e) {
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Failed to delete a Troop...");
+			} finally {
+				try {
+					dbUtil.closeCon(con);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+	}
+
 	/**
 	 * Delete selected Arm
 	 * @param event
@@ -535,8 +575,15 @@ public class TroopManageInterFrm extends JInternalFrame {
 	 * Initialize MyTroopTable
 	 */
 	public void fillMyTroopTable() {
-		DefaultTableModel dtm = (DefaultTableModel) myTroopTable.getModel();
+		DefaultTableModel dtm = (DefaultTableModel) selectedArmsTable.getModel();
 		dtm.setRowCount(0); // Clear table
+		dtm = (DefaultTableModel) myTroopTable.getModel();
+		dtm.setRowCount(0); // Clear table
+		
+		this.troopIDTxt.setText("");
+		this.troopNameTxt.setText("");
+		this.troopMemoTxt.setText("");
+		
 		Connection con = null;
 		try {
 			con = dbUtil.getCon();

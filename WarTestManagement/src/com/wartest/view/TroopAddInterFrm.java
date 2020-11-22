@@ -333,6 +333,7 @@ public class TroopAddInterFrm extends JInternalFrame {
 			}
 			
 		} catch(Exception e) {
+			JOptionPane.showMessageDialog(null, "Failed to add a troop...");
 			e.printStackTrace();
 		} finally {
 			try {
