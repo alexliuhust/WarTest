@@ -31,6 +31,7 @@ import com.wartest.model.Lord;
 import com.wartest.model.Race;
 import com.wartest.model.Troop;
 import com.wartest.model.User;
+import com.wartest.service.TroopFrmService;
 import com.wartest.service.TroopService;
 import com.wartest.util.DbUtil;
 import com.wartest.util.StringUtil;
@@ -95,7 +96,7 @@ public class TroopAddInterFrm extends JInternalFrame {
 		JButton btnNewButton = new JButton("Apply Filter");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TroopService.filterRaceActionPerformed(e, raceJcb, lordJcb, armJcb);
+				TroopFrmService.filterRaceActionPerformed(e, raceJcb, lordJcb, armJcb);
 			}
 		});
 		btnNewButton.setFont(new Font("Segoe UI Semibold", Font.BOLD, 13));
@@ -117,7 +118,7 @@ public class TroopAddInterFrm extends JInternalFrame {
 		JButton btnNewButton_1 = new JButton("Delete");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TroopService.deleteSelectedArm(e, selectedArmsTable);
+				TroopFrmService.deleteSelectedArm(e, selectedArmsTable);
 			}
 		});
 		btnNewButton_1.setFont(new Font("Segoe UI Semibold", Font.BOLD, 13));
@@ -137,7 +138,7 @@ public class TroopAddInterFrm extends JInternalFrame {
 		JButton btnNewButton_1_1 = new JButton("Clear");
 		btnNewButton_1_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TroopService.clearArmTable(e, selectedArmsTable);
+				TroopFrmService.clearArmTable(e, selectedArmsTable);
 			}
 		});
 		btnNewButton_1_1.setFont(new Font("Segoe UI Semibold", Font.BOLD, 13));
@@ -145,7 +146,7 @@ public class TroopAddInterFrm extends JInternalFrame {
 		JButton btnNewButton_3 = new JButton("Add Arm");
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TroopService.addAnArmIntoArmTable(e, selectedArmsTable, armJcb);
+				TroopFrmService.addAnArmIntoArmTable(e, selectedArmsTable, armJcb);
 			}
 		});
 		btnNewButton_3.setFont(new Font("Segoe UI Semibold", Font.BOLD, 12));
@@ -268,7 +269,7 @@ public class TroopAddInterFrm extends JInternalFrame {
 		scrollPane.setViewportView(selectedArmsTable);
 		getContentPane().setLayout(groupLayout);
 
-		TroopService.fillAllJcbs(raceJcb, lordJcb, armJcb);
+		TroopFrmService.fillAllJcbs(raceJcb, lordJcb, armJcb);
 	}
 	
 }

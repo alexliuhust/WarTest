@@ -5,11 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -17,7 +12,6 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -28,14 +22,10 @@ import com.wartest.dao.ArmDao;
 import com.wartest.dao.LordDao;
 import com.wartest.dao.RaceDao;
 import com.wartest.dao.TroopDao;
-import com.wartest.model.Arm;
-import com.wartest.model.Lord;
-import com.wartest.model.Race;
-import com.wartest.model.Troop;
 import com.wartest.model.User;
+import com.wartest.service.TroopFrmService;
 import com.wartest.service.TroopService;
 import com.wartest.util.DbUtil;
-import com.wartest.util.StringUtil;
 
 public class TroopManageInterFrm extends JInternalFrame {
 	private JTextField troopNameTxt;
@@ -94,7 +84,7 @@ public class TroopManageInterFrm extends JInternalFrame {
 		JButton btnNewButton = new JButton("Apply Filter");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TroopService.filterRaceActionPerformed(e, raceJcb, lordJcb, armJcb);
+				TroopFrmService.filterRaceActionPerformed(e, raceJcb, lordJcb, armJcb);
 			}
 		});
 		btnNewButton.setFont(new Font("Segoe UI Semibold", Font.BOLD, 13));
@@ -119,7 +109,7 @@ public class TroopManageInterFrm extends JInternalFrame {
 		JButton btnNewButton_1_1 = new JButton("Clear");
 		btnNewButton_1_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TroopService.clearArmTable(e, selectedArmsTable);
+				TroopFrmService.clearArmTable(e, selectedArmsTable);
 			}
 		});
 		btnNewButton_1_1.setFont(new Font("Segoe UI Semibold", Font.BOLD, 13));
@@ -127,7 +117,7 @@ public class TroopManageInterFrm extends JInternalFrame {
 		JButton btnNewButton_1 = new JButton("Delete");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TroopService.deleteSelectedArm(e, selectedArmsTable);
+				TroopFrmService.deleteSelectedArm(e, selectedArmsTable);
 			}
 		});
 		btnNewButton_1.setFont(new Font("Segoe UI Semibold", Font.BOLD, 13));
@@ -135,7 +125,7 @@ public class TroopManageInterFrm extends JInternalFrame {
 		JButton btnNewButton_3 = new JButton("Add Arm");
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TroopService.addAnArmIntoArmTable(e, selectedArmsTable, armJcb);
+				TroopFrmService.addAnArmIntoArmTable(e, selectedArmsTable, armJcb);
 			}
 		});
 		btnNewButton_3.setFont(new Font("Segoe UI Semibold", Font.BOLD, 12));
@@ -335,7 +325,7 @@ public class TroopManageInterFrm extends JInternalFrame {
 		getContentPane().setLayout(groupLayout);
 		
 		
-		TroopService.fillMyTroopTable(troopNameTxt, troopMemoTxt, troopIDTxt, selectedArmsTable, myTroopTable, currentUser);
+		TroopFrmService.fillMyTroopTable(troopNameTxt, troopMemoTxt, troopIDTxt, selectedArmsTable, myTroopTable, currentUser);
 	}
 	
 }
