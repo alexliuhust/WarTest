@@ -321,6 +321,7 @@ public class ArmInterFrm extends JInternalFrame {
 		
 		scrollPane.setViewportView(armTable);
 		getContentPane().setLayout(groupLayout);
+
 		ArmService.fillTable(new Arm(), armTable);
 	}
 }

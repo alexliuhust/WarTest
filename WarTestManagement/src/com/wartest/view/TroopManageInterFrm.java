@@ -33,6 +33,7 @@ import com.wartest.model.Lord;
 import com.wartest.model.Race;
 import com.wartest.model.Troop;
 import com.wartest.model.User;
+import com.wartest.service.TroopService;
 import com.wartest.util.DbUtil;
 import com.wartest.util.StringUtil;
 
@@ -56,22 +57,6 @@ public class TroopManageInterFrm extends JInternalFrame {
 	
 	private User currentUser = null; // Used to track the current user
 	
-	
-	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					TroopManageInterFrm frame = new TroopManageInterFrm();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
 
 	/**
 	 * Create the frame.
@@ -109,7 +94,7 @@ public class TroopManageInterFrm extends JInternalFrame {
 		JButton btnNewButton = new JButton("Apply Filter");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				filterRaceActionPerformed(e);
+				TroopService.filterRaceActionPerformed(e, raceJcb, lordJcb, armJcb);
 			}
 		});
 		btnNewButton.setFont(new Font("Segoe UI Semibold", Font.BOLD, 13));
@@ -134,7 +119,7 @@ public class TroopManageInterFrm extends JInternalFrame {
 		JButton btnNewButton_1_1 = new JButton("Clear");
 		btnNewButton_1_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				clearArmTable(e);
+				TroopService.clearArmTable(e, selectedArmsTable);
 			}
 		});
 		btnNewButton_1_1.setFont(new Font("Segoe UI Semibold", Font.BOLD, 13));
@@ -142,7 +127,7 @@ public class TroopManageInterFrm extends JInternalFrame {
 		JButton btnNewButton_1 = new JButton("Delete");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				deleteSelectedArm(e);
+				TroopService.deleteSelectedArm(e, selectedArmsTable);
 			}
 		});
 		btnNewButton_1.setFont(new Font("Segoe UI Semibold", Font.BOLD, 13));
@@ -150,7 +135,7 @@ public class TroopManageInterFrm extends JInternalFrame {
 		JButton btnNewButton_3 = new JButton("Add Arm");
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				addAnArmIntoArmTable(e);
+				TroopService.addAnArmIntoArmTable(e, selectedArmsTable, armJcb);
 			}
 		});
 		btnNewButton_3.setFont(new Font("Segoe UI Semibold", Font.BOLD, 12));
@@ -167,7 +152,8 @@ public class TroopManageInterFrm extends JInternalFrame {
 		JButton btnNewButton_2 = new JButton("Update");
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				updateTroopActionPerformed(e);
+				TroopService.updateTroopActionPerformed(e, troopIDTxt, currentUserIDTxt, 
+						troopNameTxt, troopMemoTxt, selectedArmsTable, myTroopTable, lordJcb, currentUser);
 			}
 		});
 		btnNewButton_2.setFont(new Font("Segoe UI Semibold", Font.BOLD, 14));
@@ -175,7 +161,8 @@ public class TroopManageInterFrm extends JInternalFrame {
 		JButton btnNewButton_4 = new JButton("Delete");
 		btnNewButton_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				deletedTroopActionPerformed(e);
+				TroopService.deletedTroopActionPerformed(e, troopIDTxt, troopNameTxt, 
+						troopMemoTxt, selectedArmsTable, myTroopTable, currentUser);
 			}
 		});
 		btnNewButton_4.setFont(new Font("Segoe UI Semibold", Font.BOLD, 13));
@@ -313,7 +300,8 @@ public class TroopManageInterFrm extends JInternalFrame {
 		myTroopTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				mousePressedOnMyTroopTable(e);
+				TroopService.mousePressedOnMyTroopTable(e, troopIDTxt, troopNameTxt, troopMemoTxt, 
+						selectedArmsTable, myTroopTable, raceJcb, lordJcb, armJcb);
 			}
 		});
 		myTroopTable.setModel(new DefaultTableModel(new Object[][] {},
@@ -346,330 +334,8 @@ public class TroopManageInterFrm extends JInternalFrame {
 		
 		getContentPane().setLayout(groupLayout);
 		
-		this.fillMyTroopTable();
-	}
-	
-	// -----------------------------------------------------------------------------------------------------
-	
-	/**
-	 * Update a Troop
-	 * @param event
-	 */
-	private void updateTroopActionPerformed(ActionEvent event) {
-		if (StringUtil.isEmpty(this.troopIDTxt.getText())) {
-			JOptionPane.showMessageDialog(null, "Please select a record!");
-			return;
-		}
 		
-		Connection con = null;
-		try {
-			con = dbUtil.getCon();
-			
-			if (StringUtil.isEmpty(this.troopNameTxt.getText())) {
-				JOptionPane.showMessageDialog(null, "Troop Name Cannot Be Empty!");
-				return;
-			}
-			if (StringUtil.isEmpty(this.troopMemoTxt.getText())) {
-				JOptionPane.showMessageDialog(null, "Troop Memo Cannot Be Empty!");
-				return;
-			}
-			Integer troopID = Integer.parseInt(this.troopIDTxt.getText());
-			ResultSet rs = troopDao.findTroopByTroopNameButNotThisID(
-					con, this.troopNameTxt.getText(), troopID);
-			if (rs.next()) {
-				JOptionPane.showMessageDialog(null, "You have used this troop name!\nTry another one!");
-				this.troopNameTxt.setText("My troop");
-			} else if (selectedArmsTable.getRowCount() == 0) {
-				JOptionPane.showMessageDialog(null, "You have to select at least one Arm!");
-			} else {
-				Troop troop = new Troop();
-				troop.setName(this.troopNameTxt.getText());
-				troop.setMemo(this.troopMemoTxt.getText());
-				Lord selectedLord = (Lord) this.lordJcb.getSelectedItem();
-				troop.setLord(selectedLord.getLordID());
-				troop.setTroopID(troopID);
-				
-				List<Integer> armIDs = new ArrayList<>();
-				for (int i = 0; i < selectedArmsTable.getRowCount(); i++) {
-					armIDs.add((Integer)selectedArmsTable.getValueAt(i, 0));
-				}
-				troop.setArms(armIDs);
-				
-				int[] ans = troopDao.updateOneTroop(con, troop);
-				if (ans[0] == 1 && ans[1] >= 1) {
-					JOptionPane.showMessageDialog(null, "Successfully Updated a Troop!");
-					this.fillMyTroopTable();
-				} else {
-					JOptionPane.showMessageDialog(null, "Failed to update a troop");
-				}
-			}
-			
-		} catch(Exception e) {
-			JOptionPane.showMessageDialog(null, "Failed to update a troop...");
-			e.printStackTrace();
-		} finally {
-			try {
-				dbUtil.closeCon(con);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	/**
-	 * Delete selected Troop
-	 * @param event
-	 */
-	private void deletedTroopActionPerformed(ActionEvent event) {
-		String troopID = this.troopIDTxt.getText();
-		if (StringUtil.isEmpty(troopID)) {
-			JOptionPane.showMessageDialog(null, "Please select a record!");
-			return;
-		}
-		int n = JOptionPane.showConfirmDialog(null, "Are you sure to delete this record?");
-		if (n == 0) {
-			Connection con = null;
-			try {
-				con = dbUtil.getCon();
-				int[] ans = troopDao.deleteTroop(con, Integer.parseInt(troopID));
-				if (ans[0] >= 0 && ans[1] >= 0 && ans[2] == 1) {
-					JOptionPane.showMessageDialog(null, "Seuccessfully Deleted a Troop!");
-					this.fillMyTroopTable();
-				} else {
-					JOptionPane.showMessageDialog(null, "Failed to delete a Troop...");
-				}
-				
-			} catch(Exception e) {
-				e.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Failed to delete a Troop...");
-			} finally {
-				try {
-					dbUtil.closeCon(con);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		
-	}
-
-	/**
-	 * Delete selected Arm
-	 * @param event
-	 */
-	private void deleteSelectedArm(ActionEvent event) {
-		DefaultTableModel dtm = (DefaultTableModel) this.selectedArmsTable.getModel();
-		int[] rows = selectedArmsTable.getSelectedRows();
-		for(int i = 0; i < rows.length; i++) {
-			dtm.removeRow(rows[i]-i);
-		}
-	}
-	
-	/**
-	 * Clear the selected Arms Table
-	 * @param event
-	 */
-	private void clearArmTable(ActionEvent event) {
-		DefaultTableModel dtm = (DefaultTableModel) selectedArmsTable.getModel();
-		dtm.setRowCount(0); // Clear table
-	}
-	
-	/**
-	 * Add a selected Arm into the armTable
-	 * @param event
-	 */
-	private void addAnArmIntoArmTable(ActionEvent event) {
-		DefaultTableModel dtm = (DefaultTableModel) selectedArmsTable.getModel();
-		Connection con = null;
-		try {
-			con = dbUtil.getCon();
-			Vector v = new Vector();
-			Arm selectedArm = (Arm) this.armJcb.getSelectedItem();
-			v.add(selectedArm.getArmID());
-			v.add(selectedArm.getName());
-			v.add(selectedArm.getRace());
-			v.add(selectedArm.getType());
-			dtm.addRow(v);
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				dbUtil.closeCon(con);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	/**
-	 * Race Filter Action
-	 * @param event
-	 */
-	private void filterRaceActionPerformed(ActionEvent event) {
-		Connection con = null;
-		Lord lord = null;
-		Arm arm = null;
-		String racename = this.raceJcb.getSelectedItem().toString();
-		try {
-			con = dbUtil.getCon();
-			
-			ResultSet rs = lordDao.findLordByRace(con, racename);
-			this.lordJcb.removeAllItems();
-			while (rs.next()) {
-				lord = new Lord();
-				lord.setLordID(rs.getInt("lordID"));
-				lord.setName(rs.getString("name"));
-				lord.setRace(racename);
-				this.lordJcb.addItem(lord);
-			}
-			
-			rs = armDao.findArmByRace(con, racename);
-			this.armJcb.removeAllItems();
-			while (rs.next()) {
-				arm = new Arm();
-				arm.setArmID(rs.getInt("armID"));
-				arm.setName(rs.getString("name"));
-				arm.setRace(racename);
-				arm.setType(rs.getString("type"));
-				this.armJcb.addItem(arm);
-			}
-			
-		}catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				dbUtil.closeCon(con);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	/**
-	 * Show edit information when mouse pressed on MyTroopTable
-	 * @param event
-	 */
-	private void mousePressedOnMyTroopTable(MouseEvent event) {
-		Connection con = null;
-		try {
-			con = dbUtil.getCon();
-			
-			int row = this.myTroopTable.getSelectedRow();
-			Integer troopID = (Integer) this.myTroopTable.getValueAt(row, 0);
-			this.troopIDTxt.setText(troopID.toString());
-			this.troopNameTxt.setText((String) this.myTroopTable.getValueAt(row, 1));
-			this.troopMemoTxt.setText((String) this.myTroopTable.getValueAt(row, 2));
-			
-			// Set the race Jcb to the specific item
-			Race race = null;
-			ResultSet rs = raceDao.findAllRaces(con);
-			while (rs.next()) {
-				race = new Race();
-				race.setRace(rs.getString("race"));
-				this.raceJcb.addItem(race);
-			}
-			String raceName = (String) this.myTroopTable.getValueAt(row, 4);
-			for (int i = 0; i < this.raceJcb.getItemCount(); i++) {
-				Race currentRace = (Race) this.raceJcb.getItemAt(i);
-				if (currentRace.getRace().equals(raceName)) {
-					this.raceJcb.setSelectedIndex(i);
-				}
-			}
-			
-			// Set the Lord Jcb to the specific item
-			Lord lord = null;
-			rs = lordDao.findLordByRace(con, raceName);
-			this.lordJcb.removeAllItems();
-			while (rs.next()) {
-				lord = new Lord();
-				lord.setLordID(rs.getInt("lordID"));
-				lord.setName(rs.getString("name"));
-				lord.setRace(raceName);
-				this.lordJcb.addItem(lord);
-			}
-			String lordName = (String) this.myTroopTable.getValueAt(row, 3);
-			for (int i = 0; i < this.lordJcb.getItemCount(); i++) {
-				Lord currentLord = (Lord) this.lordJcb.getItemAt(i);
-				if (currentLord.getName().equals(lordName)) {
-					this.lordJcb.setSelectedIndex(i);
-				}
-			}
-			
-			// Filter the Arm Jcb to the specific range
-			Arm arm = null;
-			rs = armDao.findArmByRace(con, raceName);
-			this.armJcb.removeAllItems();
-			while (rs.next()) {
-				arm = new Arm();
-				arm.setArmID(rs.getInt("armID"));
-				arm.setName(rs.getString("name"));
-				arm.setRace(raceName);
-				arm.setType(rs.getString("type"));
-				this.armJcb.addItem(arm);
-			}
-			
-			// Show the arms on the selected Arms Table
-			String tID = this.troopIDTxt.getText();
-			rs = armDao.findArmsByTroopID(con, Integer.parseInt(tID));
-			DefaultTableModel dtm = (DefaultTableModel) selectedArmsTable.getModel();
-			dtm.setRowCount(0); // Clear table
-			while (rs.next()) {
-				Vector v = new Vector();
-				v.add(rs.getInt("armID"));
-				v.add(rs.getString("name"));
-				v.add(rs.getString("race"));
-				v.add(rs.getString("type"));
-				dtm.addRow(v);
-			}
-			
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				dbUtil.closeCon(con);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	/**
-	 * Initialize MyTroopTable
-	 */
-	public void fillMyTroopTable() {
-		DefaultTableModel dtm = (DefaultTableModel) selectedArmsTable.getModel();
-		dtm.setRowCount(0); // Clear table
-		dtm = (DefaultTableModel) myTroopTable.getModel();
-		dtm.setRowCount(0); // Clear table
-		
-		this.troopIDTxt.setText("");
-		this.troopNameTxt.setText("");
-		this.troopMemoTxt.setText("");
-		
-		Connection con = null;
-		try {
-			con = dbUtil.getCon();
-			Integer currentUserId = this.currentUser.getUserID();
-			ResultSet rs = troopDao.findTroopsByUserName_withRaceAndLord(con, currentUserId);
-			while (rs.next()) {
-				Vector v = new Vector();
-				v.add(rs.getInt("troopID"));
-				v.add(rs.getString("name"));
-				v.add(rs.getString("memo"));
-				v.add(rs.getString("lord"));
-				v.add(rs.getString("race"));
-				dtm.addRow(v);
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				dbUtil.closeCon(con);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+		TroopService.fillMyTroopTable(troopNameTxt, troopMemoTxt, troopIDTxt, selectedArmsTable, myTroopTable, currentUser);
 	}
 	
 }
