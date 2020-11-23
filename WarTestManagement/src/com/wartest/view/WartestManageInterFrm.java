@@ -87,6 +87,12 @@ public class WartestManageInterFrm extends JInternalFrame {
 		btnNewButton.setFont(new Font("Segoe UI Semibold", Font.BOLD, 15));
 		
 		JButton btnDelete = new JButton("Delete");
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				WartestService.wartestDeleteActionPerformed(e, currentUser, warIDTxt, 
+						wartestTable, locationJcb, troop1Jcb, troop2Jcb, victorJcb, armsLeftJcb);
+			}
+		});
 		btnDelete.setFont(new Font("Segoe UI Semibold", Font.BOLD, 15));
 		
 		JLabel lblNewLabel_4 = new JLabel("War ID");

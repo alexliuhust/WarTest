@@ -19,6 +19,7 @@ import com.wartest.model.Troop;
 import com.wartest.model.User;
 import com.wartest.model.Wartest;
 import com.wartest.util.DbUtil;
+import com.wartest.util.StringUtil;
 
 public class WartestService {
 	
@@ -41,7 +42,6 @@ public class WartestService {
 			JComboBox<Integer> armsLeftJcb) {
 		
 		Connection con = null; 
-		locationJcb.removeAllItems();
 		
 		try {
 			con = dbUtil.getCon();
@@ -159,4 +159,75 @@ public class WartestService {
 		}
 	}
 	
+	/**
+	 * Delete a Wartest from the database
+	 * @param event
+	 */
+	public static void wartestDeleteActionPerformed(ActionEvent event,
+			User currentUser,
+			JTextField warIDTxt,
+			JTable wartestTable,
+			JComboBox<String> locationJcb,
+			JComboBox<Troop> troop1Jcb,
+			JComboBox<Troop> troop2Jcb,
+			JComboBox<Troop> victorJcb,
+			JComboBox<Integer> armsLeftJcb) {
+		
+		String warID = warIDTxt.getText();
+		if (StringUtil.isEmpty(warID)) {
+			JOptionPane.showMessageDialog(null, "Please select a record!");
+			return;
+		}
+		int n = JOptionPane.showConfirmDialog(null, "Are you sure to delete this record?");
+		if (n == 0) {
+			Connection con = null; 
+			try {
+				con = dbUtil.getCon();
+				
+				int num = wartestDao.deleteAWartest(con, Integer.parseInt(warID));
+				if (num == 1) {
+					troop1Jcb.removeAllItems();
+					troop2Jcb.removeAllItems();
+					WartestFrmService.fillWartestTable(wartestTable, currentUser);
+					WartestFrmService.fillLocationAndTroopJcbs(currentUser, locationJcb, troop1Jcb, troop2Jcb, victorJcb, armsLeftJcb);
+					JOptionPane.showMessageDialog(null, "Seuccessfully Deleted a Wartest!");
+				} else {
+					JOptionPane.showMessageDialog(null, "Failed to delete a Wartest...");
+				}
+
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "Failed to delete a Wartest...");
+				e.printStackTrace();
+			} finally {
+				try {
+					dbUtil.closeCon(con);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

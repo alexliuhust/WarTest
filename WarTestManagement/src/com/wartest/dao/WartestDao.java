@@ -87,5 +87,38 @@ public class WartestDao {
 		pstmt.setInt(6, wartest.getArms_left());
 		return pstmt.executeUpdate();
 	}
+	
+	/**
+	 * Delete a Wartest
+	 * @param con
+	 * @param warID
+	 * @return
+	 * @throws Exception
+	 */
+	public int deleteAWartest(Connection con, Integer warID) throws Exception {
+		String sql = "delete from wartest where warID = ?";
+		PreparedStatement pstmt = con.prepareStatement(sql);
+		pstmt.setInt(1, warID);
+		return pstmt.executeUpdate();
+	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

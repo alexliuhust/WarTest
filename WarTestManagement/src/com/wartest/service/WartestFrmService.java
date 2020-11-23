@@ -118,6 +118,7 @@ public class WartestFrmService {
 		
 		victorJcb.removeAllItems();
 		armsLeftJcb.removeAllItems();
+		locationJcb.removeAllItems();
 		
 		Location loc = new Location();
 		for (String l : loc.getLocations()) {
