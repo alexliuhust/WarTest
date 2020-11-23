@@ -41,6 +41,8 @@ public class WartestService {
 			JComboBox<Integer> armsLeftJcb) {
 		
 		Connection con = null; 
+		locationJcb.removeAllItems();
+		
 		try {
 			con = dbUtil.getCon();
 			WartestFrmService.fillLocationAndTroopJcbs(currentUser, locationJcb, victorJcb, victorJcb, victorJcb, armsLeftJcb);

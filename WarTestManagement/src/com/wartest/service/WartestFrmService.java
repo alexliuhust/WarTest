@@ -35,6 +35,7 @@ public class WartestFrmService {
 		
 		Troop troop1 = (Troop) troop1Jcb.getSelectedItem();
 		Troop troop2 = (Troop) troop2Jcb.getSelectedItem();
+		if (troop1 == null || troop2 == null) return;
 		if (troop1.getTroopID().equals(troop2.getTroopID())) {
 			JOptionPane.showMessageDialog(null, "The two engaged troops cannot be identical!");
 			return;

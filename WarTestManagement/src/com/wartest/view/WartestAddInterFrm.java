@@ -17,6 +17,7 @@ import javax.swing.border.TitledBorder;
 
 import com.wartest.model.Troop;
 import com.wartest.model.User;
+import com.wartest.service.WartestFrmService;
 import com.wartest.service.WartestService;
 
 public class WartestAddInterFrm extends JInternalFrame {
@@ -77,7 +78,7 @@ public class WartestAddInterFrm extends JInternalFrame {
 		JButton btnNewButton_1 = new JButton("Confirm");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				WartestService.confirmTwoEngagedTroops(e, troop1Jcb, troop2Jcb, victorJcb, armsLeftJcb);
+				WartestFrmService.confirmTwoEngagedTroops(e, troop1Jcb, troop2Jcb, victorJcb, armsLeftJcb);
 			}
 		});
 		btnNewButton_1.setFont(new Font("Segoe UI Semibold", Font.BOLD, 12));
@@ -178,7 +179,7 @@ public class WartestAddInterFrm extends JInternalFrame {
 		panel.setLayout(gl_panel);
 		getContentPane().setLayout(groupLayout);
 
-		WartestService.fillLocationAndTroopJcbs(currentUser, locationJcb, troop1Jcb, troop2Jcb, victorJcb, armsLeftJcb);
+		WartestFrmService.fillLocationAndTroopJcbs(currentUser, locationJcb, troop1Jcb, troop2Jcb, victorJcb, armsLeftJcb);
 	}
 	
 }
