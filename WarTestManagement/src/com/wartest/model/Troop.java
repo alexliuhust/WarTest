@@ -58,5 +58,11 @@ public class Troop {
 	public void setMemo(String memo) {
 		this.memo = memo;
 	}
+
+
+	@Override
+	public String toString() {
+		return this.name;
+	}
 	
 }

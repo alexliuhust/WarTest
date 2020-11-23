@@ -1,7 +1,6 @@
 package com.wartest.view;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -15,7 +14,6 @@ import javax.swing.JOptionPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Insets;
-import javax.swing.SwingConstants;
 import javax.swing.JMenu;
 import javax.swing.JDesktopPane;
 
@@ -26,21 +24,6 @@ public class MainFrm extends JFrame {
 	
 	private User currentUser = null; // Used to track the current user
 
-	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					MainFrm frame = new MainFrm();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
 
 	/**
 	 * Create the frame.
@@ -88,6 +71,11 @@ public class MainFrm extends JFrame {
 		mnNewMenu.add(mnNewMenu_3);
 		
 		JMenuItem mntmNewMenuItem_3 = new JMenuItem("Add War Test");
+		mntmNewMenuItem_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				openWartestAddInterFrmActionPerformed(e);
+			}
+		});
 		mnNewMenu_3.add(mntmNewMenuItem_3);
 		
 		JMenuItem mntmNewMenuItem_7 = new JMenuItem("Manage War Test");
@@ -135,6 +123,16 @@ public class MainFrm extends JFrame {
 		contentPane.add(table, BorderLayout.CENTER);
 		this.setLocationRelativeTo(null);
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+	}
+
+	/**
+	 * Open the Wartest Add internal frame and track the current user ID
+	 * @param event
+	 */
+	private void openWartestAddInterFrmActionPerformed(ActionEvent event) {
+		WartestAddInterFrm wartestAddInterFrm = new WartestAddInterFrm(this.currentUser);
+		wartestAddInterFrm.setVisible(true);
+		table.add(wartestAddInterFrm);
 	}
 
 	/**

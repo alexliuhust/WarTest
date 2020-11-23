@@ -19,23 +19,6 @@ public class Wartest {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Wartest(Integer troop1, Integer troop2, String location, Integer victor, Integer arms_left) {
-		super();
-		this.troop1 = troop1;
-		this.troop2 = troop2;
-		this.location = location;
-		this.victor = victor;
-		this.arms_left = arms_left;
-	}
-	public Wartest(Integer warID, Integer troop1, Integer troop2, String location, Integer victor, Integer arms_left) {
-		super();
-		this.warID = warID;
-		this.troop1 = troop1;
-		this.troop2 = troop2;
-		this.location = location;
-		this.victor = victor;
-		this.arms_left = arms_left;
-	}
 	
 	
 	public Integer getWarID() {
@@ -81,10 +64,4 @@ public class Wartest {
 		this.arms_left = arms_left;
 	}
 	
-	
-//	@Override
-//	public String toString() {
-//		return "Wartest [warID=" + warID + ", troop1=" + troop1 + ", troop2=" + troop2 + ", location=" + location
-//				+ ", victor=" + victor + ", arms_left=" + arms_left + "]";
-//	}
 }

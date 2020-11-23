@@ -9,6 +9,20 @@ import com.wartest.model.Troop;
 public class TroopDao {
 	
 	/**
+	 * Find Troops with name by current User ID
+	 * @param con
+	 * @param currentUserId
+	 * @return
+	 * @throws Exception
+	 */
+	public ResultSet findTroopsByUserID(Connection con, Integer currentUserId) throws Exception { 
+		String sql = "select troopID, name from troop where userID = ?";
+		PreparedStatement pstmt = con.prepareStatement(sql);
+		pstmt.setInt(1, currentUserId);
+		return pstmt.executeQuery();
+	}
+	
+	/**
 	 * Find Troops with Race and Lord by current User ID
 	 * @param con
 	 * @param currentUserId
