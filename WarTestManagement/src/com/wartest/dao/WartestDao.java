@@ -28,6 +28,25 @@ public class WartestDao {
 	}
 	
 	/**
+	 * Find All Wartests By User ID
+	 * @param con
+	 * @param currentUserID
+	 * @return
+	 * @throws Exception
+	 */
+	public ResultSet findAllWartestsByUserID(Connection con, Integer currentUserID) throws Exception {
+		String sql = "select w.warID, t1.name as troop1, t2.name as troop2, w.location, t3.name as victor, w.arms_left "
+				+ "from wartest as w "
+				+ "inner join troop as t1 on w.troopID1 = t1.troopID "
+				+ "inner join troop as t2 on w.troopID2 = t2.troopID "
+				+ "inner join troop as t3 on w.victor = t3.troopID "
+				+ "where w.userID = ?";
+		PreparedStatement pstmt = con.prepareStatement(sql);
+		pstmt.setInt(1, currentUserID);
+		return pstmt.executeQuery();
+	}
+	
+	/**
 	 * Add a Wartest to the database
 	 * @param con
 	 * @param wartest

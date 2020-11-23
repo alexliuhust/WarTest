@@ -3,8 +3,6 @@ package com.wartest.view;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.ResultSet;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -12,19 +10,14 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.TitledBorder;
 
-import com.wartest.dao.TroopDao;
-import com.wartest.dao.WartestDao;
-import com.wartest.model.Location;
 import com.wartest.model.Troop;
 import com.wartest.model.User;
-import com.wartest.model.Wartest;
-import com.wartest.util.DbUtil;
+import com.wartest.service.WartestService;
 
 public class WartestAddInterFrm extends JInternalFrame {
 	private JTextField currentUserIDTxt;
@@ -33,10 +26,6 @@ public class WartestAddInterFrm extends JInternalFrame {
 	private JComboBox<Troop> troop2Jcb;
 	private JComboBox<Troop> victorJcb;
 	private JComboBox<Integer> armsLeftJcb;
-	
-	private DbUtil dbUtil = new DbUtil();
-	private WartestDao wartestDao = new WartestDao();
-	private TroopDao troopDao = new TroopDao();
 	
 	private User currentUser = null; // Used to track the current user
 
@@ -53,7 +42,7 @@ public class WartestAddInterFrm extends JInternalFrame {
 		JLabel lblNewLabel = new JLabel("Location");
 		lblNewLabel.setFont(new Font("Segoe UI Semibold", Font.BOLD, 14));
 		
-		locationJcb = new JComboBox();
+		locationJcb = new JComboBox<>();
 		
 		JLabel lblNewLabel_1 = new JLabel("User ID");
 		lblNewLabel_1.setFont(new Font("Segoe UI Semibold", Font.BOLD, 14));
@@ -67,12 +56,12 @@ public class WartestAddInterFrm extends JInternalFrame {
 		JLabel lblNewLabel_2 = new JLabel("Troop 1");
 		lblNewLabel_2.setFont(new Font("Segoe UI Semibold", Font.BOLD, 14));
 		
-		troop1Jcb = new JComboBox();
+		troop1Jcb = new JComboBox<>();
 		
 		JLabel lblNewLabel_2_1 = new JLabel("Troop 2");
 		lblNewLabel_2_1.setFont(new Font("Segoe UI Semibold", Font.BOLD, 14));
 		
-		troop2Jcb = new JComboBox();
+		troop2Jcb = new JComboBox<>();
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(null, "Result", TitledBorder.CENTER, TitledBorder.TOP, null, null));
@@ -80,7 +69,7 @@ public class WartestAddInterFrm extends JInternalFrame {
 		JButton btnNewButton = new JButton("ADD");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				warTestAddActionPerformed(e);
+				WartestService.warTestAddActionPerformed(e, currentUser, locationJcb, troop1Jcb, troop2Jcb, victorJcb, armsLeftJcb);
 			}
 		});
 		btnNewButton.setFont(new Font("Segoe UI Semibold", Font.BOLD, 15));
@@ -88,7 +77,7 @@ public class WartestAddInterFrm extends JInternalFrame {
 		JButton btnNewButton_1 = new JButton("Confirm");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				confirmTwoEngagedTroops(e);
+				WartestService.confirmTwoEngagedTroops(e, troop1Jcb, troop2Jcb, victorJcb, armsLeftJcb);
 			}
 		});
 		btnNewButton_1.setFont(new Font("Segoe UI Semibold", Font.BOLD, 12));
@@ -155,12 +144,12 @@ public class WartestAddInterFrm extends JInternalFrame {
 		JLabel lblNewLabel_3 = new JLabel("Victor");
 		lblNewLabel_3.setFont(new Font("Segoe UI Semibold", Font.BOLD, 14));
 		
-		victorJcb = new JComboBox();
+		victorJcb = new JComboBox<>();
 		
 		JLabel lblNewLabel_3_1 = new JLabel("Arms Left");
 		lblNewLabel_3_1.setFont(new Font("Segoe UI Semibold", Font.BOLD, 14));
 		
-		armsLeftJcb = new JComboBox();
+		armsLeftJcb = new JComboBox<>();
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -189,122 +178,7 @@ public class WartestAddInterFrm extends JInternalFrame {
 		panel.setLayout(gl_panel);
 		getContentPane().setLayout(groupLayout);
 
-		fillLocationAndTroopJcbs();
-	}
-	
-	/**
-	 * Add a Wartest to the Database
-	 * @param event
-	 */
-	private void warTestAddActionPerformed(ActionEvent event) {
-		Wartest wartest = new Wartest();
-		wartest.setUserID(currentUser.getUserID());
-		wartest.setLocation((String)locationJcb.getSelectedItem());
-		Troop troop1 = (Troop) troop1Jcb.getSelectedItem();
-		Troop troop2 = (Troop) troop2Jcb.getSelectedItem();
-		wartest.setTroop1(troop1.getTroopID());
-		wartest.setTroop2(troop2.getTroopID());
-		Troop victor = (Troop) victorJcb.getSelectedItem();
-		wartest.setVictor(victor.getTroopID());
-		Integer arms_left = (Integer) armsLeftJcb.getSelectedItem();
-		wartest.setArms_left(arms_left);
-		
-		Connection con = null; 
-		try {
-			con = dbUtil.getCon();
-			
-			int num = wartestDao.addAWartest(con, wartest);
-			if (num == 1) {
-				JOptionPane.showMessageDialog(null, "Successfully Added a Wartest!");
-				fillLocationAndTroopJcbs();
-			} else {
-				JOptionPane.showMessageDialog(null, "Failed to add a Wartest...");
-			}
-			
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Failed to add a Wartest...");
-			e.printStackTrace();
-		} finally {
-			try {
-				dbUtil.closeCon(con);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	/**
-	 * Confirm Two Engaged Troops
-	 * @param event
-	 */
-	private void confirmTwoEngagedTroops(ActionEvent event) {
-		Troop troop1 = (Troop) troop1Jcb.getSelectedItem();
-		Troop troop2 = (Troop) troop2Jcb.getSelectedItem();
-		if (troop1.getTroopID().equals(troop2.getTroopID())) {
-			JOptionPane.showMessageDialog(null, "The two engaged troops cannot be identical!");
-			return;
-		}
-		
-		victorJcb.removeAllItems();
-		victorJcb.addItem(troop1);
-		victorJcb.addItem(troop2);
-		
-		Connection con = null;
-		try {
-			con = dbUtil.getCon();
-			
-			int count1 = wartestDao.countNumberOfArmsByTroopID(con, troop1.getTroopID());
-			int count2 = wartestDao.countNumberOfArmsByTroopID(con, troop2.getTroopID());
-			int maxCount = Math.max(count1, count2);
-			armsLeftJcb.removeAllItems();
-			for (Integer i = maxCount; i >= 1; i--) {
-				armsLeftJcb.addItem(i);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				dbUtil.closeCon(con);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	/**
-	 * Fill the location Jcb and the two troop Jcbs
-	 */
-	private void fillLocationAndTroopJcbs() {
-		victorJcb.removeAllItems();
-		armsLeftJcb.removeAllItems();
-		
-		Location loc = new Location();
-		for (String l : loc.getLocations()) {
-			locationJcb.addItem(l);
-		}
-		
-		Connection con = null;
-		try {
-			con = dbUtil.getCon();
-			Troop troop = null;
-			ResultSet rs = troopDao.findTroopsByUserID(con, currentUser.getUserID());
-			while (rs.next()) {
-				troop = new Troop();
-				troop.setTroopID(rs.getInt("troopID"));
-				troop.setName(rs.getString("name"));
-				troop1Jcb.addItem(troop);
-				troop2Jcb.addItem(troop);
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				dbUtil.closeCon(con);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+		WartestService.fillLocationAndTroopJcbs(currentUser, locationJcb, troop1Jcb, troop2Jcb, victorJcb, armsLeftJcb);
 	}
 	
 }
