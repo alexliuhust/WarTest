@@ -3,24 +3,27 @@ package com.wartest.view;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
 
 import com.wartest.model.Troop;
 import com.wartest.model.User;
+import com.wartest.service.WartestFrmService;
 import com.wartest.service.WartestService;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 
 public class WartestManageInterFrm extends JInternalFrame {
 	private JTable wartestTable;
@@ -75,7 +78,7 @@ public class WartestManageInterFrm extends JInternalFrame {
 		JButton btnNewButton_1 = new JButton("Confirm");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				WartestService.confirmTwoEngagedTroops(e, troop1Jcb, troop2Jcb, victorJcb, armsLeftJcb);
+				WartestFrmService.confirmTwoEngagedTroops(e, troop1Jcb, troop2Jcb, victorJcb, armsLeftJcb);
 			}
 		});
 		btnNewButton_1.setFont(new Font("Segoe UI Semibold", Font.BOLD, 12));
@@ -173,6 +176,13 @@ public class WartestManageInterFrm extends JInternalFrame {
 		);
 		
 		wartestTable = new JTable();
+		wartestTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				WartestService.mousePressedOnWartestTable(e, currentUser_, wartestTable, 
+						warIDTxt, locationJcb, troop1Jcb, troop2Jcb, victorJcb, armsLeftJcb);
+			}
+		});
 		wartestTable.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
@@ -219,8 +229,8 @@ public class WartestManageInterFrm extends JInternalFrame {
 		panel.setLayout(gl_panel);
 		getContentPane().setLayout(groupLayout);
 
-		WartestService.fillWartestTable(wartestTable, currentUser);
-		WartestService.fillLocationAndTroopJcbs(currentUser, locationJcb, troop1Jcb, troop2Jcb, victorJcb, armsLeftJcb);
+		WartestFrmService.fillWartestTable(wartestTable, currentUser);
+		WartestFrmService.fillLocationAndTroopJcbs(currentUser, locationJcb, troop1Jcb, troop2Jcb, victorJcb, armsLeftJcb);
 		
 	}
 }

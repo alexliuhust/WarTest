@@ -103,7 +103,7 @@ public class ArmService {
 			con = dbUtil.getCon();
 			ResultSet rs = armDao.findArmsByNameOrRaceOrType(con, arm);
 			while(rs.next()) {
-				Vector v = new Vector();
+				Vector<Object> v = new Vector<>();
 				v.add(rs.getInt("armID"));
 				v.add(rs.getString("name"));
 				v.add(rs.getString("race"));

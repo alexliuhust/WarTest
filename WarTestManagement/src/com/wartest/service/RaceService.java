@@ -64,7 +64,7 @@ public class RaceService {
 			con = dbUtil.getCon();
 			ResultSet rs = raceDao.findRacesByName(con, race);
 			while(rs.next()) {
-				Vector v = new Vector();
+				Vector<Object> v = new Vector<>();
 				v.add(rs.getString("race"));
 				v.add(rs.getString("location"));
 				v.add(rs.getString("description"));

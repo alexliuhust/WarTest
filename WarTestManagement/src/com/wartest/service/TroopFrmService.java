@@ -59,13 +59,13 @@ public class TroopFrmService {
 	 */
 	public static void addAnArmIntoArmTable(ActionEvent event, 
 			JTable selectedArmsTable, 
-			JComboBox armJcb) {
+			JComboBox<Arm> armJcb) {
 		
 		DefaultTableModel dtm = (DefaultTableModel) selectedArmsTable.getModel();
 		Connection con = null;
 		try {
 			con = dbUtil.getCon();
-			Vector v = new Vector();
+			Vector<Object> v = new Vector<>();
 			Arm selectedArm = (Arm) armJcb.getSelectedItem();
 			v.add(selectedArm.getArmID());
 			v.add(selectedArm.getName());
@@ -90,9 +90,9 @@ public class TroopFrmService {
 	 * @param event
 	 */
 	public static void filterRaceActionPerformed(ActionEvent event, 
-			JComboBox raceJcb,
-			JComboBox lordJcb,
-			JComboBox armJcb) {
+			JComboBox<Race> raceJcb,
+			JComboBox<Lord> lordJcb,
+			JComboBox<Arm> armJcb) {
 		
 		Connection con = null;
 		Lord lord = null;
@@ -160,7 +160,7 @@ public class TroopFrmService {
 			
 			ResultSet rs = troopDao.findTroopsByUserName_withRaceAndLord(con, currentUserId);
 			while (rs.next()) {
-				Vector v = new Vector();
+				Vector<Object> v = new Vector<>();
 				v.add(rs.getInt("troopID"));
 				v.add(rs.getString("name"));
 				v.add(rs.getString("memo"));
@@ -184,9 +184,9 @@ public class TroopFrmService {
 	 * Initialize all Jcbs
 	 */
 	public static void fillAllJcbs(
-			JComboBox raceJcb,
-			JComboBox lordJcb,
-			JComboBox armJcb) {
+			JComboBox<Race> raceJcb,
+			JComboBox<Lord> lordJcb,
+			JComboBox<Arm> armJcb) {
 		
 		Connection con = null;
 		Race race = null;

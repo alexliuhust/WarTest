@@ -95,7 +95,7 @@ public class LordService {
 			con = dbUtil.getCon();
 			ResultSet rs = lordDao.findLordsByNameOrRace(con, lord);
 			while(rs.next()) {
-				Vector v = new Vector();
+				Vector<Object> v = new Vector<>();
 				v.add(rs.getInt("lordID"));
 				v.add(rs.getString("name"));
 				v.add(rs.getString("race"));

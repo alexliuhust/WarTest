@@ -20,6 +20,9 @@ public class Troop {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	public Troop(String name) {
+		this.name = name;
+	}
 	
 	
 	public Integer getTroopID() {

@@ -44,9 +44,9 @@ public class TroopService {
 			JTextField troopMemoTxt,
 			JTable selectedArmsTable, 
 			JTable myTroopTable,
-			JComboBox raceJcb,
-			JComboBox lordJcb, 
-			JComboBox armJcb) {
+			JComboBox<Race> raceJcb,
+			JComboBox<Lord> lordJcb, 
+			JComboBox<Arm> armJcb) {
 		
 		Connection con = null;
 		try {
@@ -112,7 +112,7 @@ public class TroopService {
 			DefaultTableModel dtm = (DefaultTableModel) selectedArmsTable.getModel();
 			dtm.setRowCount(0); // Clear table
 			while (rs.next()) {
-				Vector v = new Vector();
+				Vector<Object> v = new Vector<>();
 				v.add(rs.getInt("armID"));
 				v.add(rs.getString("name"));
 				v.add(rs.getString("race"));
@@ -142,7 +142,7 @@ public class TroopService {
 			JTextField troopNameTxt,
 			JTextField troopMemoTxt,
 			JTable selectedArmsTable, 
-			JComboBox lordJcb) {
+			JComboBox<Lord> lordJcb) {
 		
 		Connection con = null;
 		try {
@@ -209,7 +209,7 @@ public class TroopService {
 			JTextField troopMemoTxt,
 			JTable selectedArmsTable,
 			JTable myTroopTable,
-			JComboBox lordJcb,
+			JComboBox<Lord> lordJcb,
 			User currentUser) {
 		
 		if (StringUtil.isEmpty(troopIDTxt.getText())) {

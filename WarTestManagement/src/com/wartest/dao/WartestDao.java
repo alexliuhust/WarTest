@@ -9,7 +9,7 @@ import com.wartest.model.Wartest;
 public class WartestDao {
 	
 	/**
-	 * Get how many arms the target Troop contains
+	 * Get how many arms the target Troop contains (By Troop ID)
 	 * @param con
 	 * @param troopID
 	 * @return
@@ -26,6 +26,28 @@ public class WartestDao {
 			count = rs.getInt("count");
 		return count;
 	}
+	
+	/**
+	 * Get how many arms the target Troop contains (By Troop Name)
+	 * @param con
+	 * @param troopName
+	 * @return
+	 * @throws Exception
+	 */
+	public Integer countNumberOfArmsByTroopName(Connection con, String troopName) throws Exception {
+		String sql = "select count(*) as count from "
+				+ "composition as c join troop as t on c.troopID = t.troopID "
+				+ "where t.name = ?";
+		PreparedStatement pstmt = con.prepareStatement(sql);
+		pstmt.setString(1, troopName);
+		ResultSet rs = pstmt.executeQuery();
+		
+		int count = 0;
+		if (rs.next())
+			count = rs.getInt("count");
+		return count;
+	}
+	
 	
 	/**
 	 * Find All Wartests By User ID
