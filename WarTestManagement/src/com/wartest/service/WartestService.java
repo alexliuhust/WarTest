@@ -3,9 +3,12 @@ package com.wartest.service;
 import java.awt.event.ActionEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.util.Vector;
 
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 import com.wartest.dao.TroopDao;
 import com.wartest.dao.WartestDao;
@@ -103,6 +106,44 @@ public class WartestService {
 				armsLeftJcb.addItem(i);
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				dbUtil.closeCon(con);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	/**
+	 * Fill the Wartest Table
+	 */
+	public static void fillWartestTable(
+			JTable wartestTable,
+			User currentUser) {
+		
+		Integer currentUserId = currentUser.getUserID();
+		DefaultTableModel dtm = (DefaultTableModel) wartestTable.getModel();
+		dtm.setRowCount(0); // Clear table
+		
+		Connection con = null;
+		try {
+			con = dbUtil.getCon();
+			
+			ResultSet rs = wartestDao.findAllWartestsByUserID(con, currentUser.getUserID());
+			while (rs.next()) {
+				Vector v = new Vector();
+				v.add(rs.getInt("warID"));
+				v.add(rs.getString("troop1"));
+				v.add(rs.getString("troop2"));
+				v.add(rs.getString("location"));
+				v.add(rs.getString("victor"));
+				v.add(rs.getInt("arms_left"));
+				dtm.addRow(v);
+			}
+			
+		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
 			try {

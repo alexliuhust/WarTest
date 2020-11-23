@@ -23,6 +23,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 public class WartestManageInterFrm extends JInternalFrame {
+	private JTable wartestTable;
 	private JTextField currentUserIDTxt;
 	private JTextField warIDTxt;
 	private JComboBox<String> locationJcb;
@@ -32,7 +33,6 @@ public class WartestManageInterFrm extends JInternalFrame {
 	private JComboBox<Integer> armsLeftJcb;
 	
 	private User currentUser = null; // Used to track the current user
-	private JTable wartestTable;
 	
 	
 	/**
@@ -106,40 +106,36 @@ public class WartestManageInterFrm extends JInternalFrame {
 							.addGap(47)
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 								.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 536, GroupLayout.PREFERRED_SIZE)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-										.addGroup(groupLayout.createSequentialGroup()
-											.addComponent(lblNewLabel_2)
-											.addPreferredGap(ComponentPlacement.UNRELATED)
-											.addComponent(troop1Jcb, GroupLayout.PREFERRED_SIZE, 138, GroupLayout.PREFERRED_SIZE)
-											.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-											.addComponent(lblNewLabel_2_1))
-										.addGroup(groupLayout.createSequentialGroup()
-											.addComponent(lblNewLabel)
-											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(locationJcb, GroupLayout.PREFERRED_SIZE, 192, GroupLayout.PREFERRED_SIZE)
-											.addPreferredGap(ComponentPlacement.RELATED)))
-									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-										.addGroup(groupLayout.createSequentialGroup()
-											.addGap(12)
-											.addComponent(lblNewLabel_1)
-											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(currentUserIDTxt, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE)
-											.addGap(18)
-											.addComponent(lblNewLabel_4)
-											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(warIDTxt, 0, 0, Short.MAX_VALUE))
-										.addGroup(groupLayout.createSequentialGroup()
-											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(troop2Jcb, GroupLayout.PREFERRED_SIZE, 132, GroupLayout.PREFERRED_SIZE)
-											.addGap(18)
-											.addComponent(btnNewButton_1))))
-								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+									.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+										.addComponent(lblNewLabel)
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(locationJcb, GroupLayout.PREFERRED_SIZE, 192, GroupLayout.PREFERRED_SIZE)
+										.addGap(43)
+										.addComponent(lblNewLabel_1)
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(currentUserIDTxt, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE)
+										.addGap(18)
+										.addComponent(lblNewLabel_4)
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(warIDTxt, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
+										.addGap(58))
 									.addGroup(groupLayout.createSequentialGroup()
 										.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 216, GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addPreferredGap(ComponentPlacement.RELATED)
 										.addComponent(btnDelete, GroupLayout.PREFERRED_SIZE, 216, GroupLayout.PREFERRED_SIZE))
-									.addComponent(panel, GroupLayout.PREFERRED_SIZE, 528, GroupLayout.PREFERRED_SIZE))))
+									.addComponent(panel, GroupLayout.PREFERRED_SIZE, 528, GroupLayout.PREFERRED_SIZE)
+									.addGroup(groupLayout.createSequentialGroup()
+										.addComponent(lblNewLabel_2)
+										.addPreferredGap(ComponentPlacement.UNRELATED)
+										.addComponent(troop1Jcb, GroupLayout.PREFERRED_SIZE, 138, GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addComponent(lblNewLabel_2_1)
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(troop2Jcb, GroupLayout.PREFERRED_SIZE, 132, GroupLayout.PREFERRED_SIZE)
+										.addGap(18)
+										.addComponent(btnNewButton_1)
+										.addGap(47)))))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(241)
 							.addComponent(lblNewLabel_5)))
@@ -164,13 +160,13 @@ public class WartestManageInterFrm extends JInternalFrame {
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblNewLabel_2)
 						.addComponent(troop1Jcb, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblNewLabel_2_1, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnNewButton_1)
 						.addComponent(troop2Jcb, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnNewButton_1))
+						.addComponent(lblNewLabel_2_1, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE))
 					.addGap(28)
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 119, GroupLayout.PREFERRED_SIZE)
 					.addGap(38)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnNewButton)
 						.addComponent(btnDelete, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE))
 					.addGap(59))
@@ -223,7 +219,8 @@ public class WartestManageInterFrm extends JInternalFrame {
 		panel.setLayout(gl_panel);
 		getContentPane().setLayout(groupLayout);
 
+		WartestService.fillWartestTable(wartestTable, currentUser);
 		WartestService.fillLocationAndTroopJcbs(currentUser, locationJcb, troop1Jcb, troop2Jcb, victorJcb, armsLeftJcb);
-
+		
 	}
 }

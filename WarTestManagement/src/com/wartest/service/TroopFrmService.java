@@ -144,6 +144,7 @@ public class TroopFrmService {
 			JTable myTroopTable, 
 			User currentUser) {
 		
+		Integer currentUserId = currentUser.getUserID();
 		DefaultTableModel dtm = (DefaultTableModel) selectedArmsTable.getModel();
 		dtm.setRowCount(0); // Clear table
 		dtm = (DefaultTableModel) myTroopTable.getModel();
@@ -156,7 +157,7 @@ public class TroopFrmService {
 		Connection con = null;
 		try {
 			con = dbUtil.getCon();
-			Integer currentUserId = currentUser.getUserID();
+			
 			ResultSet rs = troopDao.findTroopsByUserName_withRaceAndLord(con, currentUserId);
 			while (rs.next()) {
 				Vector v = new Vector();

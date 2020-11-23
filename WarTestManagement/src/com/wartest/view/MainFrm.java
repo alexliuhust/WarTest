@@ -79,6 +79,12 @@ public class MainFrm extends JFrame {
 		mnNewMenu_3.add(mntmNewMenuItem_3);
 		
 		JMenuItem mntmNewMenuItem_7 = new JMenuItem("Manage War Test");
+		mntmNewMenuItem_7.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				openWartestManageInterFrmActionPerformed(e);
+			}
+		});
+		
 		mnNewMenu_3.add(mntmNewMenuItem_7);
 		mnNewMenu.add(mntmNewMenuItem);
 		
@@ -123,6 +129,16 @@ public class MainFrm extends JFrame {
 		contentPane.add(table, BorderLayout.CENTER);
 		this.setLocationRelativeTo(null);
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+	}
+
+	/**
+	 * Open the Wartest Manage internal frame and track the current user ID
+	 * @param event
+	 */
+	private void openWartestManageInterFrmActionPerformed(ActionEvent event) {
+		WartestManageInterFrm wartestManageInterFrm = new WartestManageInterFrm(this.currentUser);
+		wartestManageInterFrm.setVisible(true);
+		table.add(wartestManageInterFrm);
 	}
 
 	/**
