@@ -10,7 +10,7 @@ import java.sql.Connection;
  */
 public class DbUtil {
 	
-	private String dbUrl = "jdbc:mysql://localhost:3306/totalwar_test";	// Database connecting address
+	private String dbUrl = "jdbc:mysql://localhost:3306/totalwar_test?autoReconnect=true&useSSL=false";	// Database connecting address
 	private String dbUserName = "root";        						// UserName 
 	private String dbPassword = "lzh977372";   						// and Password of Database
 	private String jdbcName = "com.mysql.jdbc.Driver";				// Driver name
@@ -34,23 +34,4 @@ public class DbUtil {
 	public void closeCon(Connection con) throws Exception {
 		if (con != null) con.close();
 	}
-	
-	public static void main(String arg[]) {
-		DbUtil dbUtil = new DbUtil();
-		try {
-			dbUtil.getCon();
-			System.out.println("************Database totalwar_test connected!************");
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("********Database totalwar_test failed to connect.********");
-		}
-	}
-	
-	
-	
-	
-	
-	
-	
-	
 }
