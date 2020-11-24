@@ -49,11 +49,10 @@ public class WartestFrmService {
 		try {
 			con = dbUtil.getCon();
 			
-			int count1 = wartestDao.countNumberOfArmsByTroopID(con, troop1.getTroopID());
-			int count2 = wartestDao.countNumberOfArmsByTroopID(con, troop2.getTroopID());
-			int maxCount = Math.max(count1, count2);
+			Troop victor = (Troop) victorJcb.getSelectedItem();
+			int count = wartestDao.countNumberOfArmsByTroopID(con, victor.getTroopID());
 			armsLeftJcb.removeAllItems();
-			for (Integer i = maxCount; i >= 1; i--) {
+			for (Integer i = count; i >= 1; i--) {
 				armsLeftJcb.addItem(i);
 			}
 		} catch (Exception e) {
@@ -116,6 +115,8 @@ public class WartestFrmService {
 			JComboBox<Troop> victorJcb,
 			JComboBox<Integer> armsLeftJcb) {
 		
+		troop1Jcb.removeAllItems();
+		troop2Jcb.removeAllItems();
 		victorJcb.removeAllItems();
 		armsLeftJcb.removeAllItems();
 		locationJcb.removeAllItems();

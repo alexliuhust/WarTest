@@ -45,7 +45,7 @@ public class WartestService {
 		
 		try {
 			con = dbUtil.getCon();
-			WartestFrmService.fillLocationAndTroopJcbs(currentUser, locationJcb, victorJcb, victorJcb, victorJcb, armsLeftJcb);
+			WartestFrmService.fillLocationAndTroopJcbs(currentUser, locationJcb, troop1Jcb, troop2Jcb, victorJcb, armsLeftJcb);
 			
 			int row = wartestTable.getSelectedRow();
 			Integer WarID = (Integer) wartestTable.getValueAt(row, 0);
@@ -140,8 +140,7 @@ public class WartestService {
 			
 			int num = wartestDao.addAWartest(con, wartest);
 			if (num == 1) {
-				WartestFrmService.fillLocationAndTroopJcbs(currentUser, locationJcb, victorJcb, victorJcb, victorJcb, armsLeftJcb);
-				victorJcb.removeAllItems();
+				WartestFrmService.fillLocationAndTroopJcbs(currentUser, locationJcb, troop1Jcb, troop2Jcb, victorJcb, armsLeftJcb);
 				JOptionPane.showMessageDialog(null, "Successfully Added a Wartest!");
 			} else {
 				JOptionPane.showMessageDialog(null, "Failed to add a Wartest...");
@@ -186,12 +185,12 @@ public class WartestService {
 				
 				int num = wartestDao.deleteAWartest(con, Integer.parseInt(warID));
 				if (num == 1) {
-					troop1Jcb.removeAllItems();
-					troop2Jcb.removeAllItems();
+					warIDTxt.setText("");
 					WartestFrmService.fillWartestTable(wartestTable, currentUser);
 					WartestFrmService.fillLocationAndTroopJcbs(currentUser, locationJcb, troop1Jcb, troop2Jcb, victorJcb, armsLeftJcb);
 					JOptionPane.showMessageDialog(null, "Seuccessfully Deleted a Wartest!");
 				} else {
+					warIDTxt.setText("");
 					JOptionPane.showMessageDialog(null, "Failed to delete a Wartest...");
 				}
 
@@ -221,6 +220,11 @@ public class WartestService {
 			JComboBox<Troop> troop2Jcb,
 			JComboBox<Troop> victorJcb,
 			JComboBox<Integer> armsLeftJcb) {
+		
+		if (StringUtil.isEmpty(warIDTxt.getText())) {
+			JOptionPane.showMessageDialog(null, "Please select a record!");
+			return;
+		}
 		
 		Integer warID = Integer.parseInt(warIDTxt.getText());
 		String location = (String) locationJcb.getSelectedItem();
@@ -255,12 +259,12 @@ public class WartestService {
 			Wartest wartest = new Wartest(warID, troop1ID, troop2ID, location, victorID, amrsLeft);
 			int num = wartestDao.updateAWartest(con, wartest);
 			if (num == 1) {
-				troop1Jcb.removeAllItems();
-				troop2Jcb.removeAllItems();
+				warIDTxt.setText("");
 				WartestFrmService.fillWartestTable(wartestTable, currentUser);
 				WartestFrmService.fillLocationAndTroopJcbs(currentUser, locationJcb, troop1Jcb, troop2Jcb, victorJcb, armsLeftJcb);
 				JOptionPane.showMessageDialog(null, "Seuccessfully Updated a Wartest!");
 			} else {
+				warIDTxt.setText("");
 				JOptionPane.showMessageDialog(null, "Failed to update a Wartest...");
 			}
 			

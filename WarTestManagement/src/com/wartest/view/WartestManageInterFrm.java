@@ -242,7 +242,5 @@ public class WartestManageInterFrm extends JInternalFrame {
 		getContentPane().setLayout(groupLayout);
 
 		WartestFrmService.fillWartestTable(wartestTable, currentUser);
-		WartestFrmService.fillLocationAndTroopJcbs(currentUser, locationJcb, troop1Jcb, troop2Jcb, victorJcb, armsLeftJcb);
-		
 	}
 }
