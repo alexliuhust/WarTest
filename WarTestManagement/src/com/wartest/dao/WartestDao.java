@@ -101,24 +101,32 @@ public class WartestDao {
 		pstmt.setInt(1, warID);
 		return pstmt.executeUpdate();
 	}
+	
+	/**
+	 * Update a Wartest
+	 * @param con
+	 * @param troopName
+	 * @return
+	 * @throws Exception
+	 */
+	public int updateAWartest(Connection con, Wartest wartest) throws Exception {
+		Integer warID = wartest.getWarID();
+		Integer troop1ID = wartest.getTroop1();
+		Integer troop2ID = wartest.getTroop2();
+		Integer victorID = wartest.getVictor();
+		String location = wartest.getLocation();
+		Integer amrsLeft = wartest.getArms_left();
+		
+		String sql = "update wartest set troopID1 = ?, troopID2 = ?, "
+				+ "location = ?, victor = ?, arms_left = ? where warID = ?";
+		PreparedStatement pstmt = con.prepareStatement(sql);
+		pstmt.setInt(1, troop1ID);
+		pstmt.setInt(2, troop2ID);
+		pstmt.setString(3, location);
+		pstmt.setInt(4, victorID);
+		pstmt.setInt(5, amrsLeft);
+		pstmt.setInt(6, warID);
+		return pstmt.executeUpdate();
+	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

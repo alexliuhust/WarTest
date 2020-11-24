@@ -208,26 +208,72 @@ public class WartestService {
 		}
 	}
 	
+	/**
+	 * Update a Wartest
+	 * @param event
+	 */
+	public static void wartestUpdateActionPerformed(ActionEvent event,
+			User currentUser,
+			JTextField warIDTxt,
+			JTable wartestTable,
+			JComboBox<String> locationJcb,
+			JComboBox<Troop> troop1Jcb,
+			JComboBox<Troop> troop2Jcb,
+			JComboBox<Troop> victorJcb,
+			JComboBox<Integer> armsLeftJcb) {
+		
+		Integer warID = Integer.parseInt(warIDTxt.getText());
+		String location = (String) locationJcb.getSelectedItem();
+		Integer amrsLeft = (Integer) armsLeftJcb.getSelectedItem();
+		
+		Troop troop1 = (Troop) troop1Jcb.getSelectedItem();
+		String troop1Name = troop1.getName();
+		Troop troop2 = (Troop) troop2Jcb.getSelectedItem();
+		String troop2Name = troop2.getName();
+		Troop victor = (Troop) victorJcb.getSelectedItem();
+		String victorName = victor.getName();
+		
+		Connection con = null;
+		try {
+			con = dbUtil.getCon();
+			ResultSet rs = null;
+			
+			// Get the troopID of troop1, troop2, victor
+			rs = troopDao.findTroopByTroopName(con, troop1Name);
+			Integer troop1ID = null;
+			if (rs.next()) troop1ID = rs.getInt("troopID");
+			
+			rs = troopDao.findTroopByTroopName(con, troop2Name);
+			Integer troop2ID = null;
+			if (rs.next()) troop2ID = rs.getInt("troopID");
+			
+			rs = troopDao.findTroopByTroopName(con, victorName);
+			Integer victorID = null;
+			if (rs.next()) victorID = rs.getInt("troopID");
+			
+			// Update Wartest
+			Wartest wartest = new Wartest(warID, troop1ID, troop2ID, location, victorID, amrsLeft);
+			int num = wartestDao.updateAWartest(con, wartest);
+			if (num == 1) {
+				troop1Jcb.removeAllItems();
+				troop2Jcb.removeAllItems();
+				WartestFrmService.fillWartestTable(wartestTable, currentUser);
+				WartestFrmService.fillLocationAndTroopJcbs(currentUser, locationJcb, troop1Jcb, troop2Jcb, victorJcb, armsLeftJcb);
+				JOptionPane.showMessageDialog(null, "Seuccessfully Updated a Wartest!");
+			} else {
+				JOptionPane.showMessageDialog(null, "Failed to update a Wartest...");
+			}
+			
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Failed to update a Wartest...");
+			e.printStackTrace();
+		} finally {
+			try {
+				dbUtil.closeCon(con);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
