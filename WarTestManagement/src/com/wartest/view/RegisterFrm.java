@@ -1,6 +1,5 @@
 package com.wartest.view;
 
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,7 +7,6 @@ import java.sql.Connection;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -32,22 +30,7 @@ public class RegisterFrm extends JFrame {
 	
 	private DbUtil dbUtil = new DbUtil();
 	private UserDao userDao = new UserDao();
-
-	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					LogInFrm frame = new LogInFrm();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
+	
 
 	/**
 	 * Create the frame.
@@ -174,7 +157,7 @@ public class RegisterFrm extends JFrame {
 			if (num == 1) {
 				JOptionPane.showMessageDialog(null, "Successfully Registered");
 				dispose();
-				new LogInFrm().setVisible(true);
+				new LogInFrm(userName, password).setVisible(true);
 			} else if (num == -1) {
 				JOptionPane.showMessageDialog(null, "This username has already existed!\nPlease try another one!");
 				this.usernameTxt.setText("");
@@ -198,7 +181,7 @@ public class RegisterFrm extends JFrame {
 	 */
 	private void goBackToLogIn(ActionEvent e) {
 		dispose();
-		new LogInFrm().setVisible(true);
+		new LogInFrm("", "").setVisible(true);
 	}
 
 

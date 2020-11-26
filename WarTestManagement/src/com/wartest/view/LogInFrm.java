@@ -1,6 +1,5 @@
 package com.wartest.view;
 
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,7 +7,6 @@ import java.sql.Connection;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -33,26 +31,11 @@ public class LogInFrm extends JFrame {
 	private DbUtil dbUtil = new DbUtil();
 	private UserDao userDao = new UserDao();
 
-	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					LogInFrm frame = new LogInFrm();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
 
 	/**
 	 * Create the frame.
 	 */
-	public LogInFrm() {
+	public LogInFrm(String inputUsername, String inputPassword) {
 		setResizable(false);
 		setTitle("User Login");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -72,8 +55,10 @@ public class LogInFrm extends JFrame {
 		
 		usernameTxt = new JTextField();
 		usernameTxt.setColumns(10);
+		usernameTxt.setText(inputUsername);
 		
 		passwordTXT = new JPasswordField();
+		passwordTXT.setText(inputPassword);
 		
 		JButton btnNewButton = new JButton("Log In");
 		btnNewButton.addActionListener(new ActionListener() {

@@ -182,7 +182,7 @@ public class MainFrm extends JFrame {
 		if (result == 0) {
 			this.currentUser = null;
 			dispose();
-			new LogInFrm().setVisible(true);;
+			new LogInFrm("", "").setVisible(true);;
 		}
 	}
 }

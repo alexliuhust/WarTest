@@ -4,17 +4,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.util.Vector;
 
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
 
 import com.wartest.dao.TroopDao;
 import com.wartest.dao.WartestDao;
-import com.wartest.model.Location;
 import com.wartest.model.Troop;
 import com.wartest.model.User;
 import com.wartest.model.Wartest;
