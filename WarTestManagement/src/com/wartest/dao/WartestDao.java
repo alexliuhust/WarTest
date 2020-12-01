@@ -60,8 +60,8 @@ public class WartestDao {
 		String sql = "select w.warID, t1.name as troop1, t2.name as troop2, w.location, t3.name as victor, w.arms_left "
 				+ "from wartest as w "
 				+ "inner join troop as t1 on w.troopID1 = t1.troopID "
-				+ "inner join troop as t2 on w.troopID2 = t2.troopID "
-				+ "inner join troop as t3 on w.victor = t3.troopID "
+				+ "inner join troop as t2 on w.troopID2_v = t2.troopID "
+				+ "inner join troop as t3 on w.troopID2_v = t3.troopID "
 				+ "where w.userID = ?";
 		PreparedStatement pstmt = con.prepareStatement(sql);
 		pstmt.setInt(1, currentUserID);
@@ -76,15 +76,19 @@ public class WartestDao {
 	 * @throws Exception
 	 */
 	public int addAWartest(Connection con, Wartest wartest) throws Exception {
-		String sql = "insert into wartest (userID, troopID1, troopID2, location, victor, arms_left) "
-				+ "values(?, ?, ?, ?, ?, ?)";
+		Integer victor = wartest.getVictor();
+		Integer looser = 0;
+		if (victor.equals(wartest.getTroop1())) looser = wartest.getTroop2();
+		else looser = wartest.getTroop1();
+		
+		String sql = "insert into wartest (userID, troopID1, troopID2_v, location, arms_left) "
+				+ "values(?, ?, ?, ?, ?)";
 		PreparedStatement pstmt = con.prepareStatement(sql);
 		pstmt.setInt(1, wartest.getUserID());
-		pstmt.setInt(2, wartest.getTroop1());
-		pstmt.setInt(3, wartest.getTroop2());
+		pstmt.setInt(2, looser);
+		pstmt.setInt(3, victor);
 		pstmt.setString(4, wartest.getLocation());
-		pstmt.setInt(5, wartest.getVictor());
-		pstmt.setInt(6, wartest.getArms_left());
+		pstmt.setInt(5, wartest.getArms_left());
 		return pstmt.executeUpdate();
 	}
 	
@@ -111,21 +115,21 @@ public class WartestDao {
 	 */
 	public int updateAWartest(Connection con, Wartest wartest) throws Exception {
 		Integer warID = wartest.getWarID();
-		Integer troop1ID = wartest.getTroop1();
-		Integer troop2ID = wartest.getTroop2();
-		Integer victorID = wartest.getVictor();
 		String location = wartest.getLocation();
 		Integer amrsLeft = wartest.getArms_left();
+		Integer victor = wartest.getVictor();
+		Integer looser = 0;
+		if (victor.equals(wartest.getTroop1())) looser = wartest.getTroop2();
+		else looser = wartest.getTroop1();
 		
-		String sql = "update wartest set troopID1 = ?, troopID2 = ?, "
-				+ "location = ?, victor = ?, arms_left = ? where warID = ?";
+		String sql = "update wartest set troopID1 = ?, troopID2_v = ?, "
+				+ "location = ?, arms_left = ? where warID = ?";
 		PreparedStatement pstmt = con.prepareStatement(sql);
-		pstmt.setInt(1, troop1ID);
-		pstmt.setInt(2, troop2ID);
+		pstmt.setInt(1, looser);
+		pstmt.setInt(2, victor);
 		pstmt.setString(3, location);
-		pstmt.setInt(4, victorID);
-		pstmt.setInt(5, amrsLeft);
-		pstmt.setInt(6, warID);
+		pstmt.setInt(4, amrsLeft);
+		pstmt.setInt(5, warID);
 		return pstmt.executeUpdate();
 	}
 

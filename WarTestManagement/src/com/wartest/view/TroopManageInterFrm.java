@@ -128,7 +128,7 @@ public class TroopManageInterFrm extends JInternalFrame {
 		lblNewLabel_4.setFont(new Font("Segoe UI Semibold", Font.BOLD, 13));
 		
 		
-		JButton btnNewButton_2 = new JButton("Update");
+		JButton btnNewButton_2 = new JButton("Submit");
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				TroopService.updateTroopActionPerformed(e, troopIDTxt, currentUserIDTxt, 

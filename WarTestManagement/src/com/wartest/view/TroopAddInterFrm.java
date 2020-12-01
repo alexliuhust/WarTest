@@ -104,7 +104,7 @@ public class TroopAddInterFrm extends JInternalFrame {
 		JLabel lblNewLabel_2 = new JLabel("Selected Arms");
 		lblNewLabel_2.setFont(new Font("Segoe UI Semibold", Font.BOLD, 12));
 		
-		JButton btnNewButton_2 = new JButton("Add");
+		JButton btnNewButton_2 = new JButton("Submit");
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				TroopService.addTroopActionPerformed(e, currentUserIDTxt, troopNameTxt, 

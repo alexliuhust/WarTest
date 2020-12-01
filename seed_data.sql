@@ -67,7 +67,7 @@ CREATE TABLE `composition` (
   KEY `hasArms_idx` (`armID`),
   CONSTRAINT `hasArms` FOREIGN KEY (`armID`) REFERENCES `arm` (`armID`),
   CONSTRAINT `ofTroop` FOREIGN KEY (`troopID`) REFERENCES `troop` (`troopID`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=87 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -76,7 +76,7 @@ CREATE TABLE `composition` (
 
 LOCK TABLES `composition` WRITE;
 /*!40000 ALTER TABLE `composition` DISABLE KEYS */;
-INSERT INTO `composition` VALUES (1,1,1),(2,1,2),(3,1,3),(4,1,3),(5,2,5),(6,2,2),(7,2,7),(8,2,7),(9,2,7);
+INSERT INTO `composition` VALUES (5,2,5),(6,2,2),(7,2,7),(8,2,7),(9,2,7),(41,7,18),(42,7,18),(43,7,18),(44,7,19),(45,7,19),(56,11,13),(57,11,13),(58,11,13),(59,11,13),(66,12,30),(67,12,30),(68,12,30),(69,12,30),(70,12,34),(71,12,34),(72,12,34),(73,13,11),(74,13,11),(75,13,11),(76,13,15),(77,13,15),(78,8,31),(79,8,31),(80,8,32),(81,8,32),(82,8,32),(83,8,32);
 /*!40000 ALTER TABLE `composition` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -154,7 +154,7 @@ CREATE TABLE `troop` (
   KEY `userID_idx` (`userID`),
   CONSTRAINT `leadedBy` FOREIGN KEY (`lordID`) REFERENCES `lord` (`lordID`),
   CONSTRAINT `userID` FOREIGN KEY (`userID`) REFERENCES `user` (`userID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -163,7 +163,7 @@ CREATE TABLE `troop` (
 
 LOCK TABLES `troop` WRITE;
 /*!40000 ALTER TABLE `troop` DISABLE KEYS */;
-INSERT INTO `troop` VALUES (1,'harry\'s first',1,3,'This is Harry\'s first troop'),(2,'harry\'s second',1,1,'This is Harry\'s second troop');
+INSERT INTO `troop` VALUES (2,'harrys second',1,1,'This is Harrys second troop'),(7,'Lizard Melees',4,8,'They are all melees'),(8,'Skaven Missles',4,10,'Missles Big Army!'),(11,'High Riders',4,6,'Take Dragons\' Fury!'),(12,'My strong army',2,10,'This is my Strongest army!'),(13,'Fury Archers',2,4,'They are all archers');
 /*!40000 ALTER TABLE `troop` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -179,7 +179,7 @@ CREATE TABLE `user` (
   `username` varchar(20) NOT NULL,
   `password` varchar(15) NOT NULL,
   PRIMARY KEY (`userID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -188,7 +188,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'harry@gmail.com','123456'),(2,'ronald@gmail.com','654321'),(4,'admin','213');
+INSERT INTO `user` VALUES (1,'harry','123456'),(2,'ronald','654321'),(4,'admin','123');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -203,20 +203,17 @@ CREATE TABLE `wartest` (
   `warID` int NOT NULL AUTO_INCREMENT,
   `userID` int NOT NULL,
   `troopID1` int NOT NULL,
-  `troopID2` int NOT NULL,
+  `troopID2_v` int NOT NULL,
   `location` varchar(30) NOT NULL,
-  `victor` int NOT NULL,
   `arms_left` int NOT NULL,
   PRIMARY KEY (`warID`),
   KEY `troop1_idx` (`troopID1`),
-  KEY `troop2_idx` (`troopID2`),
+  KEY `troop2_idx` (`troopID2_v`),
   KEY `owner_idx` (`userID`),
-  KEY `winner_idx` (`victor`),
+  CONSTRAINT `looser` FOREIGN KEY (`troopID1`) REFERENCES `troop` (`troopID`),
   CONSTRAINT `owner` FOREIGN KEY (`userID`) REFERENCES `user` (`userID`),
-  CONSTRAINT `troop1` FOREIGN KEY (`troopID1`) REFERENCES `troop` (`troopID`),
-  CONSTRAINT `troop2` FOREIGN KEY (`troopID2`) REFERENCES `troop` (`troopID`),
-  CONSTRAINT `winner` FOREIGN KEY (`victor`) REFERENCES `troop` (`troopID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `victor` FOREIGN KEY (`troopID2_v`) REFERENCES `troop` (`troopID`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -225,7 +222,7 @@ CREATE TABLE `wartest` (
 
 LOCK TABLES `wartest` WRITE;
 /*!40000 ALTER TABLE `wartest` DISABLE KEYS */;
-INSERT INTO `wartest` VALUES (1,1,2,1,'underground',2,1),(2,1,1,2,'cliven river',2,2);
+INSERT INTO `wartest` VALUES (5,4,11,7,'Taemoral Lake',4),(6,4,7,8,'Flicken Mount',2),(10,4,11,8,'Gurvart Mount',3),(12,4,11,7,'Athalorine Woods',5);
 /*!40000 ALTER TABLE `wartest` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -246,4 +243,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-18 21:21:30
+-- Dump completed on 2020-12-01 16:31:53
