@@ -29,7 +29,7 @@ public class TroopDao {
 	 * @return
 	 * @throws Exception
 	 */
-	public ResultSet findTroopsByUserName_withRaceAndLord(Connection con, Integer currentUserId) throws Exception { 
+	public ResultSet findTroopsByUserID_withRaceAndLord(Connection con, Integer currentUserId) throws Exception { 
 		String sql = "select t.troopID, t.name, t.memo, l.name as lord, l.race from "
 				+ "troop as t join lord as l on (t.lordID = l.lordID) "
 				+ "where t.userID = ?";

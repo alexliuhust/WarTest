@@ -18,6 +18,9 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.table.DefaultTableModel;
 
+import com.wartest.model.Arm;
+import com.wartest.model.Lord;
+import com.wartest.model.Race;
 import com.wartest.model.User;
 import com.wartest.service.TroopFrmService;
 import com.wartest.service.TroopService;
@@ -30,9 +33,9 @@ public class TroopManageInterFrm extends JInternalFrame {
 	private JTextField troopIDTxt;
 	private JTable myTroopTable;
 	
-	private JComboBox raceJcb;
-	private JComboBox lordJcb;
-	private JComboBox armJcb;
+	private JComboBox<Race> raceJcb;
+	private JComboBox<Lord> lordJcb;
+	private JComboBox<Arm> armJcb;
 	
 	private User currentUser = null; // Used to track the current user
 	
@@ -68,7 +71,7 @@ public class TroopManageInterFrm extends JInternalFrame {
 		JLabel lblNewLabel_1 = new JLabel("Select a Race");
 		lblNewLabel_1.setFont(new Font("Segoe UI Semibold", Font.BOLD, 14));
 		
-		raceJcb = new JComboBox();
+		raceJcb = new JComboBox<>();
 		
 		JButton btnNewButton = new JButton("Apply Filter");
 		btnNewButton.addActionListener(new ActionListener() {
@@ -81,13 +84,13 @@ public class TroopManageInterFrm extends JInternalFrame {
 		JLabel lblNewLabel_1_1 = new JLabel("Select a Lord");
 		lblNewLabel_1_1.setFont(new Font("Segoe UI Semibold", Font.BOLD, 14));
 		
-		lordJcb = new JComboBox();
+		lordJcb = new JComboBox<>();
 		lordJcb.setMaximumRowCount(15);
 		
 		JLabel lblNewLabel_1_1_1 = new JLabel("Select Arm(s)");
 		lblNewLabel_1_1_1.setFont(new Font("Segoe UI Semibold", Font.BOLD, 14));
 		
-		armJcb = new JComboBox();
+		armJcb = new JComboBox<>();
 		armJcb.setMaximumRowCount(40);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -279,7 +282,7 @@ public class TroopManageInterFrm extends JInternalFrame {
 		myTroopTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				TroopService.mousePressedOnMyTroopTable(e, troopIDTxt, troopNameTxt, troopMemoTxt, 
+				TroopFrmService.mousePressedOnMyTroopTable(e, troopIDTxt, troopNameTxt, troopMemoTxt, 
 						selectedArmsTable, myTroopTable, raceJcb, lordJcb, armJcb);
 			}
 		});
@@ -314,7 +317,7 @@ public class TroopManageInterFrm extends JInternalFrame {
 		getContentPane().setLayout(groupLayout);
 		
 		
-		TroopFrmService.fillMyTroopTable(troopNameTxt, troopMemoTxt, troopIDTxt, selectedArmsTable, myTroopTable, currentUser);
+		TroopService.fillMyTroopTable(troopNameTxt, troopMemoTxt, troopIDTxt, selectedArmsTable, myTroopTable, currentUser);
 	}
 	
 }

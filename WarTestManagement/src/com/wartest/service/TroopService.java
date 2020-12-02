@@ -1,7 +1,6 @@
 package com.wartest.service;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -18,9 +17,7 @@ import com.wartest.dao.ArmDao;
 import com.wartest.dao.LordDao;
 import com.wartest.dao.RaceDao;
 import com.wartest.dao.TroopDao;
-import com.wartest.model.Arm;
 import com.wartest.model.Lord;
-import com.wartest.model.Race;
 import com.wartest.model.Troop;
 import com.wartest.model.User;
 import com.wartest.util.DbUtil;
@@ -34,93 +31,43 @@ public class TroopService {
 	public static ArmDao armDao = new ArmDao();       
 	public static TroopDao troopDao = new TroopDao();
 	
+	
 	/**
-	 * Show edit information when mouse pressed on MyTroopTable
-	 * @param event
+	 * Find Troops with Races and Lords by current User ID; initialize MyTroopTable
 	 */
-	public static void mousePressedOnMyTroopTable(MouseEvent event, 
-			JTextField troopIDTxt,
+	public static void fillMyTroopTable(
 			JTextField troopNameTxt,
 			JTextField troopMemoTxt,
-			JTable selectedArmsTable, 
-			JTable myTroopTable,
-			JComboBox<Race> raceJcb,
-			JComboBox<Lord> lordJcb, 
-			JComboBox<Arm> armJcb) {
+			JTextField troopIDTxt,
+			JTable selectedArmsTable,
+			JTable myTroopTable, 
+			User currentUser) {
+		
+		Integer currentUserId = currentUser.getUserID();
+		DefaultTableModel dtm = (DefaultTableModel) selectedArmsTable.getModel();
+		dtm.setRowCount(0); // Clear table
+		dtm = (DefaultTableModel) myTroopTable.getModel();
+		dtm.setRowCount(0); // Clear table
+		
+		troopIDTxt.setText("");
+		troopNameTxt.setText("");
+		troopMemoTxt.setText("");
 		
 		Connection con = null;
 		try {
 			con = dbUtil.getCon();
 			
-			int row = myTroopTable.getSelectedRow();
-			Integer troopID = (Integer) myTroopTable.getValueAt(row, 0);
-			troopIDTxt.setText(troopID.toString());
-			troopNameTxt.setText((String) myTroopTable.getValueAt(row, 1));
-			troopMemoTxt.setText((String) myTroopTable.getValueAt(row, 2));
-			
-			// Set the race Jcb to the specific item
-			Race race = null;
-			ResultSet rs = raceDao.findAllRaces(con);
-			while (rs.next()) {
-				race = new Race();
-				race.setRace(rs.getString("race"));
-				raceJcb.addItem(race);
-			}
-			String raceName = (String) myTroopTable.getValueAt(row, 4);
-			for (int i = 0; i < raceJcb.getItemCount(); i++) {
-				Race currentRace = (Race) raceJcb.getItemAt(i);
-				if (currentRace.getRace().equals(raceName)) {
-					raceJcb.setSelectedIndex(i);
-				}
-			}
-			
-			// Set the Lord Jcb to the specific item
-			Lord lord = null;
-			rs = lordDao.findLordByRace(con, raceName);
-			lordJcb.removeAllItems();
-			while (rs.next()) {
-				lord = new Lord();
-				lord.setLordID(rs.getInt("lordID"));
-				lord.setName(rs.getString("name"));
-				lord.setRace(raceName);
-				lordJcb.addItem(lord);
-			}
-			String lordName = (String) myTroopTable.getValueAt(row, 3);
-			for (int i = 0; i < lordJcb.getItemCount(); i++) {
-				Lord currentLord = (Lord) lordJcb.getItemAt(i);
-				if (currentLord.getName().equals(lordName)) {
-					lordJcb.setSelectedIndex(i);
-				}
-			}
-			
-			// Filter the Arm Jcb to the specific range
-			Arm arm = null;
-			rs = armDao.findArmByRace(con, raceName);
-			armJcb.removeAllItems();
-			while (rs.next()) {
-				arm = new Arm();
-				arm.setArmID(rs.getInt("armID"));
-				arm.setName(rs.getString("name"));
-				arm.setRace(raceName);
-				arm.setType(rs.getString("type"));
-				armJcb.addItem(arm);
-			}
-			
-			// Show the arms on the selected Arms Table
-			String tID = troopIDTxt.getText();
-			rs = armDao.findArmsByTroopID(con, Integer.parseInt(tID));
-			DefaultTableModel dtm = (DefaultTableModel) selectedArmsTable.getModel();
-			dtm.setRowCount(0); // Clear table
+			ResultSet rs = troopDao.findTroopsByUserID_withRaceAndLord(con, currentUserId);
 			while (rs.next()) {
 				Vector<Object> v = new Vector<>();
-				v.add(rs.getInt("armID"));
+				v.add(rs.getInt("troopID"));
 				v.add(rs.getString("name"));
+				v.add(rs.getString("memo"));
+				v.add(rs.getString("lord"));
 				v.add(rs.getString("race"));
-				v.add(rs.getString("type"));
 				dtm.addRow(v);
 			}
-			
-		} catch (Exception e) {
+		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
 			try {
@@ -130,8 +77,6 @@ public class TroopService {
 			}
 		}
 	}
-	
-	// -----------------------------------------------------------------------------------------------------
 	
 	/**
 	 * Add a Troop to the database
@@ -254,7 +199,7 @@ public class TroopService {
 				int[] ans = troopDao.updateOneTroop(con, troop);
 				if (ans[0] == 1 && ans[1] >= 1) {
 					JOptionPane.showMessageDialog(null, "Successfully Updated a Troop!");
-					TroopFrmService.fillMyTroopTable(troopNameTxt, troopMemoTxt, troopIDTxt, 
+					fillMyTroopTable(troopNameTxt, troopMemoTxt, troopIDTxt, 
 							selectedArmsTable, myTroopTable, currentUser);
 				} else {
 					JOptionPane.showMessageDialog(null, "Failed to update a troop");
@@ -298,7 +243,7 @@ public class TroopService {
 				int[] ans = troopDao.deleteTroop(con, Integer.parseInt(troopID));
 				if (ans[0] >= 0 && ans[1] >= 0 && ans[2] == 1) {
 					JOptionPane.showMessageDialog(null, "Seuccessfully Deleted a Troop!");
-					TroopFrmService.fillMyTroopTable(troopNameTxt, troopMemoTxt, troopIDTxt, 
+					fillMyTroopTable(troopNameTxt, troopMemoTxt, troopIDTxt, 
 							selectedArmsTable, myTroopTable, currentUser);
 				} else {
 					JOptionPane.showMessageDialog(null, "Failed to delete a Troop...");
