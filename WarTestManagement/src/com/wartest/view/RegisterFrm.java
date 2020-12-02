@@ -3,34 +3,25 @@ package com.wartest.view;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 
-import com.wartest.dao.UserDao;
-import com.wartest.model.User;
-import com.wartest.util.DbUtil;
-import com.wartest.util.StringUtil;
+import com.wartest.service.UserService;
 
 public class RegisterFrm extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField usernameTxt;
 	private JPasswordField passwordTXT;
-	
-	private DbUtil dbUtil = new DbUtil();
-	private UserDao userDao = new UserDao();
-	
 
 	/**
 	 * Create the frame.
@@ -61,7 +52,7 @@ public class RegisterFrm extends JFrame {
 		JButton btnNewButton = new JButton("Sign Up");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				registerActionPerformed(e);
+				doRegister(e);
 			}
 		});
 		btnNewButton.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 14));
@@ -77,7 +68,8 @@ public class RegisterFrm extends JFrame {
 		JButton btnBack = new JButton("Back");
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				goBackToLogIn(e);
+				dispose();
+				new LogInFrm("", "").setVisible(true);
 			}
 		});
 		btnBack.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 14));
@@ -131,60 +123,14 @@ public class RegisterFrm extends JFrame {
 		this.setLocationRelativeTo(null);
 	}
 	
-	
-	
-	
 	/**
-	 * Action Event: Register 
-	 * @param e
-	 */
-	private void registerActionPerformed(ActionEvent event) {
-		String userName = this.usernameTxt.getText();
-		String password = (new String(this.passwordTXT.getPassword()));
-		if (StringUtil.isEmpty(userName)) {
-			JOptionPane.showMessageDialog(null, "Username cannot be EMPTY!");
-			return;
-		}
-		if (StringUtil.isEmpty(password)) {
-			JOptionPane.showMessageDialog(null, "Password cannot be EMPTY!");
-			return;
-		}
-		User user = new User(userName, password);
-		Connection con = null;
-		try {
-			con = dbUtil.getCon();
-			int num = userDao.register(con, user);
-			if (num == 1) {
-				JOptionPane.showMessageDialog(null, "Successfully Registered");
-				dispose();
-				new LogInFrm(userName, password).setVisible(true);
-			} else if (num == -1) {
-				JOptionPane.showMessageDialog(null, "This username has already existed!\nPlease try another one!");
-				this.usernameTxt.setText("");
-			} else {
-				JOptionPane.showMessageDialog(null, "Fail to sign you in...");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				dbUtil.closeCon(con);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	/**
-	 * Action Event: Go back to Login
+	 * Register
 	 * @param event
 	 */
-	private void goBackToLogIn(ActionEvent e) {
-		dispose();
-		new LogInFrm("", "").setVisible(true);
+	private void doRegister(ActionEvent event) {
+		UserService.registerActionPerformed(event, usernameTxt, passwordTXT, this);
 	}
-
-
+	
 	/**
 	 * Action Event: Reset Values
 	 * @param event
