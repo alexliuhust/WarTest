@@ -15,7 +15,7 @@ import com.wartest.util.StringUtil;
 public class LordDao {
 	
 	/**
-	 * Find Lords by Name or Race
+	 * Search Lords by Name or Race
 	 * @param con
 	 * @param lord
 	 * @return
@@ -47,6 +47,13 @@ public class LordDao {
 		return pstmt.executeQuery();
 	}
 	
+	/**
+	 * Find Lord by Race
+	 * @param con
+	 * @param race
+	 * @return
+	 * @throws Exception
+	 */
 	public ResultSet findLordByRace(Connection con, String race) throws Exception{
 		String sql = "select * from lord where race = ?";
 		PreparedStatement pstmt = con.prepareStatement(sql);

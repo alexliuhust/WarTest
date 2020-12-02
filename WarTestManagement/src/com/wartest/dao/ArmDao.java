@@ -33,7 +33,7 @@ public class ArmDao {
 	}
 	
 	/**
-	 * Find arms by Name, Race or Type
+	 * Search arms by Name, Race or Type
 	 * @param con
 	 * @param arm
 	 * @return

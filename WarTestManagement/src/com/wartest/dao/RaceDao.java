@@ -16,7 +16,7 @@ import com.wartest.util.StringUtil;
 public class RaceDao {
 
 	/**
-	 * Find Races by Race Name
+	 * Search Races by Race Name
 	 * @param con
 	 * @param race
 	 * @return

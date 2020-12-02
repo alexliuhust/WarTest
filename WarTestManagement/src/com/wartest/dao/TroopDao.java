@@ -9,7 +9,7 @@ import com.wartest.model.Troop;
 public class TroopDao {
 	
 	/**
-	 * Find Troops with name by current User ID
+	 * Find Troops with names by current User ID
 	 * @param con
 	 * @param currentUserId
 	 * @return
@@ -23,7 +23,7 @@ public class TroopDao {
 	}
 	
 	/**
-	 * Find Troops with Race and Lord by current User ID
+	 * Find Troops with Races and Lords by current User ID
 	 * @param con
 	 * @param currentUserId
 	 * @return
@@ -128,15 +128,13 @@ public class TroopDao {
 		pstmt.setInt(2, troopID);
 		ans[0] = pstmt.executeUpdate();
 		
-		if (ans[0] == -1) return ans;
-		
 		// Delete the compositions that belong to the target troopID
 		sql = "delete from composition where troopID = ?";
 		pstmt = con.prepareStatement(sql);
 		pstmt.setInt(1, troopID);
 		ans[1] = pstmt.executeUpdate();
 		
-		if (ans[1] == -1) return ans;
+		if (ans[1] == 0) return ans;
 		
 		// Delete a troop
 		sql = "delete from troop where troopID = ?";
@@ -159,6 +157,7 @@ public class TroopDao {
 		int ans[] = new int[2];
 		ans[0] = ans[1] = 0;
 		
+		// Insert the new troop into the troop table (without the arms information)
 		String sql = "insert into troop (name, userID, lordID, memo) "
 				+ "values(?, ?, ?, ?)";
 		PreparedStatement pstmt = con.prepareStatement(sql);
@@ -170,6 +169,7 @@ public class TroopDao {
 		
 		if (ans[0] != 1) return ans;
 		
+		// Get the troop ID of the new inserted troop
 		String findTroopID = "select troopID from troop where name = ?";
 		pstmt = con.prepareStatement(findTroopID);
 		pstmt.setString(1, troop.getName());
@@ -178,6 +178,7 @@ public class TroopDao {
 		if (rs.next()) 
 			troopID = rs.getInt("troopID");
 		
+		// Store the arms information of the new inserted troop into the composition table
 		String addComp = "insert into composition (troopID, armID) values (?, ?)";
 		if (troopID > 0) {
 			for (Integer armID : troop.getArms()) {

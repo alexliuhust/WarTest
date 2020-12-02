@@ -25,10 +25,7 @@ public class UserDao {
 		PreparedStatement checkpstmt = con.prepareStatement(checksql);
 		checkpstmt.setString(1, user.getUsername());
 		ResultSet rs = checkpstmt.executeQuery();
-		if (rs.next()) {
-			//System.out.println("This username has already existed!");
-			return -1;
-		}
+		if (rs.next()) return -1;
 		
 		// Add the valid new user into the database
 		String sql = "insert into user (username, password) values (?, ?)";
@@ -36,10 +33,8 @@ public class UserDao {
 		pstmt.setString(1, user.getUsername());
 		pstmt.setString(2, user.getPassword());
 		int num = pstmt.executeUpdate();
-		if (num == 1) {
-			//System.out.println("Successfully Add a User!");
-			return num;
-		}
+		if (num == 1) return num;
+		
 		return -2;
 	}
 	
@@ -62,7 +57,7 @@ public class UserDao {
 		if (rs.next()) {
 			resultUser = new User();
 			resultUser.setUserID(rs.getInt("userID"));
-			resultUser.setUsername(rs.getString("userName"));
+			resultUser.setUsername(rs.getString("username"));
 			resultUser.setPassword(rs.getString("password"));
 		}
 		
