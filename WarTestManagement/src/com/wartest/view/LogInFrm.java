@@ -3,34 +3,25 @@ package com.wartest.view;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 
-import com.wartest.dao.UserDao;
-import com.wartest.model.User;
-import com.wartest.util.DbUtil;
-import com.wartest.util.StringUtil;
+import com.wartest.service.UserService;
 
 public class LogInFrm extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField usernameTxt;
 	private JPasswordField passwordTXT;
-	
-	private DbUtil dbUtil = new DbUtil();
-	private UserDao userDao = new UserDao();
-
 
 	/**
 	 * Create the frame.
@@ -63,7 +54,7 @@ public class LogInFrm extends JFrame {
 		JButton btnNewButton = new JButton("Log In");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				loginActionPerformed(e);
+				doLogin(e);
 			}
 		});
 		btnNewButton.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 14));
@@ -132,42 +123,13 @@ public class LogInFrm extends JFrame {
 		contentPane.setLayout(gl_contentPane);
 		this.setLocationRelativeTo(null);
 	}
+	
 	/**
-	 * Action Event: Log In
-	 * @param e
+	 * Login
+	 * @param event
 	 */
-	private void loginActionPerformed(ActionEvent event) {
-		String userName = this.usernameTxt.getText();
-		String password = (new String(this.passwordTXT.getPassword()));
-		if (StringUtil.isEmpty(userName)) {
-			JOptionPane.showMessageDialog(null, "Username cannot be EMPTY!");
-			return;
-		}
-		if (StringUtil.isEmpty(password)) {
-			JOptionPane.showMessageDialog(null, "Password cannot be EMPTY!");
-			return;
-		}
-		User user = new User(userName, password);
-		Connection con = null;
-		try {
-			con = dbUtil.getCon();
-			User currentUser = userDao.login(con, user);
-			if (currentUser != null) {
-				JOptionPane.showMessageDialog(null, currentUser.getUsername() + ", Logged You In!");
-				dispose();
-				new MainFrm(currentUser).setVisible(true);
-			}else {
-				JOptionPane.showMessageDialog(null, "Incorrect username or password!");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				dbUtil.closeCon(con);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+	private void doLogin(ActionEvent event) {
+		UserService.loginActionPerformed(event, usernameTxt, passwordTXT, this);
 	}
 
 	/**
@@ -179,7 +141,3 @@ public class LogInFrm extends JFrame {
 		this.passwordTXT.setText("");
 	}
 }
-
-
-
-

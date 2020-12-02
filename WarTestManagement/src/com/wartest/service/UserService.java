@@ -12,6 +12,7 @@ import com.wartest.model.User;
 import com.wartest.util.DbUtil;
 import com.wartest.util.StringUtil;
 import com.wartest.view.LogInFrm;
+import com.wartest.view.MainFrm;
 import com.wartest.view.RegisterFrm;
 
 public class UserService {
@@ -64,4 +65,45 @@ public class UserService {
 		}
 	}
 
+	/**
+	 * Action Event: Log In
+	 * @param e
+	 */
+	public static void loginActionPerformed(ActionEvent event, 
+			JTextField usernameTxt,   
+			JPasswordField passwordTXT,
+			LogInFrm logInFrm) {
+		
+		String userName = usernameTxt.getText();
+		String password = (new String(passwordTXT.getPassword()));
+		if (StringUtil.isEmpty(userName)) {
+			JOptionPane.showMessageDialog(null, "Username cannot be EMPTY!");
+			return;
+		}
+		if (StringUtil.isEmpty(password)) {
+			JOptionPane.showMessageDialog(null, "Password cannot be EMPTY!");
+			return;
+		}
+		User user = new User(userName, password);
+		Connection con = null;
+		try {
+			con = dbUtil.getCon();
+			User currentUser = userDao.login(con, user);
+			if (currentUser != null) {
+				JOptionPane.showMessageDialog(null, currentUser.getUsername() + ", Logged You In!");
+				logInFrm.dispose();
+				new MainFrm(currentUser).setVisible(true);
+			}else {
+				JOptionPane.showMessageDialog(null, "Incorrect username or password!");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				dbUtil.closeCon(con);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }
