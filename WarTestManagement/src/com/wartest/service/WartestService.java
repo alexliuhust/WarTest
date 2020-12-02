@@ -1,14 +1,15 @@
 package com.wartest.service;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.util.Vector;
 
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 import com.wartest.dao.TroopDao;
 import com.wartest.dao.WartestDao;
@@ -25,76 +26,33 @@ public class WartestService {
 	public static TroopDao troopDao = new TroopDao();
 	
 	/**
-	 * Show edit information when mouse pressed on Wartest Table
-	 * @param event
+	 * Find All Wartests By User ID; initialize the Wartest Table
 	 */
-	public static void mousePressedOnWartestTable(MouseEvent event,
-			User currentUser,
+	public static void fillWartestTable(
 			JTable wartestTable,
-			JTextField warIDTxt,
-			JComboBox<String> locationJcb,
-			JComboBox<Troop> troop1Jcb,
-			JComboBox<Troop> troop2Jcb,
-			JComboBox<Troop> victorJcb,
-			JComboBox<Integer> armsLeftJcb) {
+			User currentUser) {
 		
-		Connection con = null; 
+		Integer currentUserId = currentUser.getUserID();
+		DefaultTableModel dtm = (DefaultTableModel) wartestTable.getModel();
+		dtm.setRowCount(0); // Clear table
 		
+		Connection con = null;
 		try {
 			con = dbUtil.getCon();
-			WartestFrmService.fillLocationAndTroopJcbs(currentUser, locationJcb, troop1Jcb, troop2Jcb, victorJcb, armsLeftJcb);
 			
-			int row = wartestTable.getSelectedRow();
-			Integer WarID = (Integer) wartestTable.getValueAt(row, 0);
-			warIDTxt.setText(WarID.toString());
-			
-			String troop1 = (String) wartestTable.getValueAt(row, 1);
-			String troop2 = (String) wartestTable.getValueAt(row, 2);
-			String location = (String) wartestTable.getValueAt(row, 3);
-			String victor = (String) wartestTable.getValueAt(row, 4);
-			Integer armsLeft = (Integer) wartestTable.getValueAt(row, 5);
-			
-			// Set locationJcb to the selected location
-			for (int i = 0; i < locationJcb.getItemCount(); i++) {
-				String currentLocation = locationJcb.getItemAt(i);
-				if (currentLocation.equals(location))
-					locationJcb.setSelectedIndex(i);
+			ResultSet rs = wartestDao.findAllWartestsByUserID(con, currentUserId);
+			while (rs.next()) {
+				Vector<Object> v = new Vector<>();
+				v.add(rs.getInt("warID"));
+				v.add(rs.getString("troop1"));
+				v.add(rs.getString("troop2"));
+				v.add(rs.getString("location"));
+				v.add(rs.getString("victor"));
+				v.add(rs.getInt("arms_left"));
+				dtm.addRow(v);
 			}
 			
-			// Set troop1Jcb to the selected troop
-			for (int i = 0; i < troop1Jcb.getItemCount(); i++) {
-				Troop currentTroop = troop1Jcb.getItemAt(i);
-				if (currentTroop.getName().equals(troop1))
-					troop1Jcb.setSelectedIndex(i);
-			}
-			
-			// Set troop2Jcb to the selected troop
-			for (int i = 0; i < troop2Jcb.getItemCount(); i++) {
-				Troop currentTroop = troop2Jcb.getItemAt(i);
-				if (currentTroop.getName().equals(troop2))
-					troop2Jcb.setSelectedIndex(i);
-			}
-			
-			// Set victorJcb to the selected victor
-			victorJcb.removeAllItems();
-			victorJcb.addItem(new Troop(troop1));
-			victorJcb.addItem(new Troop(troop2));
-			if (troop1.equals(victor)) victorJcb.setSelectedIndex(0);
-			if (troop2.equals(victor)) victorJcb.setSelectedIndex(1);
-			
-			// Set armsLeftJcb to the selected arms_left
-			int count = wartestDao.countNumberOfArmsByTroopName(con, victor);
-			armsLeftJcb.removeAllItems();
-			for (Integer i = count; i >= 1; i--) {
-				armsLeftJcb.addItem(i);
-			}
-			for (int i = 0; i < armsLeftJcb.getItemCount(); i++) {
-				Integer currentNum = armsLeftJcb.getItemAt(i);
-				if (currentNum.equals(armsLeft)) 
-					armsLeftJcb.setSelectedIndex(i);
-			}
-			
-		} catch (Exception e) {
+		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
 			try {
@@ -105,8 +63,7 @@ public class WartestService {
 		}
 	}
 	
-	// ----------------------------------------------------------------------------------------
-
+	
 	/**
 	 * Add a Wartest to the Database
 	 * @param event
@@ -183,7 +140,7 @@ public class WartestService {
 				int num = wartestDao.deleteAWartest(con, Integer.parseInt(warID));
 				if (num == 1) {
 					warIDTxt.setText("");
-					WartestFrmService.fillWartestTable(wartestTable, currentUser);
+					fillWartestTable(wartestTable, currentUser);
 					WartestFrmService.fillLocationAndTroopJcbs(currentUser, locationJcb, troop1Jcb, troop2Jcb, victorJcb, armsLeftJcb);
 					JOptionPane.showMessageDialog(null, "Seuccessfully Deleted a Wartest!");
 				} else {
@@ -257,7 +214,7 @@ public class WartestService {
 			int num = wartestDao.updateAWartest(con, wartest);
 			if (num == 1) {
 				warIDTxt.setText("");
-				WartestFrmService.fillWartestTable(wartestTable, currentUser);
+				fillWartestTable(wartestTable, currentUser);
 				WartestFrmService.fillLocationAndTroopJcbs(currentUser, locationJcb, troop1Jcb, troop2Jcb, victorJcb, armsLeftJcb);
 				JOptionPane.showMessageDialog(null, "Seuccessfully Updated a Wartest!");
 			} else {

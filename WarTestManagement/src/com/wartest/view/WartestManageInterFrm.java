@@ -191,7 +191,7 @@ public class WartestManageInterFrm extends JInternalFrame {
 		wartestTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				WartestService.mousePressedOnWartestTable(e, currentUser_, wartestTable, 
+				WartestFrmService.mousePressedOnWartestTable(e, currentUser_, wartestTable, 
 						warIDTxt, locationJcb, troop1Jcb, troop2Jcb, victorJcb, armsLeftJcb);
 			}
 		});
@@ -199,7 +199,7 @@ public class WartestManageInterFrm extends JInternalFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"War ID", "Troop 2", "Troop 1", "Location", "Victor", "Arms Left"
+				"War ID", "Troop 1", "Troop 2", "Location", "Victor", "Arms Left"
 			}
 		));
 		scrollPane.setViewportView(wartestTable);
@@ -241,6 +241,6 @@ public class WartestManageInterFrm extends JInternalFrame {
 		panel.setLayout(gl_panel);
 		getContentPane().setLayout(groupLayout);
 
-		WartestFrmService.fillWartestTable(wartestTable, currentUser);
+		WartestService.fillWartestTable(wartestTable, currentUser);
 	}
 }
