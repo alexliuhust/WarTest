@@ -13,6 +13,7 @@ import javax.swing.table.DefaultTableModel;
 import com.wartest.dao.ArmDao;
 import com.wartest.model.Arm;
 import com.wartest.util.DbUtil;
+import com.wartest.util.StringUtil;
 
 public class ArmService {
 	
@@ -83,9 +84,9 @@ public class ArmService {
 		String s_armRace = s_armRaceTxt.getText();
 		String s_armType = s_armTypeTxt.getText();
 		Arm arm = new Arm();
-		arm.setName(s_armName);
-		arm.setRace(s_armRace);
-		arm.setType(s_armType);
+		arm.setName(StringUtil.replaceQuoteWithStar(s_armName));
+		arm.setRace(StringUtil.replaceQuoteWithStar(s_armRace));
+		arm.setType(StringUtil.replaceQuoteWithStar(s_armType));
 		fillTable(arm, armTable);
 	}
 	

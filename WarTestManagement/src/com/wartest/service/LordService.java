@@ -13,6 +13,7 @@ import javax.swing.table.DefaultTableModel;
 import com.wartest.dao.LordDao;
 import com.wartest.model.Lord;
 import com.wartest.util.DbUtil;
+import com.wartest.util.StringUtil;
 
 public class LordService {
 	
@@ -75,8 +76,8 @@ public class LordService {
 		String s_lordName = s_lordNameTxt.getText();
 		String s_lordRace = s_lordRaceTxt.getText();
 		Lord lord = new Lord();
-		lord.setName(s_lordName);
-		lord.setRace(s_lordRace);
+		lord.setName(StringUtil.replaceQuoteWithStar(s_lordName));
+		lord.setRace(StringUtil.replaceQuoteWithStar(s_lordRace));
 		fillTable(lord, lordtable);
 	}
 	

@@ -14,6 +14,7 @@ import javax.swing.table.DefaultTableModel;
 import com.wartest.dao.RaceDao;
 import com.wartest.model.Race;
 import com.wartest.util.DbUtil;
+import com.wartest.util.StringUtil;
 
 public class RaceService {
 	
@@ -46,7 +47,7 @@ public class RaceService {
 		
 		String s_raceName = s_raceNameTxt.getText();
 		Race race = new Race();
-		race.setRace(s_raceName);
+		race.setRace(StringUtil.replaceQuoteWithStar(s_raceName));
 		fillTable(race, raceTable);
 	}
 	
