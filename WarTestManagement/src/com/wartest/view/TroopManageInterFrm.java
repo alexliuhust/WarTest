@@ -298,7 +298,7 @@ public class TroopManageInterFrm extends JInternalFrame {
 		myTroopTable.getColumnModel().getColumn(2).setPreferredWidth(150);
 		myTroopTable.getColumnModel().getColumn(3).setPreferredWidth(100);
 		myTroopTable.getColumnModel().getColumn(4).setPreferredWidth(92);
-		myTroopTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		// myTroopTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		
 		myTroopScrollPane.setViewportView(myTroopTable);
 		

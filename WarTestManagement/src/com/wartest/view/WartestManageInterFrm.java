@@ -204,13 +204,13 @@ public class WartestManageInterFrm extends JInternalFrame {
 			}
 		});
 		
-		wartestTable.getColumnModel().getColumn(0).setPreferredWidth(10);
-		wartestTable.getColumnModel().getColumn(1).setPreferredWidth(40);
-		wartestTable.getColumnModel().getColumn(2).setPreferredWidth(40);
-		wartestTable.getColumnModel().getColumn(3).setPreferredWidth(50);
-		wartestTable.getColumnModel().getColumn(4).setPreferredWidth(40);
-		wartestTable.getColumnModel().getColumn(5).setPreferredWidth(5);
-		
+		wartestTable.getColumnModel().getColumn(0).setPreferredWidth(31);
+		wartestTable.getColumnModel().getColumn(1).setPreferredWidth(105);
+		wartestTable.getColumnModel().getColumn(2).setPreferredWidth(105);
+		wartestTable.getColumnModel().getColumn(3).setPreferredWidth(115);
+		wartestTable.getColumnModel().getColumn(4).setPreferredWidth(105);
+		wartestTable.getColumnModel().getColumn(5).setPreferredWidth(70);
+		//wartestTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		
 		scrollPane.setViewportView(wartestTable);
 		
