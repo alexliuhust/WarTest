@@ -37,7 +37,7 @@ CREATE TABLE `arm` (
   `speed` int NOT NULL,
   PRIMARY KEY (`armID`),
   KEY `armRace_idx` (`race`),
-  CONSTRAINT `armRace` FOREIGN KEY (`race`) REFERENCES `race` (`race`)
+  CONSTRAINT `armRace` FOREIGN KEY (`race`) REFERENCES `race` (`race`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -66,8 +66,8 @@ CREATE TABLE `composition` (
   KEY `ofTroop_idx` (`troopID`),
   KEY `hasArms_idx` (`armID`),
   CONSTRAINT `hasArms` FOREIGN KEY (`armID`) REFERENCES `arm` (`armID`),
-  CONSTRAINT `ofTroop` FOREIGN KEY (`troopID`) REFERENCES `troop` (`troopID`)
-) ENGINE=InnoDB AUTO_INCREMENT=87 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `ofTroop` FOREIGN KEY (`troopID`) REFERENCES `troop` (`troopID`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE=InnoDB AUTO_INCREMENT=92 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -97,7 +97,7 @@ CREATE TABLE `lord` (
   `speed` int NOT NULL,
   PRIMARY KEY (`lordID`),
   KEY `lordRace_idx` (`race`),
-  CONSTRAINT `lordRace` FOREIGN KEY (`race`) REFERENCES `race` (`race`)
+  CONSTRAINT `lordRace` FOREIGN KEY (`race`) REFERENCES `race` (`race`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -152,9 +152,9 @@ CREATE TABLE `troop` (
   PRIMARY KEY (`troopID`),
   KEY `leadedBy_idx` (`lordID`),
   KEY `userID_idx` (`userID`),
-  CONSTRAINT `leadedBy` FOREIGN KEY (`lordID`) REFERENCES `lord` (`lordID`),
-  CONSTRAINT `userID` FOREIGN KEY (`userID`) REFERENCES `user` (`userID`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `leadedBy` FOREIGN KEY (`lordID`) REFERENCES `lord` (`lordID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `userID` FOREIGN KEY (`userID`) REFERENCES `user` (`userID`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -163,7 +163,7 @@ CREATE TABLE `troop` (
 
 LOCK TABLES `troop` WRITE;
 /*!40000 ALTER TABLE `troop` DISABLE KEYS */;
-INSERT INTO `troop` VALUES (2,'harrys second',1,1,'This is Harrys second troop'),(7,'Lizard Melees',4,8,'They are all melees'),(8,'Skaven Missles',4,10,'Missles Big Army!'),(11,'High Riders',4,6,'Take Dragons\' Fury!'),(12,'My strong army',2,10,'This is my Strongest army!'),(13,'Fury Archers',2,4,'They are all archers');
+INSERT INTO `troop` VALUES (2,'harrys second',1,1,'This is Harrys second troop'),(7,'Lizard Melees',4,7,'They are all melees'),(8,'Skaven Missles',4,10,'Missles Big Army!'),(11,'High Riders',4,6,'Take Dragons\' Fury!'),(12,'My strong army',2,10,'This is my Strongest army!'),(13,'Fury Archers',2,4,'They are all archers');
 /*!40000 ALTER TABLE `troop` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -210,10 +210,10 @@ CREATE TABLE `wartest` (
   KEY `troop1_idx` (`troopID1`),
   KEY `troop2_idx` (`troopID2_v`),
   KEY `owner_idx` (`userID`),
-  CONSTRAINT `looser` FOREIGN KEY (`troopID1`) REFERENCES `troop` (`troopID`),
-  CONSTRAINT `owner` FOREIGN KEY (`userID`) REFERENCES `user` (`userID`),
-  CONSTRAINT `victor` FOREIGN KEY (`troopID2_v`) REFERENCES `troop` (`troopID`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `looser` FOREIGN KEY (`troopID1`) REFERENCES `troop` (`troopID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `owner` FOREIGN KEY (`userID`) REFERENCES `user` (`userID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `victor` FOREIGN KEY (`troopID2_v`) REFERENCES `troop` (`troopID`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -243,4 +243,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-01 16:31:53
+-- Dump completed on 2020-12-05 12:15:48

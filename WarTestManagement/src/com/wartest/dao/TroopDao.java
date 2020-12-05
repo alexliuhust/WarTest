@@ -122,7 +122,7 @@ public class TroopDao {
 		ans[0] = ans[1] = ans[2] = -1; 
 		
 		// Delete the records with target troopID in wartest
-		String sql = "delete from wartest where troopID1 = ? or troopID2 = ?";
+		String sql = "delete from wartest where troopID1 = ? or troopID2_v = ?";
 		PreparedStatement pstmt = con.prepareStatement(sql);
 		pstmt.setInt(1, troopID);
 		pstmt.setInt(2, troopID);
