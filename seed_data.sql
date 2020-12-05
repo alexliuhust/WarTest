@@ -67,7 +67,7 @@ CREATE TABLE `composition` (
   KEY `hasArms_idx` (`armID`),
   CONSTRAINT `hasArms` FOREIGN KEY (`armID`) REFERENCES `arm` (`armID`),
   CONSTRAINT `ofTroop` FOREIGN KEY (`troopID`) REFERENCES `troop` (`troopID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=92 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=108 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -76,7 +76,7 @@ CREATE TABLE `composition` (
 
 LOCK TABLES `composition` WRITE;
 /*!40000 ALTER TABLE `composition` DISABLE KEYS */;
-INSERT INTO `composition` VALUES (5,2,5),(6,2,2),(7,2,7),(8,2,7),(9,2,7),(41,7,18),(42,7,18),(43,7,18),(44,7,19),(45,7,19),(56,11,13),(57,11,13),(58,11,13),(59,11,13),(66,12,30),(67,12,30),(68,12,30),(69,12,30),(70,12,34),(71,12,34),(72,12,34),(73,13,11),(74,13,11),(75,13,11),(76,13,15),(77,13,15),(78,8,31),(79,8,31),(80,8,32),(81,8,32),(82,8,32),(83,8,32);
+INSERT INTO `composition` VALUES (5,2,5),(6,2,2),(7,2,7),(8,2,7),(9,2,7),(56,11,13),(57,11,13),(58,11,13),(59,11,13),(66,12,30),(67,12,30),(68,12,30),(69,12,30),(70,12,34),(71,12,34),(72,12,34),(73,13,11),(74,13,11),(75,13,11),(76,13,15),(77,13,15),(78,8,31),(79,8,31),(80,8,32),(81,8,32),(82,8,32),(83,8,32),(102,7,19),(103,7,19),(104,7,19),(105,7,19),(106,7,19),(107,7,19);
 /*!40000 ALTER TABLE `composition` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -154,7 +154,7 @@ CREATE TABLE `troop` (
   KEY `userID_idx` (`userID`),
   CONSTRAINT `leadedBy` FOREIGN KEY (`lordID`) REFERENCES `lord` (`lordID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `userID` FOREIGN KEY (`userID`) REFERENCES `user` (`userID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -163,7 +163,7 @@ CREATE TABLE `troop` (
 
 LOCK TABLES `troop` WRITE;
 /*!40000 ALTER TABLE `troop` DISABLE KEYS */;
-INSERT INTO `troop` VALUES (2,'harrys second',1,1,'This is Harrys second troop'),(7,'Lizard Melees',4,7,'They are all melees'),(8,'Skaven Missles',4,10,'Missles Big Army!'),(11,'High Riders',4,6,'Take Dragons\' Fury!'),(12,'My strong army',2,10,'This is my Strongest army!'),(13,'Fury Archers',2,4,'They are all archers');
+INSERT INTO `troop` VALUES (2,'harrys second',1,1,'This is Harrys second troop'),(7,'Lizard Melees',4,8,'They are all melees'),(8,'Skaven Missles',4,10,'Missles Big Army!'),(11,'High Riders',4,6,'Take Dragons\' Fury!'),(12,'My strong army',2,10,'This is my Strongest army!'),(13,'Fury Archers',2,4,'They are all archers');
 /*!40000 ALTER TABLE `troop` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -213,7 +213,7 @@ CREATE TABLE `wartest` (
   CONSTRAINT `looser` FOREIGN KEY (`troopID1`) REFERENCES `troop` (`troopID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `owner` FOREIGN KEY (`userID`) REFERENCES `user` (`userID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `victor` FOREIGN KEY (`troopID2_v`) REFERENCES `troop` (`troopID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -222,7 +222,7 @@ CREATE TABLE `wartest` (
 
 LOCK TABLES `wartest` WRITE;
 /*!40000 ALTER TABLE `wartest` DISABLE KEYS */;
-INSERT INTO `wartest` VALUES (5,4,11,7,'Taemoral Lake',4),(6,4,7,8,'Flicken Mount',2),(10,4,11,8,'Gurvart Mount',3),(12,4,11,7,'Athalorine Woods',5);
+INSERT INTO `wartest` VALUES (5,4,11,7,'Taemoral Lake',4),(6,4,7,8,'Devil\'s Undercity',5),(10,4,11,8,'Gurvart Mount',3),(12,4,11,7,'Athalorine Woods',5),(14,4,8,7,'Flicken Mount',3),(15,4,7,11,'Rabnort Lake',2);
 /*!40000 ALTER TABLE `wartest` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -233,6 +233,254 @@ UNLOCK TABLES;
 --
 -- Dumping routines for database 'totalwar_test'
 --
+/*!50003 DROP PROCEDURE IF EXISTS `add_wartest` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `add_wartest`(
+in userID_ int, 
+in troopID1_ int, 
+in troopID2_v_ int, 
+in location_ varchar(30), 
+in arms_left_ int)
+begin 
+	insert into wartest (userID, troopID1, troopID2_v, location, arms_left)
+    values(userID_, troopID1_, troopID2_v_, location_, arms_left_);
+end ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `count_number_of_arms_by_troopID` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `count_number_of_arms_by_troopID`(in troopID_ int)
+begin 
+	select count(*) as count from composition where troopID = troopID_;
+end ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `count_number_of_arms_by_troopname` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `count_number_of_arms_by_troopname`(in troopname varchar(20))
+begin 
+	select count(*) as count from
+	composition as c join troop as t on c.troopID = t.troopID
+	where t.name = troopname;
+end ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `delete_compositions_belong_to_troopID` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `delete_compositions_belong_to_troopID`(in troopID_ int)
+begin 
+	delete from composition where troopID = troopID_;         
+end ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `find_all_wartests_by_userID` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `find_all_wartests_by_userID`(in userID_ int)
+begin 
+	select w.warID, t1.name as troop1, t2.name as troop2, w.location, t3.name as victor, w.arms_left
+	from wartest as w 
+	inner join troop as t1 on w.troopID1 = t1.troopID 
+	inner join troop as t2 on w.troopID2_v = t2.troopID 
+	inner join troop as t3 on w.troopID2_v = t3.troopID 
+	where w.userID = userID_;
+end ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `find_arms_by_name_race_type` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `find_arms_by_name_race_type`(
+	in name_ varchar(30), 
+	in race_ varchar(20),
+    in type_ varchar(20))
+begin 
+	select * from arm 
+    where name like concat('%', name_, '%') 
+    and race like concat('%', race_, '%')
+    and type like concat('%', type_, '%');
+    
+end ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `find_arms_by_troopID` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `find_arms_by_troopID`(in troopID int)
+begin 
+	select a.armID, a.name, a.race, a.type from
+    composition as c
+    join troop as t on c.troopID = t.troopID
+    join arm as a on c.armID = a.armID
+    where t.troopID = troopID group by c.compID;
+end ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `find_lords_by_name_race` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `find_lords_by_name_race`(
+	in name_ varchar(20), 
+	in race_ varchar(20))
+begin 
+	select * from lord 
+    where name like concat('%', name_, '%') 
+    and race like concat('%', race_, '%');
+    
+end ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `find_troops_by_userID_with_race_Lord` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `find_troops_by_userID_with_race_Lord`(in userID_ int)
+begin 
+	select t.troopID, t.name, t.memo, l.name as lord, l.race from
+	troop as t join lord as l on (t.lordID = l.lordID)
+	where t.userID = userID_;         
+end ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `insert_new_compositions` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_new_compositions`(
+	in troopID_ int, 
+	in armID_ int)
+begin 
+	insert into composition (troopID, armID) values (troopID_, armID_);        
+end ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `update_wartest` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `update_wartest`(
+in troopID1_ int, 
+in troopID2_v_ int, 
+in location_ varchar(30), 
+in arms_left_ int,
+in warID_ int)
+begin 
+	update wartest set troopID1 = troopID1_, troopID2_v = troopID2_v_, 
+    location = location_, arms_left = arms_left_ where warID = warID_;
+end ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -243,4 +491,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-05 12:15:48
+-- Dump completed on 2020-12-05 17:04:21

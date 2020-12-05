@@ -101,6 +101,14 @@ public class TroopService {
 				JOptionPane.showMessageDialog(null, "Troop Memo Cannot Be Empty!");
 				return;
 			}
+			if (troopNameTxt.getText().length() > 18) {
+				JOptionPane.showMessageDialog(null, "Troop Name is too long!");
+				return;
+			}
+			if (troopMemoTxt.getText().length() > 55) {
+				JOptionPane.showMessageDialog(null, "Troop Memo is too long!");
+				return;
+			}
 			
 			ResultSet rs = troopDao.findTroopByTroopName(con, troopNameTxt.getText());
 			if (rs.next()) {
@@ -174,6 +182,15 @@ public class TroopService {
 				JOptionPane.showMessageDialog(null, "Troop Memo Cannot Be Empty!");
 				return;
 			}
+			if (troopNameTxt.getText().length() > 18) {
+				JOptionPane.showMessageDialog(null, "Troop Name is too long!");
+				return;
+			}
+			if (troopMemoTxt.getText().length() > 55) {
+				JOptionPane.showMessageDialog(null, "Troop Memo is too long!");
+				return;
+			}
+			
 			Integer troopID = Integer.parseInt(troopIDTxt.getText());
 			ResultSet rs = troopDao.findTroopByTroopNameButNotThisID(
 					con, troopNameTxt.getText(), troopID);
