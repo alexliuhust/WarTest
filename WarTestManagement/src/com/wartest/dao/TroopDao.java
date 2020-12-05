@@ -30,9 +30,7 @@ public class TroopDao {
 	 * @throws Exception
 	 */
 	public ResultSet findTroopsByUserID_withRaceAndLord(Connection con, Integer currentUserId) throws Exception { 
-		String sql = "select t.troopID, t.name, t.memo, l.name as lord, l.race from "
-				+ "troop as t join lord as l on (t.lordID = l.lordID) "
-				+ "where t.userID = ?";
+		String sql = "call find_troops_by_userID_with_race_Lord(?)";
 		PreparedStatement pstmt = con.prepareStatement(sql);
 		pstmt.setInt(1, currentUserId);
 		return pstmt.executeQuery();
@@ -88,7 +86,7 @@ public class TroopDao {
 		if (ans[0] != 1) return ans;
 		
 		// Delete those composition records that belong to the target troop
-		sql = "delete from composition where troopID = ?";
+		sql = "call delete_compositions_belong_to_troopID(?)";
 		pstmt = con.prepareStatement(sql);
 		pstmt.setInt(1, troop.getTroopID());
 		int num = pstmt.executeUpdate();
@@ -97,7 +95,7 @@ public class TroopDao {
 		
 		// Insert new arms into the composition table
 		ans[1] = 0;
-		String addComp = "insert into composition (troopID, armID) values (?, ?)";
+		String addComp = "call insert_new_compositions(?,?)";
 		if (troop.getTroopID() > 0) {
 			for (Integer armID : troop.getArms()) {
 				pstmt = con.prepareStatement(addComp);
@@ -129,7 +127,7 @@ public class TroopDao {
 		ans[0] = pstmt.executeUpdate();
 		
 		// Delete the compositions that belong to the target troopID
-		sql = "delete from composition where troopID = ?";
+		sql = "call delete_compositions_belong_to_troopID(?)";
 		pstmt = con.prepareStatement(sql);
 		pstmt.setInt(1, troopID);
 		ans[1] = pstmt.executeUpdate();
@@ -179,7 +177,7 @@ public class TroopDao {
 			troopID = rs.getInt("troopID");
 		
 		// Store the arms information of the new inserted troop into the composition table
-		String addComp = "insert into composition (troopID, armID) values (?, ?)";
+		String addComp = "call insert_new_compositions(?,?)";
 		if (troopID > 0) {
 			for (Integer armID : troop.getArms()) {
 				pstmt = con.prepareStatement(addComp);
