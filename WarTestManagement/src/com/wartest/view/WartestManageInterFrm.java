@@ -195,13 +195,23 @@ public class WartestManageInterFrm extends JInternalFrame {
 						warIDTxt, locationJcb, troop1Jcb, troop2Jcb, victorJcb, armsLeftJcb);
 			}
 		});
-		wartestTable.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"War ID", "Troop 1", "Troop 2", "Location", "Victor", "Arms Left"
+		wartestTable.setModel(new DefaultTableModel(new Object[][] {},
+			new String[] {"ID", "Troop 1", "Troop 2", "Location", "Victor", "Arms Left"}) {
+			
+			boolean[] columnEditables = new boolean[] {false, false, false, false, false, false};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
 			}
-		));
+		});
+		
+		wartestTable.getColumnModel().getColumn(0).setPreferredWidth(10);
+		wartestTable.getColumnModel().getColumn(1).setPreferredWidth(40);
+		wartestTable.getColumnModel().getColumn(2).setPreferredWidth(40);
+		wartestTable.getColumnModel().getColumn(3).setPreferredWidth(50);
+		wartestTable.getColumnModel().getColumn(4).setPreferredWidth(40);
+		wartestTable.getColumnModel().getColumn(5).setPreferredWidth(5);
+		
+		
 		scrollPane.setViewportView(wartestTable);
 		
 		JLabel lblNewLabel_3 = new JLabel("Victor");

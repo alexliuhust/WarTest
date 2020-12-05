@@ -293,11 +293,13 @@ public class TroopManageInterFrm extends JInternalFrame {
 				return columnEditables[column];
 			}
 		});
-		myTroopTable.getColumnModel().getColumn(0).setPreferredWidth(5);
-		myTroopTable.getColumnModel().getColumn(1).setPreferredWidth(30);
-		myTroopTable.getColumnModel().getColumn(2).setPreferredWidth(40);
-		myTroopTable.getColumnModel().getColumn(3).setPreferredWidth(50);
-		myTroopTable.getColumnModel().getColumn(4).setPreferredWidth(40);
+		myTroopTable.getColumnModel().getColumn(0).setPreferredWidth(30);
+		myTroopTable.getColumnModel().getColumn(1).setPreferredWidth(100);
+		myTroopTable.getColumnModel().getColumn(2).setPreferredWidth(150);
+		myTroopTable.getColumnModel().getColumn(3).setPreferredWidth(100);
+		myTroopTable.getColumnModel().getColumn(4).setPreferredWidth(92);
+		myTroopTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		
 		myTroopScrollPane.setViewportView(myTroopTable);
 		
 		selectedArmsTable = new JTable();
