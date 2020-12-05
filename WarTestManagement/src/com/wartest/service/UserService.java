@@ -39,6 +39,14 @@ public class UserService {
 			JOptionPane.showMessageDialog(null, "Password cannot be EMPTY!");
 			return;
 		}
+		if (userName.length() > 12) {
+			JOptionPane.showMessageDialog(null, "Username should be within 12 characters!");
+			return;
+		}
+		if (password.length() > 12) {
+			JOptionPane.showMessageDialog(null, "Password should be within 12 characters!");
+			return;
+		}
 		User user = new User(userName, password);
 		Connection con = null;
 		try {
@@ -82,6 +90,14 @@ public class UserService {
 		}
 		if (StringUtil.isEmpty(password)) {
 			JOptionPane.showMessageDialog(null, "Password cannot be EMPTY!");
+			return;
+		}
+		if (userName.length() > 12) {
+			JOptionPane.showMessageDialog(null, "Username should be within 12 characters!");
+			return;
+		}
+		if (password.length() > 12) {
+			JOptionPane.showMessageDialog(null, "Password should be within 12 characters!");
 			return;
 		}
 		User user = new User(userName, password);

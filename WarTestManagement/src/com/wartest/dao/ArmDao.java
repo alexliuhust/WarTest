@@ -22,11 +22,7 @@ public class ArmDao {
 	 * @throws Exception
 	 */
 	public ResultSet findArmsByTroopID(Connection con, Integer troopID) throws Exception {
-		String sql = "select a.armID, a.name, a.race, a.type from "
-				+ "composition as c "
-				+ "join troop as t on c.troopID = t.troopID "
-				+ "join arm as a on c.armID = a.armID "
-				+ "where t.troopID = ? group by c.compID; ";
+		String sql = "call find_arms_by_troopID(?)";
 		PreparedStatement pstmt = con.prepareStatement(sql);
 		pstmt.setInt(1, troopID);
 		return pstmt.executeQuery();
@@ -40,17 +36,15 @@ public class ArmDao {
 	 * @throws Exception
 	 */
 	public ResultSet findArmsByNameOrRaceOrType(Connection con, Arm arm) throws Exception {
-		StringBuilder sb = new StringBuilder("select * from arm");
-		if (StringUtil.isNotEmpty(arm.getName() )) {
-			sb.append(" and name like '%" + arm.getName() + "%'");
-		}
-		if (StringUtil.isNotEmpty(arm.getRace() )) {
-			sb.append(" and race like '%" + arm.getRace() + "%'");
-		}
-		if (StringUtil.isNotEmpty(arm.getType() )) {
-			sb.append(" and type like '%" + arm.getType() + "%'");
-		}
-		PreparedStatement pstmt = con.prepareStatement(sb.toString().replaceFirst("and", "where"));
+		String sql = "call find_arms_by_name_race_type(?,?,?)";
+		PreparedStatement pstmt = con.prepareStatement(sql);
+		String name = "", race = "", type = "";
+		if (StringUtil.isNotEmpty(arm.getName())) name = arm.getName();
+		if (StringUtil.isNotEmpty(arm.getRace())) race = arm.getRace();
+		if (StringUtil.isNotEmpty(arm.getType())) type = arm.getType();
+		pstmt.setString(1, name);
+		pstmt.setString(2, race);
+		pstmt.setString(3, type);
 		return pstmt.executeQuery();
 	}
 	
