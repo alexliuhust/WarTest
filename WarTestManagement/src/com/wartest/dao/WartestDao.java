@@ -74,8 +74,7 @@ public class WartestDao {
 		if (victor.equals(wartest.getTroop1())) looser = wartest.getTroop2();
 		else looser = wartest.getTroop1();
 		
-		String sql = "insert into wartest (userID, troopID1, troopID2_v, location, arms_left) "
-				+ "values(?, ?, ?, ?, ?)";
+		String sql = "call add_wartest(?,?,?,?,?)";
 		PreparedStatement pstmt = con.prepareStatement(sql);
 		pstmt.setInt(1, wartest.getUserID());
 		pstmt.setInt(2, looser);
@@ -115,8 +114,7 @@ public class WartestDao {
 		if (victor.equals(wartest.getTroop1())) looser = wartest.getTroop2();
 		else looser = wartest.getTroop1();
 		
-		String sql = "update wartest set troopID1 = ?, troopID2_v = ?, "
-				+ "location = ?, arms_left = ? where warID = ?";
+		String sql = "call update_wartest(?,?,?,?,?)";
 		PreparedStatement pstmt = con.prepareStatement(sql);
 		pstmt.setInt(1, looser);
 		pstmt.setInt(2, victor);
