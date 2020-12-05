@@ -22,14 +22,13 @@ public class LordDao {
 	 * @throws Exception
 	 */
 	public ResultSet findLordsByNameOrRace(Connection con, Lord lord) throws Exception{
-		StringBuilder sb = new StringBuilder("select * from lord");
-		if (StringUtil.isNotEmpty(lord.getName())) {
-			sb.append(" and name like '%" + lord.getName() + "%'");
-		}
-		if (StringUtil.isNotEmpty(lord.getRace())) {
-			sb.append(" and race like '%" + lord.getRace() + "%'");
-		}
-		PreparedStatement pstmt = con.prepareStatement(sb.toString().replaceFirst("and", "where"));
+		String sql = "call find_lords_by_name_race(?, ?)";
+		PreparedStatement pstmt = con.prepareStatement(sql);
+		String name = "", race = "";
+		if (StringUtil.isNotEmpty(lord.getName())) name = lord.getName();
+		if (StringUtil.isNotEmpty(lord.getRace())) race = lord.getRace();
+		pstmt.setString(1, name);
+		pstmt.setString(2, race);
 		return pstmt.executeQuery();
 	}
 	
