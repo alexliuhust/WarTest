@@ -16,7 +16,7 @@ public class WartestDao {
 	 * @throws Exception
 	 */
 	public Integer countNumberOfArmsByTroopID(Connection con, Integer troopID) throws Exception {
-		String sql = "select count(*) as count from composition where troopID = ?";
+		String sql = "call count_number_of_arms_by_troopID(?)";
 		PreparedStatement pstmt = con.prepareStatement(sql);
 		pstmt.setInt(1, troopID);
 		ResultSet rs = pstmt.executeQuery();
@@ -35,9 +35,7 @@ public class WartestDao {
 	 * @throws Exception
 	 */
 	public Integer countNumberOfArmsByTroopName(Connection con, String troopName) throws Exception {
-		String sql = "select count(*) as count from "
-				+ "composition as c join troop as t on c.troopID = t.troopID "
-				+ "where t.name = ?";
+		String sql = "call count_number_of_arms_by_troopname(?)";
 		PreparedStatement pstmt = con.prepareStatement(sql);
 		pstmt.setString(1, troopName);
 		ResultSet rs = pstmt.executeQuery();
@@ -57,12 +55,7 @@ public class WartestDao {
 	 * @throws Exception
 	 */
 	public ResultSet findAllWartestsByUserID(Connection con, Integer currentUserID) throws Exception {
-		String sql = "select w.warID, t1.name as troop1, t2.name as troop2, w.location, t3.name as victor, w.arms_left "
-				+ "from wartest as w "
-				+ "inner join troop as t1 on w.troopID1 = t1.troopID "
-				+ "inner join troop as t2 on w.troopID2_v = t2.troopID "
-				+ "inner join troop as t3 on w.troopID2_v = t3.troopID "
-				+ "where w.userID = ?";
+		String sql = "call find_all_wartests_by_userID(?)";
 		PreparedStatement pstmt = con.prepareStatement(sql);
 		pstmt.setInt(1, currentUserID);
 		return pstmt.executeQuery();
