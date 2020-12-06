@@ -20,20 +20,15 @@ public class UserDao {
 	 * @throws Exception
 	 */
 	public int register(Connection con, User user) throws Exception {
-		// Check if the input username already exists in the database
-		String checksql = "select * from user where username = ?";
-		PreparedStatement checkpstmt = con.prepareStatement(checksql);
-		checkpstmt.setString(1, user.getUsername());
-		ResultSet rs = checkpstmt.executeQuery();
-		if (rs.next()) return -1;
-		
-		// Add the valid new user into the database
-		String sql = "insert into user (username, password) values (?, ?)";
+		String sql = "call register(?, ?)";
 		PreparedStatement pstmt = con.prepareStatement(sql);
 		pstmt.setString(1, user.getUsername());
 		pstmt.setString(2, user.getPassword());
-		int num = pstmt.executeUpdate();
-		if (num == 1) return num;
+		ResultSet rs = pstmt.executeQuery();
+		if (rs.next()) {
+			System.out.println(rs.getInt("result"));
+			return rs.getInt("result");
+		}
 		
 		return -2;
 	}

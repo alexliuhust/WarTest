@@ -60,9 +60,10 @@ public class UserService {
 				JOptionPane.showMessageDialog(null, "This username has already existed!\nPlease try another one!");
 				usernameTxt.setText("");
 			} else {
-				JOptionPane.showMessageDialog(null, "Fail to sign you in...");
+				JOptionPane.showMessageDialog(null, "Failed to sign you up...");
 			}
 		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Failed to sign you up...");
 			e.printStackTrace();
 		} finally {
 			try {
@@ -113,6 +114,7 @@ public class UserService {
 				JOptionPane.showMessageDialog(null, "Incorrect username or password!");
 			}
 		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Failed to log you in...");
 			e.printStackTrace();
 		} finally {
 			try {
