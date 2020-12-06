@@ -258,7 +258,7 @@ public class TroopService {
 			try {
 				con = dbUtil.getCon();
 				int[] ans = troopDao.deleteTroop(con, Integer.parseInt(troopID));
-				if (ans[0] >= 0 && ans[1] >= 0 && ans[2] == 1) {
+				if (ans[0] >= 0 && ans[1] >= 1 && ans[2] == 1) {
 					JOptionPane.showMessageDialog(null, "Seuccessfully Deleted a Troop!");
 					fillMyTroopTable(troopNameTxt, troopMemoTxt, troopIDTxt, 
 							selectedArmsTable, myTroopTable, currentUser);
