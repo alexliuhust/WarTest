@@ -67,7 +67,7 @@ CREATE TABLE `composition` (
   KEY `hasArms_idx` (`armID`),
   CONSTRAINT `hasArms` FOREIGN KEY (`armID`) REFERENCES `arm` (`armID`),
   CONSTRAINT `ofTroop` FOREIGN KEY (`troopID`) REFERENCES `troop` (`troopID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=108 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=222 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -76,7 +76,7 @@ CREATE TABLE `composition` (
 
 LOCK TABLES `composition` WRITE;
 /*!40000 ALTER TABLE `composition` DISABLE KEYS */;
-INSERT INTO `composition` VALUES (5,2,5),(6,2,2),(7,2,7),(8,2,7),(9,2,7),(56,11,13),(57,11,13),(58,11,13),(59,11,13),(66,12,30),(67,12,30),(68,12,30),(69,12,30),(70,12,34),(71,12,34),(72,12,34),(73,13,11),(74,13,11),(75,13,11),(76,13,15),(77,13,15),(78,8,31),(79,8,31),(80,8,32),(81,8,32),(82,8,32),(83,8,32),(102,7,19),(103,7,19),(104,7,19),(105,7,19),(106,7,19),(107,7,19);
+INSERT INTO `composition` VALUES (199,25,27),(200,25,27),(201,25,27),(202,22,18),(203,22,18),(204,22,18),(205,22,18),(206,22,18),(207,21,13),(208,21,13),(209,21,13),(219,27,35),(220,27,35),(221,27,35);
 /*!40000 ALTER TABLE `composition` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -154,7 +154,7 @@ CREATE TABLE `troop` (
   KEY `userID_idx` (`userID`),
   CONSTRAINT `leadedBy` FOREIGN KEY (`lordID`) REFERENCES `lord` (`lordID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `userID` FOREIGN KEY (`userID`) REFERENCES `user` (`userID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -163,7 +163,7 @@ CREATE TABLE `troop` (
 
 LOCK TABLES `troop` WRITE;
 /*!40000 ALTER TABLE `troop` DISABLE KEYS */;
-INSERT INTO `troop` VALUES (2,'harrys second',1,1,'This is Harrys second troop'),(7,'Lizard Melees',4,8,'They are all melees'),(8,'Skaven Missles',4,10,'Missles Big Army!'),(11,'High Riders',4,6,'Take Dragons\' Fury!'),(12,'My strong army',2,10,'This is my Strongest army!'),(13,'Fury Archers',2,4,'They are all archers');
+INSERT INTO `troop` VALUES (21,'HIII',4,4,'qwe21'),(22,'Lizaaaa',4,7,'fwueib 923'),(25,'DELETELTLE',4,10,'fner'),(27,'QWEQWE',4,10,'12u 928yr qhtuh');
 /*!40000 ALTER TABLE `troop` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -179,7 +179,7 @@ CREATE TABLE `user` (
   `username` varchar(20) NOT NULL,
   `password` varchar(15) NOT NULL,
   PRIMARY KEY (`userID`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -188,7 +188,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'harry','123456'),(2,'ronald','654321'),(4,'admin','123');
+INSERT INTO `user` VALUES (1,'harry','123456'),(2,'ronald','654321'),(4,'admin','123'),(8,'admin2','321');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -213,7 +213,7 @@ CREATE TABLE `wartest` (
   CONSTRAINT `looser` FOREIGN KEY (`troopID1`) REFERENCES `troop` (`troopID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `owner` FOREIGN KEY (`userID`) REFERENCES `user` (`userID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `victor` FOREIGN KEY (`troopID2_v`) REFERENCES `troop` (`troopID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -222,7 +222,7 @@ CREATE TABLE `wartest` (
 
 LOCK TABLES `wartest` WRITE;
 /*!40000 ALTER TABLE `wartest` DISABLE KEYS */;
-INSERT INTO `wartest` VALUES (5,4,11,7,'Taemoral Lake',4),(6,4,7,8,'Devil\'s Undercity',5),(10,4,11,8,'Gurvart Mount',3),(12,4,11,7,'Athalorine Woods',5),(14,4,8,7,'Flicken Mount',3),(15,4,7,11,'Rabnort Lake',2);
+INSERT INTO `wartest` VALUES (18,4,22,21,'Gurvart Mount',2);
 /*!40000 ALTER TABLE `wartest` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -311,6 +311,32 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `delete_compositions_belong_to_troopID`(in troopID_ int)
 begin 
 	delete from composition where troopID = troopID_;         
+end ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `delete_wartest_comp_with_troopid` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `delete_wartest_comp_with_troopid`(in troopid int)
+begin 
+	declare d_war int default 0;
+	declare d_comp int default 0;
+    
+	delete from wartest where troopID1 = troopid or troopID2_v = troopid;
+    select row_count() into d_war;
+    call delete_compositions_belong_to_troopID(troopid);
+    select row_count() into d_comp;
+    select d_war, d_comp;
 end ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -456,6 +482,98 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `insert_troop_get_troopID` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_troop_get_troopID`(
+	in userid_ int,
+	in troopname_ varchar(20),
+	in troopmemo_ varchar(60),
+	in lordid_ int)
+begin 
+	declare i_trp int default 0;
+ 	declare get_trpid int default 0;
+    
+    insert into troop (name, userID, lordID, memo) 
+		values(troopname_, userid_, lordid_, troopmemo_);
+	select row_count() into i_trp;
+    select troopID into get_trpid from troop where name = troopname_;
+    
+	select i_trp, get_trpid;
+end ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `register` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `register`(in username_ varchar(20), in password_ varchar(15))
+begin 
+	declare num int default 0;
+    select count(*) into num from user where username = username_;
+    if num = 0 then 
+		insert into user (username, password) values (username_, password_);
+        select 1 as result;
+	else 
+		select -1 as result;
+    end if;
+    
+end ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `update_troop_clear_comp` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `update_troop_clear_comp`(
+	in troopid_ int,
+	in troopname_ varchar(20),
+	in troopmemo_ varchar(60),
+	in lordid_ int)
+begin 
+	declare u_trp int default 0;
+ 	declare d_comp int default 0;
+    
+    
+    update troop set name = troopname_, memo = troopmemo_, lordID = lordid_ 
+    where (troopID = troopid_);
+ 	select row_count() into u_trp;
+	call delete_compositions_belong_to_troopID(troopid_);
+	select row_count() into d_comp;
+    
+	select u_trp, d_comp;
+    
+end ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `update_wartest` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -491,4 +609,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-05 17:04:21
+-- Dump completed on 2020-12-06 18:12:10

@@ -97,7 +97,7 @@ public class TroopDao {
 				pstmt = con.prepareStatement(addComp);
 				pstmt.setInt(1, troop.getTroopID());
 				pstmt.setInt(2, armID);
-				ans[1] += pstmt.executeUpdate();
+				ans[2] += pstmt.executeUpdate();
 			}
 		}
 		
@@ -144,31 +144,25 @@ public class TroopDao {
 	 */
 	public int[] addOneTroop(Connection con, Troop troop) throws Exception {
 		int ans[] = new int[2];
-		ans[0] = ans[1] = 0;
+		ans[0] = ans[1] = -1;
 		
-		// Insert the new troop into the troop table (without the arms information)
-		String sql = "insert into troop (name, userID, lordID, memo) "
-				+ "values(?, ?, ?, ?)";
+		// Insert the new troop into the troop table and get the troop ID of the new inserted troop
+		String sql = "call insert_troop_get_troopID(?,?,?,?)";
 		PreparedStatement pstmt = con.prepareStatement(sql);
-		pstmt.setString(1, troop.getName());
-		pstmt.setInt(2, troop.getUserID());
-		pstmt.setInt(3, troop.getLordID());
-		pstmt.setString(4, troop.getMemo());
-		ans[0] = pstmt.executeUpdate();
-		
-		if (ans[0] != 1) return ans;
-		
-		// Get the troop ID of the new inserted troop
-		String findTroopID = "select troopID from troop where name = ?";
-		pstmt = con.prepareStatement(findTroopID);
-		pstmt.setString(1, troop.getName());
-		ResultSet rs = pstmt.executeQuery();
+		pstmt.setInt(1, troop.getUserID());
+		pstmt.setString(2, troop.getName());
+		pstmt.setString(3, troop.getMemo());
+		pstmt.setInt(4, troop.getLordID());
 		Integer troopID = -1;
-		if (rs.next()) 
-			troopID = rs.getInt("troopID");
+		ResultSet rs = pstmt.executeQuery();
+		if (rs.next()) {
+			ans[0] = rs.getInt("i_trp");
+			troopID = rs.getInt("get_trpid");
+		}
 		
 		// Store the arms information of the new inserted troop into the composition table
 		String addComp = "call insert_new_compositions(?,?)";
+		ans[1] = 0;
 		if (troopID > 0) {
 			for (Integer armID : troop.getArms()) {
 				pstmt = con.prepareStatement(addComp);
