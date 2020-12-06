@@ -71,30 +71,26 @@ public class TroopDao {
 	 * @throws Exception
 	 */
 	public int[] updateOneTroop(Connection con, Troop troop) throws Exception {
-		int[] ans = new int[2];
-		ans[0] = ans[1] = -1;
+		int[] ans = new int[3];
+		ans[0] = ans[1] = ans[2] = -1;
 		
-		// Update a Troop record
-		String sql = "update troop set name = ?, memo = ?, lordID = ? where troopID = ?";
+		// Update a Troop record and clear old records in composition
+		String sql = "call update_troop_clear_comp(?,?,?,?)";
 		PreparedStatement pstmt = con.prepareStatement(sql);
-		pstmt.setString(1, troop.getName());
-		pstmt.setString(2, troop.getMemo());
-		pstmt.setInt(3, troop.getLordID());
-		pstmt.setInt(4, troop.getTroopID());
-		ans[0] = pstmt.executeUpdate();
-		
-		if (ans[0] != 1) return ans;
-		
-		// Delete those composition records that belong to the target troop
-		sql = "call delete_compositions_belong_to_troopID(?)";
-		pstmt = con.prepareStatement(sql);
 		pstmt.setInt(1, troop.getTroopID());
-		int num = pstmt.executeUpdate();
-		
-		if (num < 1) return ans;
+		pstmt.setString(2, troop.getName());
+		pstmt.setString(3, troop.getMemo());
+		pstmt.setInt(4, troop.getLordID());
+		ResultSet rs = pstmt.executeQuery();
+		if (rs.next()) {
+			ans[0] = rs.getInt("u_trp");
+			ans[1] = rs.getInt("d_comp");
+		} else {
+			return ans;
+		}
 		
 		// Insert new arms into the composition table
-		ans[1] = 0;
+		ans[2] = 0;
 		String addComp = "call insert_new_compositions(?,?)";
 		if (troop.getTroopID() > 0) {
 			for (Integer armID : troop.getArms()) {
@@ -119,6 +115,7 @@ public class TroopDao {
 		int[] ans = new int[3];
 		ans[0] = ans[1] = ans[2] = -1; 
 		
+		// Delete records in wartest and composition with troopID
 		String sql = "call delete_wartest_comp_with_troopid(?)";
 		PreparedStatement pstmt = con.prepareStatement(sql);
 		pstmt.setInt(1, troopID);
@@ -128,6 +125,7 @@ public class TroopDao {
 			ans[1] = rs.getInt("d_comp");
 		} 
 		
+		// Delete troop
 		sql = "delete from troop where troopID = ?";
 		pstmt = con.prepareStatement(sql);
 		pstmt.setInt(1, troopID);

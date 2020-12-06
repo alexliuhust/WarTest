@@ -214,7 +214,7 @@ public class TroopService {
 				troop.setArms(armIDs);
 				
 				int[] ans = troopDao.updateOneTroop(con, troop);
-				if (ans[0] == 1 && ans[1] >= 1) {
+				if (ans[0] >= 0 && ans[1] >= 1 && ans[2] >= 1) {
 					JOptionPane.showMessageDialog(null, "Successfully Updated a Troop!");
 					fillMyTroopTable(troopNameTxt, troopMemoTxt, troopIDTxt, 
 							selectedArmsTable, myTroopTable, currentUser);

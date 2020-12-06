@@ -55,6 +55,7 @@ public class TroopFrmService {
 			// Set the race Jcb to the specific item
 			Race race = null;
 			ResultSet rs = raceDao.findAllRaces(con);
+			raceJcb.removeAllItems();
 			while (rs.next()) {
 				race = new Race();
 				race.setRace(rs.getString("race"));
