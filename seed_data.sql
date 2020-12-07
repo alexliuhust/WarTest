@@ -67,7 +67,7 @@ CREATE TABLE `composition` (
   KEY `hasArms_idx` (`armID`),
   CONSTRAINT `hasArms` FOREIGN KEY (`armID`) REFERENCES `arm` (`armID`),
   CONSTRAINT `ofTroop` FOREIGN KEY (`troopID`) REFERENCES `troop` (`troopID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=222 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=233 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -76,7 +76,7 @@ CREATE TABLE `composition` (
 
 LOCK TABLES `composition` WRITE;
 /*!40000 ALTER TABLE `composition` DISABLE KEYS */;
-INSERT INTO `composition` VALUES (199,25,27),(200,25,27),(201,25,27),(202,22,18),(203,22,18),(204,22,18),(205,22,18),(206,22,18),(207,21,13),(208,21,13),(209,21,13),(219,27,35),(220,27,35),(221,27,35);
+INSERT INTO `composition` VALUES (199,25,27),(200,25,27),(201,25,27),(202,22,18),(203,22,18),(204,22,18),(205,22,18),(206,22,18),(219,27,35),(220,27,35),(221,27,35),(228,21,12),(229,21,12),(230,21,12),(231,21,12),(232,21,12);
 /*!40000 ALTER TABLE `composition` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -154,7 +154,7 @@ CREATE TABLE `troop` (
   KEY `userID_idx` (`userID`),
   CONSTRAINT `leadedBy` FOREIGN KEY (`lordID`) REFERENCES `lord` (`lordID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `userID` FOREIGN KEY (`userID`) REFERENCES `user` (`userID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -163,7 +163,7 @@ CREATE TABLE `troop` (
 
 LOCK TABLES `troop` WRITE;
 /*!40000 ALTER TABLE `troop` DISABLE KEYS */;
-INSERT INTO `troop` VALUES (21,'HIII',4,4,'qwe21'),(22,'Lizaaaa',4,7,'fwueib 923'),(25,'DELETELTLE',4,10,'fner'),(27,'QWEQWE',4,10,'12u 928yr qhtuh');
+INSERT INTO `troop` VALUES (21,'HIII',4,6,'qwe21'),(22,'Lizaaaa',4,7,'fwueib 923'),(25,'DELETELTLE',4,10,'fner'),(27,'QWEQWE',4,10,'12u 928yr qhtuh');
 /*!40000 ALTER TABLE `troop` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -317,7 +317,7 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `delete_wartest_comp_with_troopid` */;
+/*!50003 DROP PROCEDURE IF EXISTS `delete_troop` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -327,16 +327,20 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `delete_wartest_comp_with_troopid`(in troopid int)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `delete_troop`(in troopid_ int)
 begin 
 	declare d_war int default 0;
-	declare d_comp int default 0;
+ 	declare d_comp int default 0;
+ 	declare d_trp int default 0;
     
-	delete from wartest where troopID1 = troopid or troopID2_v = troopid;
+    delete from wartest where troopID1 = troopid_ or troopID2_v = troopid_;
     select row_count() into d_war;
-    call delete_compositions_belong_to_troopID(troopid);
+    call delete_compositions_belong_to_troopID(troopid_);
     select row_count() into d_comp;
-    select d_war, d_comp;
+    delete from troop where troopID = troopid_;
+    select row_count() into d_trp;
+    
+	select d_war, d_comp, d_trp;
 end ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -609,4 +613,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-06 18:12:10
+-- Dump completed on 2020-12-07  9:29:29

@@ -115,21 +115,15 @@ public class TroopDao {
 		int[] ans = new int[3];
 		ans[0] = ans[1] = ans[2] = -1; 
 		
-		// Delete records in wartest and composition with troopID
-		String sql = "call delete_wartest_comp_with_troopid(?)";
+		String sql = "call delete_troop(?)";
 		PreparedStatement pstmt = con.prepareStatement(sql);
 		pstmt.setInt(1, troopID);
 		ResultSet rs = pstmt.executeQuery();
 		if (rs.next()) {
 			ans[0] = rs.getInt("d_war");
 			ans[1] = rs.getInt("d_comp");
+			ans[2] = rs.getInt("d_trp");
 		} 
-		
-		// Delete troop
-		sql = "delete from troop where troopID = ?";
-		pstmt = con.prepareStatement(sql);
-		pstmt.setInt(1, troopID);
-		ans[2] = pstmt.executeUpdate();
 		
 		return ans;
 	}
