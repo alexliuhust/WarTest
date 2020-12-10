@@ -16,6 +16,7 @@ import com.wartest.model.Location;
 import com.wartest.model.Troop;
 import com.wartest.model.User;
 import com.wartest.util.DbUtil;
+import com.wartest.util.StringUtil;
 
 public class WartestFrmService {
 	
@@ -94,12 +95,14 @@ public class WartestFrmService {
 			}
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			StringUtil.connectionError();
+			// e.printStackTrace();
 		} finally {
 			try {
 				dbUtil.closeCon(con);
 			} catch (Exception e) {
-				e.printStackTrace();
+				StringUtil.disconnectionError();
+				// e.printStackTrace();
 			}
 		}
 	}
@@ -138,12 +141,14 @@ public class WartestFrmService {
 				armsLeftJcb.addItem(i);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			StringUtil.connectionError();
+			// e.printStackTrace();
 		} finally {
 			try {
 				dbUtil.closeCon(con);
 			} catch (Exception e) {
-				e.printStackTrace();
+				StringUtil.disconnectionError();
+				// e.printStackTrace();
 			}
 		}
 	}
@@ -184,12 +189,14 @@ public class WartestFrmService {
 			}
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			StringUtil.connectionError();
+			// e.printStackTrace();
 		} finally {
 			try {
 				dbUtil.closeCon(con);
 			} catch (Exception e) {
-				e.printStackTrace();
+				StringUtil.disconnectionError();
+				// e.printStackTrace();
 			}
 		}
 	}

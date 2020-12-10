@@ -1,5 +1,7 @@
 package com.wartest.util;
 
+import javax.swing.JOptionPane;
+
 /**
  * String Util
  * @author liu.zehu
@@ -37,4 +39,21 @@ public class StringUtil {
 		}
 		return String.valueOf(s);
 	}
+	
+	/**
+	 * Print out the connection error
+	 */
+	public static void connectionError() {
+		JOptionPane.showMessageDialog(null, "Looks like you have some connection failure."
+				+ "\nPlease open com/wartest/util/DbUtil.java and check your MySQL username and password.");
+	}
+	
+	/**
+	 * Print out the disconnection error
+	 */
+	public static void disconnectionError() {
+		JOptionPane.showMessageDialog(null, "Looks like you have some disconnection failure."
+				+ "\nPlease open com/wartest/util/DbUtil.java and check your MySQL username and password.");
+	}
+	
 }

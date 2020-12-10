@@ -64,12 +64,14 @@ public class UserService {
 			}
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Failed to sign you up...");
-			e.printStackTrace();
+			StringUtil.connectionError();
+			// e.printStackTrace();
 		} finally {
 			try {
 				dbUtil.closeCon(con);
 			} catch (Exception e) {
-				e.printStackTrace();
+				StringUtil.disconnectionError();
+				//e.printStackTrace();
 			}
 		}
 	}
@@ -115,12 +117,14 @@ public class UserService {
 			}
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Failed to log you in...");
-			e.printStackTrace();
+			StringUtil.connectionError();
+			// e.printStackTrace();
 		} finally {
 			try {
 				dbUtil.closeCon(con);
 			} catch (Exception e) {
-				e.printStackTrace();
+				StringUtil.disconnectionError();
+				//e.printStackTrace();
 			}
 		}
 	}

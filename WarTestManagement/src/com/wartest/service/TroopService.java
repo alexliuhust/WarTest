@@ -68,12 +68,14 @@ public class TroopService {
 				dtm.addRow(v);
 			}
 		} catch(Exception e) {
-			e.printStackTrace();
+			StringUtil.connectionError();
+			// e.printStackTrace();
 		} finally {
 			try {
 				dbUtil.closeCon(con);
 			} catch (Exception e) {
-				e.printStackTrace();
+				StringUtil.disconnectionError();
+				// e.printStackTrace();
 			}
 		}
 	}
@@ -141,12 +143,14 @@ public class TroopService {
 			
 		} catch(Exception e) {
 			JOptionPane.showMessageDialog(null, "Failed to add a troop...");
-			e.printStackTrace();
+			StringUtil.connectionError();
+			// e.printStackTrace();
 		} finally {
 			try {
 				dbUtil.closeCon(con);
 			} catch (Exception e) {
-				e.printStackTrace();
+				StringUtil.disconnectionError();
+				// e.printStackTrace();
 			}
 		}
 	}
@@ -225,12 +229,14 @@ public class TroopService {
 			
 		} catch(Exception e) {
 			JOptionPane.showMessageDialog(null, "Failed to update a troop...");
-			e.printStackTrace();
+			StringUtil.connectionError();
+			// e.printStackTrace();
 		} finally {
 			try {
 				dbUtil.closeCon(con);
 			} catch (Exception e) {
-				e.printStackTrace();
+				StringUtil.disconnectionError();
+				// e.printStackTrace();
 			}
 		}
 	}
@@ -267,13 +273,15 @@ public class TroopService {
 				}
 				
 			} catch(Exception e) {
-				e.printStackTrace();
 				JOptionPane.showMessageDialog(null, "Failed to delete a Troop...");
+				StringUtil.connectionError();
+				// e.printStackTrace();
 			} finally {
 				try {
 					dbUtil.closeCon(con);
 				} catch (Exception e) {
-					e.printStackTrace();
+					StringUtil.disconnectionError();
+					// e.printStackTrace();
 				}
 			}
 		}

@@ -19,6 +19,7 @@ import com.wartest.model.Arm;
 import com.wartest.model.Lord;
 import com.wartest.model.Race;
 import com.wartest.util.DbUtil;
+import com.wartest.util.StringUtil;
 
 public class TroopFrmService {
 	
@@ -116,12 +117,14 @@ public class TroopFrmService {
 			}
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			StringUtil.connectionError();
+			// e.printStackTrace();
 		} finally {
 			try {
 				dbUtil.closeCon(con);
 			} catch (Exception e) {
-				e.printStackTrace();
+				StringUtil.disconnectionError();
+				// e.printStackTrace();
 			}
 		}
 	}
@@ -171,12 +174,14 @@ public class TroopFrmService {
 			v.add(selectedArm.getType());
 			dtm.addRow(v);
 		} catch(Exception e) {
-			e.printStackTrace();
+			StringUtil.connectionError();
+			// e.printStackTrace();
 		} finally {
 			try {
 				dbUtil.closeCon(con);
 			} catch (Exception e) {
-				e.printStackTrace();
+				StringUtil.disconnectionError();
+				// e.printStackTrace();
 			}
 		}
 	}
@@ -219,12 +224,14 @@ public class TroopFrmService {
 			}
 			
 		}catch (Exception e) {
-			e.printStackTrace();
+			StringUtil.connectionError();
+			// e.printStackTrace();
 		} finally {
 			try {
 				dbUtil.closeCon(con);
 			} catch (Exception e) {
-				e.printStackTrace();
+				StringUtil.disconnectionError();
+				// e.printStackTrace();
 			}
 		}
 	}
@@ -271,12 +278,14 @@ public class TroopFrmService {
 			}
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			StringUtil.connectionError();
+			// e.printStackTrace();
 		} finally {
 			try {
 				dbUtil.closeCon(con);
 			} catch (Exception e) {
-				e.printStackTrace();
+				StringUtil.disconnectionError();
+				// e.printStackTrace();
 			}
 		}
 	}

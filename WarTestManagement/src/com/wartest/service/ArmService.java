@@ -60,12 +60,14 @@ public class ArmService {
 				spTxt.setText(sp.toString());
 			}
 		} catch(Exception e) {
-			e.printStackTrace();
+			StringUtil.connectionError();
+			// e.printStackTrace();
 		} finally {
 			try {
 				dbUtil.closeCon(con);
 			} catch (Exception e) {
-				e.printStackTrace();
+				StringUtil.disconnectionError();
+				//e.printStackTrace();
 			}
 		}
 	}
@@ -112,12 +114,14 @@ public class ArmService {
 				dtm.addRow(v);
 			}
 		} catch(Exception e) {
-			e.printStackTrace();
+			StringUtil.connectionError();
+			// e.printStackTrace();
 		} finally {
 			try {
 				dbUtil.closeCon(con);
 			} catch (Exception e) {
-				e.printStackTrace();
+				StringUtil.disconnectionError();
+				//e.printStackTrace();
 			}
 		}
 	}

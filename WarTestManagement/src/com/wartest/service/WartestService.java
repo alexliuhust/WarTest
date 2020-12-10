@@ -53,12 +53,14 @@ public class WartestService {
 			}
 			
 		} catch(Exception e) {
-			e.printStackTrace();
+			StringUtil.connectionError();
+			// e.printStackTrace();
 		} finally {
 			try {
 				dbUtil.closeCon(con);
 			} catch (Exception e) {
-				e.printStackTrace();
+				StringUtil.disconnectionError();
+				// e.printStackTrace();
 			}
 		}
 	}
@@ -102,12 +104,14 @@ public class WartestService {
 			
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Failed to add a Wartest...");
-			e.printStackTrace();
+			StringUtil.connectionError();
+			// e.printStackTrace();
 		} finally {
 			try {
 				dbUtil.closeCon(con);
 			} catch (Exception e) {
-				e.printStackTrace();
+				StringUtil.disconnectionError();
+				// e.printStackTrace();
 			}
 		}
 	}
@@ -150,12 +154,14 @@ public class WartestService {
 
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(null, "Failed to delete a Wartest...");
-				e.printStackTrace();
+				StringUtil.connectionError();
+				// e.printStackTrace();
 			} finally {
 				try {
 					dbUtil.closeCon(con);
 				} catch (Exception e) {
-					e.printStackTrace();
+					StringUtil.disconnectionError();
+					// e.printStackTrace();
 				}
 			}
 		}
@@ -224,12 +230,14 @@ public class WartestService {
 			
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Failed to update a Wartest...");
-			e.printStackTrace();
+			StringUtil.connectionError();
+			// e.printStackTrace();
 		} finally {
 			try {
 				dbUtil.closeCon(con);
 			} catch (Exception e) {
-				e.printStackTrace();
+				StringUtil.disconnectionError();
+				// e.printStackTrace();
 			}
 		}
 	}
